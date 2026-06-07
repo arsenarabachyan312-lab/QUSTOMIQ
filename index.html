@@ -1,972 +1,358 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QUSTOMIQ — IT-компания полного цикла</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --border: #1e1e2e;
-    --accent: #4f6ef7;
-    --accent2: #7c3aed;
-    --text: #e8e8f0;
-    --muted: #6b6b80;
-    --white: #ffffff;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  /* NOISE TEXTURE */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.4;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 24px 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid transparent;
-    transition: all 0.3s;
-    backdrop-filter: blur(0px);
-  }
-
-  nav.scrolled {
-    border-bottom-color: var(--border);
-    background: rgba(10,10,15,0.85);
-    backdrop-filter: blur(20px);
-    padding: 16px 60px;
-  }
-
-  .logo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    gap: 5px;
-  }
-
-  .logo img {
-    height: 36px;
-    width: 36px;
-    object-fit: contain;
-  }
-
-  .logo-text {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--white);
-    line-height: 1;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 40px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 14px;
-    letter-spacing: 0.02em;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--white); }
-
-  .nav-cta {
-    background: var(--accent);
-    color: var(--white) !important;
-    padding: 10px 24px;
-    border-radius: 6px;
-    font-weight: 500 !important;
-    transition: opacity 0.2s !important;
-  }
-
-  .nav-cta:hover { opacity: 0.85; color: var(--white) !important; }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 140px 60px 80px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-glow {
-    position: absolute;
-    width: 800px;
-    height: 800px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(79,110,247,0.12) 0%, transparent 70%);
-    top: -200px;
-    right: -200px;
-    pointer-events: none;
-    animation: pulse 8s ease-in-out infinite;
-  }
-
-  .hero-glow2 {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%);
-    bottom: -100px;
-    left: -100px;
-    pointer-events: none;
-    animation: pulse 10s ease-in-out infinite reverse;
-  }
-
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.7; }
-  }
-
-  .hero-inner {
-    max-width: 900px;
-    position: relative;
-    z-index: 1;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeUp 0.9s ease forwards 0.2s;
-  }
-
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 6px 16px 6px 8px;
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 40px;
-    background: rgba(255,255,255,0.02);
-  }
-
-  .hero-badge-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: blink 2s ease-in-out infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  h1 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: clamp(48px, 7vw, 88px);
-    line-height: 1.0;
-    letter-spacing: -0.02em;
-    color: var(--white);
-    margin-bottom: 32px;
-  }
-
-  h1 .accent-word {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .hero-sub {
-    font-size: 18px;
-    color: var(--muted);
-    max-width: 520px;
-    line-height: 1.7;
-    margin-bottom: 48px;
-    font-weight: 300;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: var(--white);
-    padding: 16px 36px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s;
-    border: none;
-    cursor: pointer;
-    display: inline-block;
-  }
-
-  .btn-primary:hover {
-    background: #3d5ce5;
-    transform: translateY(-1px);
-    box-shadow: 0 8px 32px rgba(79,110,247,0.3);
-  }
-
-  .btn-ghost {
-    color: var(--muted);
-    padding: 16px 24px;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 400;
-    text-decoration: none;
-    transition: color 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .btn-ghost:hover { color: var(--white); }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 40px;
-    left: 60px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: var(--muted);
-    font-size: 13px;
-    letter-spacing: 0.05em;
-    opacity: 0;
-    animation: fadeUp 0.9s ease forwards 1s;
-  }
-
-  .scroll-line {
-    width: 40px;
-    height: 1px;
-    background: var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .scroll-line::after {
-    content: '';
-    position: absolute;
-    left: -100%;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--accent);
-    animation: slide 2s ease-in-out infinite;
-  }
-
-  @keyframes slide {
-    0% { left: -100%; }
-    100% { left: 100%; }
-  }
-
-  /* SERVICES */
-  section {
-    padding: 120px 60px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .section-label {
-    font-size: 12px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-weight: 500;
-    margin-bottom: 20px;
-  }
-
-  h2 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: clamp(32px, 4vw, 52px);
-    color: var(--white);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
-  }
-
-  .section-sub {
-    color: var(--muted);
-    font-size: 17px;
-    max-width: 480px;
-    margin-bottom: 72px;
-  }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-  }
-
-  .service-card {
-    background: var(--surface);
-    padding: 48px 40px;
-    transition: background 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .service-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-  }
-
-  .service-card:hover::before { transform: scaleX(1); }
-
-  .service-card:hover { background: #14141e; }
-
-  .service-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 28px;
-    font-size: 22px;
-    background: rgba(255,255,255,0.02);
-    transition: border-color 0.3s;
-  }
-
-  .service-card:hover .service-icon {
-    border-color: var(--accent);
-  }
-
-  .service-card h3 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    color: var(--white);
-    margin-bottom: 16px;
-  }
-
-  .service-card p {
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.7;
-  }
-
-  .service-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 24px;
-  }
-
-  .tag {
-    font-size: 12px;
-    padding: 4px 12px;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    letter-spacing: 0.02em;
-  }
-
-  /* WHY */
-  .why-section { background: var(--surface); }
-
-  .why-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: center;
-  }
-
-  .why-list {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-  }
-
-  .why-item {
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: all 0.6s ease;
-  }
-
-  .why-item.visible {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .why-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--accent);
-    min-width: 28px;
-    padding-top: 4px;
-  }
-
-  .why-item h4 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 18px;
-    color: var(--white);
-    margin-bottom: 8px;
-  }
-
-  .why-item p {
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.7;
-  }
-
-  .why-visual {
-    position: relative;
-    height: 440px;
-  }
-
-  .why-card-main {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 36px;
-    bottom: 100px;
-  }
-
-  .why-card-float {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 60px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 16px;
-    padding: 28px 32px;
-    color: white;
-  }
-
-  .stat-big {
-    font-family: 'Syne', sans-serif;
-    font-size: 48px;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .stat-label {
-    font-size: 14px;
-    opacity: 0.8;
-  }
-
-  .formula-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .formula-step {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: var(--muted);
-    font-size: 14px;
-  }
-
-  .formula-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-  }
-
-  /* AI SECTION */
-  .ai-section {
-    background: var(--bg);
-  }
-
-  .ai-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 16px;
-    margin-top: 64px;
-  }
-
-  .ai-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 32px 24px;
-    text-align: center;
-    transition: all 0.3s;
-    cursor: default;
-  }
-
-  .ai-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-4px);
-    box-shadow: 0 16px 48px rgba(79,110,247,0.1);
-  }
-
-  .ai-emoji { font-size: 32px; margin-bottom: 16px; display: block; }
-
-  .ai-card h4 {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--white);
-    margin-bottom: 8px;
-  }
-
-  .ai-card p {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  /* PROCESS */
-  .process-section { background: var(--surface); }
-
-  .process-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-top: 64px;
-  }
-
-  .process-step {
-    background: var(--bg);
-    padding: 40px 32px;
-    position: relative;
-    transition: background 0.3s;
-  }
-
-  .process-step:hover { background: #0d0d14; }
-
-  .step-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 48px;
-    font-weight: 800;
-    color: var(--border);
-    line-height: 1;
-    margin-bottom: 24px;
-    transition: color 0.3s;
-  }
-
-  .process-step:hover .step-num { color: rgba(79,110,247,0.2); }
-
-  .process-step h4 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 600;
-    font-size: 17px;
-    color: var(--white);
-    margin-bottom: 12px;
-  }
-
-  .process-step p {
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  /* CTA */
-  .cta-section {
-    background: var(--bg);
-    text-align: center;
-  }
-
-  .cta-inner {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 80px 0;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .cta-inner h2 { margin-bottom: 20px; }
-
-  .cta-inner p {
-    color: var(--muted);
-    font-size: 17px;
-    margin-bottom: 48px;
-  }
-
-  .cta-contacts {
-    display: flex;
-    gap: 32px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 40px;
-  }
-
-  .contact-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--muted);
-    font-size: 14px;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .contact-item:hover { color: var(--white); }
-
-  .contact-icon {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    transition: border-color 0.2s;
-  }
-
-  .contact-item:hover .contact-icon { border-color: var(--accent); }
-
-  /* FOOTER */
-  footer {
-    padding: 40px 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px solid var(--border);
-    position: relative;
-    z-index: 1;
-  }
-
-  .footer-copy {
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .footer-tagline {
-    font-size: 13px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-
-  /* SCROLL ANIMATIONS */
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: all 0.7s ease;
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  @media (max-width: 900px) {
-    nav { padding: 20px 24px; }
-    nav.scrolled { padding: 14px 24px; }
-    .nav-links { display: none; }
-    section { padding: 80px 24px; }
-    .hero { padding: 120px 24px 60px; }
-    h1 { font-size: 42px; }
-    .services-grid { grid-template-columns: 1fr; }
-    .why-grid { grid-template-columns: 1fr; }
-    .why-visual { display: none; }
-    .ai-grid { grid-template-columns: 1fr 1fr; }
-    .process-steps { grid-template-columns: 1fr 1fr; }
-    footer { flex-direction: column; gap: 12px; text-align: center; padding: 32px 24px; }
-    .hero-scroll { display: none; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUSTOMIQ — AI-разработка и IT-решения для бизнеса</title>
+  <meta name="description" content="Кастомная разработка, AI-агенты и цифровая трансформация. Становимся вашим технологическим партнёром — надолго.">
+  <meta property="og:title" content="QUSTOMIQ — AI-разработка нового поколения">
+  <meta property="og:description" content="Кастомная разработка, AI-интеграции и цифровая трансформация бизнеса">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://qustomiq.ru">
+  <link rel="canonical" href="https://qustomiq.ru">
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/ticker.css">
+  <link rel="stylesheet" href="css/stats.css">
+  <link rel="stylesheet" href="css/services.css">
+  <link rel="stylesheet" href="css/why.css">
+  <link rel="stylesheet" href="css/ai.css">
+  <link rel="stylesheet" href="css/process.css">
+  <link rel="stylesheet" href="css/cta.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 
-<nav id="nav">
-  <a href="#" class="logo">
-    <img src="/mnt/user-data/uploads/75C10F09-C236-4AF3-AC1C-0238D5D502B2.png" alt="QUSTOMIQ logo">
-    <span class="logo-text">QUSTOMIQ</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#services">Услуги</a></li>
-    <li><a href="#ai">AI-решения</a></li>
-    <li><a href="#process">Процесс</a></li>
-    <li><a href="#contact" class="nav-cta">Обсудить проект</a></li>
-  </ul>
-</nav>
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-glow2"></div>
-  <div class="hero-inner">
-    <div class="hero-badge">
-      <div class="hero-badge-dot"></div>
-      IT-компания полного цикла · Россия и СНГ
-    </div>
-    <h1>Технология,<br>созданная <span class="accent-word">под вас</span></h1>
-    <p class="hero-sub">Разрабатываем кастомные решения, выстраиваем интеграции и внедряем AI-инструменты. Становимся вашим технологическим партнёром — надолго.</p>
-    <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Обсудить проект</a>
-      <a href="#services" class="btn-ghost">Посмотреть услуги →</a>
-    </div>
-  </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    Листайте вниз
-  </div>
-</section>
+  <!-- Navigation -->
+  <nav id="nav">
+    <a href="#" class="logo">
+      <div class="logo-mark">Q</div>
+      <span class="logo-text">QUSTOMIQ</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Услуги</a></li>
+      <li><a href="#ai">AI-решения</a></li>
+      <li><a href="#process">Процесс</a></li>
+      <li><a href="#contact" class="nav-cta">Обсудить проект</a></li>
+    </ul>
+  </nav>
 
-<!-- SERVICES -->
-<section id="services">
-  <div class="section-label">Услуги</div>
-  <h2>Что мы делаем</h2>
-  <p class="section-sub">Полный спектр IT-услуг — от разработки до AI-автоматизации</p>
-
-  <div class="services-grid reveal">
-    <div class="service-card">
-      <div class="service-icon">⚙️</div>
-      <h3>Разработка</h3>
-      <p>Веб-сервисы, мобильные приложения и корпоративные системы. Разрабатываем с нуля или усиливаем существующий продукт.</p>
-      <div class="service-tags">
-        <span class="tag">Web</span>
-        <span class="tag">Mobile</span>
-        <span class="tag">ERP</span>
-        <span class="tag">CRM</span>
+  <!-- Hero -->
+  <section class="hero">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <div class="badge-dot"></div>
+        IT-компания нового поколения · Россия и СНГ
+      </div>
+      <h1>
+        Технология,<br>
+        созданная <span class="tw-text" id="twEl">под вас</span><span class="tw-cursor"></span>
+      </h1>
+      <p class="hero-sub">
+        Разрабатываем кастомные решения, выстраиваем интеграции и внедряем AI-инструменты.
+        Становимся вашим технологическим партнёром — надолго.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Обсудить проект</a>
+        <a href="#services" class="btn-ghost">Посмотреть услуги →</a>
       </div>
     </div>
-    <div class="service-card">
-      <div class="service-icon">🔗</div>
-      <h3>Интеграции</h3>
-      <p>Связываем системы между собой: CRM, ERP, маркетплейсы, внутренние сервисы. Устраняем разрывы в данных и автоматизируем процессы.</p>
-      <div class="service-tags">
-        <span class="tag">API</span>
-        <span class="tag">Маркетплейсы</span>
-        <span class="tag">1С</span>
-        <span class="tag">Bitrix</span>
-      </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Листайте вниз
     </div>
-    <div class="service-card">
-      <div class="service-icon">🤖</div>
-      <h3>AI-решения</h3>
-      <p>AI-ассистенты под конкретные подразделения: продажи, поддержка, HR, логистика. Каждое решение настраивается под ваши процессы.</p>
-      <div class="service-tags">
-        <span class="tag">Чат-боты</span>
-        <span class="tag">Автоматизация</span>
-        <span class="tag">LLM</span>
+  </section>
+
+  <!-- Tech ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="ticker-sep"></span>React &amp; Next.js</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Python &amp; FastAPI</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>OpenAI GPT-4o</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Claude AI</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>LangChain &amp; RAG</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>PostgreSQL</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Node.js</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Docker &amp; K8s</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>1С &amp; Bitrix</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Telegram Bot API</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Vector Databases</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>REST &amp; GraphQL</span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item"><span class="ticker-sep"></span>React &amp; Next.js</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Python &amp; FastAPI</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>OpenAI GPT-4o</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Claude AI</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>LangChain &amp; RAG</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>PostgreSQL</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Node.js</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Docker &amp; K8s</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>1С &amp; Bitrix</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Telegram Bot API</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>Vector Databases</span>
+      <span class="ticker-item"><span class="ticker-sep"></span>REST &amp; GraphQL</span>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-section">
+    <div class="stats-grid reveal" id="statsGrid">
+      <div class="stat-cell">
+        <div class="stat-number"><span id="c1">0</span><em>+</em></div>
+        <div class="stat-desc">реализованных проектов</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-number"><span id="c2">0</span><em>+</em></div>
+        <div class="stat-desc">довольных клиентов</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-number"><span id="c3">0</span><em>%</em></div>
+        <div class="stat-desc">клиентов возвращаются снова</div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- WHY -->
-<section class="why-section" id="why">
-  <div class="section-label">Почему QUSTOMIQ</div>
-  <div class="why-grid">
-    <div>
-      <h2>Партнёр,<br>а не подрядчик</h2>
-      <div class="why-list">
-        <div class="why-item reveal">
-          <div class="why-num">01</div>
-          <div>
-            <h4>Надёжность</h4>
-            <p>Мы строим отношения на долгий срок. Не сдаём проект и уходим — остаёмся рядом, поддерживаем и развиваем решение вместе с вашим бизнесом.</p>
+  <!-- Services -->
+  <section id="services">
+    <div class="section-label">Услуги</div>
+    <h2>Что мы делаем</h2>
+    <p class="section-sub">Полный спектр IT-услуг — от разработки до AI-автоматизации</p>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3>Разработка</h3>
+        <p>Веб-сервисы, мобильные приложения и корпоративные системы. Разрабатываем с нуля или усиливаем существующий продукт.</p>
+        <div class="service-tags">
+          <span class="tag">Web</span><span class="tag">Mobile</span><span class="tag">ERP</span><span class="tag">CRM</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+        </div>
+        <h3>Интеграции</h3>
+        <p>Связываем системы между собой: CRM, ERP, маркетплейсы, внутренние сервисы. Устраняем разрывы в данных и автоматизируем процессы.</p>
+        <div class="service-tags">
+          <span class="tag">API</span><span class="tag">Маркетплейсы</span><span class="tag">1С</span><span class="tag">Bitrix</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/>
+          </svg>
+        </div>
+        <h3>AI-решения</h3>
+        <p>AI-ассистенты под конкретные подразделения: продажи, поддержка, HR, логистика. Каждое решение настраивается под ваши процессы.</p>
+        <div class="service-tags">
+          <span class="tag">Чат-боты</span><span class="tag">Автоматизация</span><span class="tag">LLM</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why -->
+  <section class="why-section" id="why">
+    <div class="section-label">Почему QUSTOMIQ</div>
+    <div class="why-grid">
+      <div class="why-content">
+        <h2>Партнёр,<br>а не подрядчик</h2>
+        <div class="why-list">
+          <div class="why-item">
+            <div class="why-num">01</div>
+            <div>
+              <h4>Надёжность</h4>
+              <p>Мы строим отношения на долгий срок. Не сдаём проект и уходим — остаёмся рядом, поддерживаем и развиваем решение вместе с вашим бизнесом.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-num">02</div>
+            <div>
+              <h4>Кастомный подход</h4>
+              <p>Название говорит само за себя. Мы не продаём коробочный продукт — каждое решение создаётся под конкретную задачу конкретного клиента.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-num">03</div>
+            <div>
+              <h4>Погружение в бизнес</h4>
+              <p>Мы понимаем, как устроен бизнес изнутри — не только технически, но и с точки зрения процессов, коммуникаций и реальных задач.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-num">04</div>
+            <div>
+              <h4>AI как стандарт</h4>
+              <p>Встраиваем искусственный интеллект не как опцию, а как часть современного решения — там, где это даёт реальный измеримый эффект.</p>
+            </div>
           </div>
         </div>
-        <div class="why-item reveal">
-          <div class="why-num">02</div>
-          <div>
-            <h4>Кастомный подход</h4>
-            <p>Название говорит само за себя. Мы не продаём коробочный продукт — каждое решение создаётся под конкретную задачу конкретного клиента.</p>
+      </div>
+      <div class="why-visual reveal">
+        <div class="why-card-main">
+          <div class="formula-label">Наша формула</div>
+          <div class="formula-steps">
+            <div class="formula-step"><div class="formula-dot"></div>Погружаемся в бизнес клиента</div>
+            <div class="formula-step"><div class="formula-dot"></div>Проектируем решение под задачу</div>
+            <div class="formula-step"><div class="formula-dot"></div>Реализуем в срок</div>
+            <div class="formula-step"><div class="formula-dot accent2"></div>Остаёмся партнёром навсегда</div>
           </div>
         </div>
-        <div class="why-item reveal">
-          <div class="why-num">03</div>
-          <div>
-            <h4>Погружение в бизнес</h4>
-            <p>Мы понимаем, как устроен бизнес изнутри — не только технически, но и с точки зрения процессов, коммуникаций и реальных задач.</p>
-          </div>
-        </div>
-        <div class="why-item reveal">
-          <div class="why-num">04</div>
-          <div>
-            <h4>AI как стандарт</h4>
-            <p>Встраиваем искусственный интеллект не как опцию, а как часть современного решения — там, где это даёт реальный измеримый эффект.</p>
-          </div>
+        <div class="why-card-float">
+          <div class="stat-big">200+</div>
+          <div class="stat-label">проектов реализовано командой</div>
         </div>
       </div>
     </div>
-    <div class="why-visual reveal">
-      <div class="why-card-main">
-        <div style="color: var(--muted); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 32px;">Наша формула</div>
-        <div class="formula-steps">
-          <div class="formula-step"><div class="formula-dot"></div>Погружаемся в бизнес клиента</div>
-          <div class="formula-step"><div class="formula-dot"></div>Проектируем решение под задачу</div>
-          <div class="formula-step"><div class="formula-dot"></div>Реализуем в срок</div>
-          <div class="formula-step"><div class="formula-dot" style="background: var(--accent2);"></div>Остаёмся партнёром</div>
+  </section>
+
+  <!-- AI Section -->
+  <section class="ai-section" id="ai">
+    <div class="section-label">AI-направление</div>
+    <h2>Умные ассистенты<br>для каждого отдела</h2>
+    <p class="section-sub">Создаём AI-инструменты под конкретные подразделения — они работают с вашими данными и процессами</p>
+
+    <div class="ai-layout">
+      <div class="ai-cards reveal">
+        <div class="ai-card">
+          <div class="ai-icon">💼</div>
+          <div>
+            <h4>Продажи</h4>
+            <p>Квалификация лидов, подготовка КП, напоминания и аналитика сделок</p>
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-icon">🎧</div>
+          <div>
+            <h4>Поддержка</h4>
+            <p>Ответы на типовые запросы, маршрутизация тикетов, база знаний</p>
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-icon">👥</div>
+          <div>
+            <h4>HR</h4>
+            <p>Скрининг резюме, онбординг сотрудников, ответы на внутренние вопросы</p>
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-icon">🚚</div>
+          <div>
+            <h4>Логистика</h4>
+            <p>Отслеживание отгрузок, уведомления, обработка накладных и документов</p>
+          </div>
         </div>
       </div>
-      <div class="why-card-float">
-        <div class="stat-big">200+</div>
-        <div class="stat-label">проектов реализовано командой</div>
+
+      <!-- Live AI Demo Widget -->
+      <div class="ai-demo reveal">
+        <div class="demo-header">
+          <div class="demo-dots">
+            <div class="demo-dot"></div>
+            <div class="demo-dot"></div>
+            <div class="demo-dot"></div>
+          </div>
+          <span class="demo-title">QUSTOMIQ AI · Ассистент продаж</span>
+          <span class="demo-live">Live demo</span>
+        </div>
+        <div class="demo-body" id="demoBody"></div>
+        <div class="demo-footer">
+          <input class="demo-input" placeholder="Введите запрос..." readonly>
+          <button class="demo-send-btn" aria-label="Отправить">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4 20-7z"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- AI SECTION -->
-<section class="ai-section" id="ai">
-  <div class="section-label">AI-направление</div>
-  <h2>Умные ассистенты<br>для каждого отдела</h2>
-  <p class="section-sub">Создаём AI-инструменты под конкретные подразделения — они работают с вашими данными и вашими процессами</p>
+  <!-- Process -->
+  <section class="process-section" id="process">
+    <div class="section-label">Процесс</div>
+    <h2>Как мы работаем</h2>
+    <p class="section-sub">Чёткий процесс — предсказуемый результат</p>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <h4>Погружение</h4>
+        <p>Изучаем бизнес-процессы, текущий IT-ландшафт и реальные задачи. Находим узкие места и точки роста.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <h4>Проектирование</h4>
+        <p>Разрабатываем архитектуру решения, формируем команду и согласовываем план реализации.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <h4>Разработка</h4>
+        <p>Работаем по Scrum. Показываем промежуточные результаты, оперативно вносим корректировки.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <h4>Партнёрство</h4>
+        <p>После запуска не уходим. Поддерживаем, развиваем продукт и остаёмся на связи 24/7.</p>
+      </div>
+    </div>
+  </section>
 
-  <div class="ai-grid reveal">
-    <div class="ai-card">
-      <span class="ai-emoji">💼</span>
-      <h4>Продажи</h4>
-      <p>Квалификация лидов, подготовка КП, напоминания и аналитика сделок</p>
+  <!-- CTA / Contact -->
+  <section class="cta-section" id="contact">
+    <div class="cta-inner reveal">
+      <div class="section-label">Начать работу</div>
+      <h2>Расскажите о вашей задаче</h2>
+      <p class="cta-sub">Разберёмся в деталях, предложим архитектуру решения и ответим на все вопросы</p>
+      <form class="cta-form" id="ctaForm" novalidate>
+        <div class="form-row">
+          <input type="text" class="form-input" placeholder="Ваше имя" required>
+          <input type="text" class="form-input" placeholder="Email или Telegram" required>
+        </div>
+        <textarea class="form-input" placeholder="Опишите вашу задачу..." required></textarea>
+        <button type="submit" class="form-btn" id="formBtn">Отправить запрос →</button>
+      </form>
+      <div class="cta-contacts">
+        <a href="mailto:info@qustomiq.ru" class="contact-item">
+          <div class="contact-icon">✉️</div>
+          info@qustomiq.ru
+        </a>
+        <a href="https://t.me/Arsen_Arabachyan" class="contact-item" target="_blank" rel="noopener">
+          <div class="contact-icon">✈️</div>
+          @Arsen_Arabachyan
+        </a>
+      </div>
     </div>
-    <div class="ai-card">
-      <span class="ai-emoji">🎧</span>
-      <h4>Поддержка</h4>
-      <p>Ответы на типовые запросы, маршрутизация тикетов, база знаний</p>
-    </div>
-    <div class="ai-card">
-      <span class="ai-emoji">👥</span>
-      <h4>HR</h4>
-      <p>Скрининг резюме, онбординг сотрудников, ответы на внутренние вопросы</p>
-    </div>
-    <div class="ai-card">
-      <span class="ai-emoji">🚚</span>
-      <h4>Логистика</h4>
-      <p>Отслеживание отгрузок, уведомления, обработка накладных и документов</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- PROCESS -->
-<section class="process-section" id="process">
-  <div class="section-label">Процесс</div>
-  <h2>Как мы работаем</h2>
-  <p class="section-sub">Чёткий процесс — предсказуемый результат</p>
+  <!-- Footer -->
+  <footer>
+    <a href="#" class="logo">
+      <div class="logo-mark">Q</div>
+      <span class="logo-text">QUSTOMIQ</span>
+    </a>
+    <div class="footer-copy">© 2025 QUSTOMIQ. Все права защищены.</div>
+    <div class="footer-tagline">Россия · СНГ</div>
+  </footer>
 
-  <div class="process-steps reveal">
-    <div class="process-step">
-      <div class="step-num">01</div>
-      <h4>Погружение</h4>
-      <p>Изучаем бизнес-процессы, текущий IT-ландшафт и реальные задачи. Находим узкие места и точки роста.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-num">02</div>
-      <h4>Проектирование</h4>
-      <p>Разрабатываем архитектуру решения, формируем команду и согласовываем план реализации.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-num">03</div>
-      <h4>Разработка</h4>
-      <p>Работаем по Scrum. Показываем промежуточные результаты, оперативно вносим корректировки.</p>
-    </div>
-    <div class="process-step">
-      <div class="step-num">04</div>
-      <h4>Партнёрство</h4>
-      <p>После запуска не уходим. Поддерживаем, развиваем продукт и остаёмся на связи.</p>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section" id="contact">
-  <div class="cta-inner">
-    <div class="section-label">Начать работу</div>
-    <h2>Расскажите о вашей задаче</h2>
-    <p>Разберёмся в деталях, предложим архитектуру решения и ответим на все вопросы</p>
-    <a href="mailto:info@qustomiq.ru" class="btn-primary">Написать нам</a>
-    <div class="cta-contacts">
-      <a href="mailto:info@qustomiq.ru" class="contact-item">
-        <div class="contact-icon">✉️</div>
-        info@qustomiq.ru
-      </a>
-      <a href="https://t.me/Arsen_Arabachyan" class="contact-item">
-        <div class="contact-icon">✈️</div>
-        @Arsen_Arabachyan
-      </a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <a href="#" class="logo">
-    <img src="/mnt/user-data/uploads/75C10F09-C236-4AF3-AC1C-0238D5D502B2.png" alt="QUSTOMIQ logo">
-    <span class="logo-text">QUSTOMIQ</span>
-  </a>
-  <div class="footer-copy">© 2025 QUSTOMIQ. Все права защищены.</div>
-  <div class="footer-tagline">Россия · СНГ</div>
-</footer>
-
-<script>
-  // Nav scroll
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  });
-
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.classList.add('visible');
-        }, entry.target.dataset.delay || 0);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.reveal, .why-item').forEach((el, i) => {
-    el.dataset.delay = (i % 4) * 100;
-    observer.observe(el);
-  });
-</script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

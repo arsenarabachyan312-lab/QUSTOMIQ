@@ -1,0 +1,27 @@
+:root {
+  /* Background */
+  --bg:      #0a0a0f;
+  --surface: #111118;
+  --border:  #1e1e2e;
+
+  /* Brand */
+  --accent:  #4f6ef7;
+  --accent2: #7c3aed;
+  --green:   #22c55e;
+
+  /* Text */
+  --text:  #e8e8f0;
+  --muted: #6b6b80;
+  --white: #ffffff;
+
+  /* Radius */
+  --r-sm:   6px;
+  --r-md:   8px;
+  --r-lg:   12px;
+  --r-xl:   16px;
+  --r-full: 100px;
+
+  /* Transitions */
+  --ease:      0.2s ease;
+  --ease-slow: 0.6s ease;
+}
