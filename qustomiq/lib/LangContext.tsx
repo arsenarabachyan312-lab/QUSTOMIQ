@@ -30,7 +30,7 @@ export function LangProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <LangContext.Provider value={{ locale, t: dict[locale], toggle }}>
+    <LangContext.Provider value={{ locale, t: dict[locale] as typeof dict.ru, toggle }}>
       {children}
     </LangContext.Provider>
   );
