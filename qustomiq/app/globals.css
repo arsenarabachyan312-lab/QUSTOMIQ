@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens: light ── */
+:root {
+  --bg: #f7f8f7;
+  --ink: #0c1116;
+  --muted: #46555b;
+  --accent: #22d3ee;
+  --accent-deep: #0a96b0;
+  --accent-ink: #0a7d92;
+  --line: rgba(12, 17, 22, 0.08);
+  --panel: rgba(255, 255, 255, 0.7);
+}
+
+/* ── Design tokens: dark ── */
+.dark {
+  --bg: #070b10;
+  --ink: #eef4f6;
+  --muted: #9aa6ab;
+  --accent: #22d3ee;
+  --accent-deep: #22d3ee;
+  --accent-ink: #22d3ee;
+  --line: rgba(255, 255, 255, 0.1);
+  --panel: rgba(255, 255, 255, 0.04);
+}
+
+/* ── Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--ink);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Hero gradient background ── */
+.hero-bg {
+  background: radial-gradient(120% 120% at 78% 30%, #eef4f6 0%, var(--bg) 55%);
+}
+
+.dark .hero-bg {
+  background: radial-gradient(
+    120% 120% at 78% 30%,
+    #0d1f2d 0%,
+    var(--bg) 65%
+  );
+}
+
+/* ── Focus ── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Clients ticker ── */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ticker-track { animation: ticker 26s linear infinite; }
+.ticker-track:hover { animation-play-state: paused; }
+
+/* ── reduced-motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>QUSTOMIQ — Q-Core (референс героя)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  :root {
+    --bg: #f7f8f7;
+    --ink: #0c1116;
+    --muted: #46555b;
+    --accent: #22d3ee;       /* cyan core */
+    --accent-deep: #0a96b0;  /* readable cyan on light */
+    --accent-ink: #0a7d92;
+    --line: rgba(12,17,22,0.08);
+    --font-display: "Space Grotesk", sans-serif;
+    --font-body: "Sora", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+  }
+  body { font-family: var(--font-body); color: var(--ink);
+    background: radial-gradient(120% 120% at 78% 30%, #eef4f6 0%, var(--bg) 55%); }
+
+  /* Hero animations */
+  @keyframes qfloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+  @keyframes qspin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes qspinrev { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(-360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .qring, .orbit, .sat { animation: none !important; }
+  }
+
+  .hero { min-height: 100vh; display: flex; flex-direction: column; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 28px 56px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-family: var(--font-display); font-weight: 700; font-size: 19px; letter-spacing: .5px; }
+  .qmark { width: 32px; height: 32px; border-radius: 50%; border: 3px solid var(--ink); position: relative; }
+  .qmark::after { content: ""; position: absolute; width: 13px; height: 4px; background: var(--ink); border-radius: 2px; bottom: 1px; right: -1px; transform: rotate(45deg); }
+  .navlinks { display: flex; gap: 28px; font-size: 14.5px; color: var(--muted); font-weight: 500; }
+  .navlinks a { color: inherit; text-decoration: none; }
+  .nav-right { display: flex; align-items: center; gap: 18px; }
+  .lang { font-family: var(--font-mono); font-size: 12.5px; color: #86969c; letter-spacing: 1px; }
+  .lang b { color: var(--ink); }
+  .cta { background: var(--ink); color: #fff; padding: 12px 22px; border-radius: 50px; font-size: 14.5px; font-weight: 600; white-space: nowrap; text-decoration: none; }
+
+  .body { flex: 1; display: grid; grid-template-columns: 1fr 620px; align-items: center; padding: 0 56px; gap: 24px; }
+  .badge { display: inline-flex; align-items: center; gap: 9px; padding: 8px 16px; border-radius: 50px; background: rgba(255,255,255,.7); border: 1px solid var(--line); font-size: 13.5px; font-weight: 500; color: var(--accent-ink); margin-bottom: 28px; white-space: nowrap; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(34,211,238,.25); }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: 72px; line-height: .98; letter-spacing: -2.5px; margin: 0; }
+  h1 .grad { color: var(--accent-deep); }
+  .sub { font-size: 18.5px; line-height: 1.6; color: var(--muted); margin-top: 26px; max-width: 460px; }
+  .ctas { display: flex; gap: 14px; margin-top: 36px; align-items: center; }
+  .btn-p { background: var(--ink); color: #fff; padding: 17px 30px; border-radius: 12px; font-weight: 600; font-size: 15.5px; white-space: nowrap; text-decoration: none; }
+  .btn-s { color: var(--ink); padding: 17px 24px; font-weight: 600; font-size: 15.5px; white-space: nowrap; text-decoration: none; }
+
+  .stage { position: relative; height: 560px; display: flex; align-items: center; justify-content: center; }
+  .orbit { position: absolute; width: 560px; height: 560px; animation: qspin 38s linear infinite; }
+  .sat { position: absolute; transform: translate(-50%,-50%); animation: qspinrev 38s linear infinite; }
+  .chip { padding: 8px 15px; border-radius: 50px; background: #fff; box-shadow: 0 6px 20px rgba(12,40,55,.12); border: 1px solid rgba(12,17,22,.06); font-size: 13px; font-weight: 600; font-family: var(--font-mono); color: var(--ink); white-space: nowrap; }
+  .qring { width: 360px; height: 360px; border-radius: 50%; border: 30px solid var(--ink); position: relative; display: flex; align-items: center; justify-content: center; animation: qfloat 7s ease-in-out infinite; }
+  .qring::after { content: ""; position: absolute; width: 120px; height: 30px; background: var(--ink); border-radius: 15px; bottom: -6px; right: -10px; transform: rotate(45deg); }
+  .core { width: 300px; height: 300px; border-radius: 50%; overflow: hidden; }
+  .core canvas { width: 300px; height: 300px; display: block; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <nav class="nav">
+    <div class="brand"><span class="qmark"></span>QUSTOMIQ</div>
+    <div class="navlinks">
+      <a href="#">Услуги</a><a href="#">AI-решения</a><a href="#">Процесс</a><a href="#">Контакты</a>
+    </div>
+    <div class="nav-right">
+      <span class="lang"><b>RU</b> / EN</span>
+      <a class="cta" href="#">Обсудить проект</a>
+    </div>
+  </nav>
+  <div class="body">
+    <div>
+      <div class="badge"><span class="dot"></span>IT-компания нового поколения · Россия и СНГ</div>
+      <h1>Технология,<br />созданная <span class="grad">под вас</span></h1>
+      <p class="sub">Кастомная разработка, интеграции и AI-инструменты вокруг ядра вашего бизнеса. Технологический партнёр — надолго.</p>
+      <div class="ctas">
+        <a class="btn-p" href="#">Обсудить проект</a>
+        <a class="btn-s" href="#">Посмотреть услуги →</a>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="orbit" id="orbit"></div>
+      <div class="qring">
+        <div class="core"><canvas id="core"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Orbiting system chips — positioned at N/E/S/W of the orbit ring
+  (function () {
+    const orbit = document.getElementById('orbit');
+    const sats = [['6%','50%','CRM'], ['50%','95%','1С'], ['94%','50%','ERP'], ['50%','5%','API']];
+    for (const [top, left, label] of sats) {
+      const wrap = document.createElement('div');
+      wrap.className = 'sat';
+      wrap.style.top = top; wrap.style.left = left;
+      const chip = document.createElement('span');
+      chip.className = 'chip'; chip.textContent = label;
+      wrap.appendChild(chip); orbit.appendChild(wrap);
+    }
+  })();
+
+  // Generative neural core inside the Q — particles + proximity links + radial glow
+  (function () {
+    const cv = document.getElementById('core');
+    if (!cv) return;
+    const ctx = cv.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const S = 300; cv.width = S * dpr; cv.height = S * dpr; ctx.scale(dpr, dpr);
+    const N = 34, R = S / 2;
+    const ps = Array.from({ length: N }, () => ({
+      x: Math.random() * S, y: Math.random() * S,
+      vx: (Math.random() - .5) * .28, vy: (Math.random() - .5) * .28,
+    }));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function frame() {
+      ctx.clearRect(0, 0, S, S);
+      const g = ctx.createRadialGradient(R, R, 8, R, R, R);
+      g.addColorStop(0, 'rgba(34,211,238,0.45)');
+      g.addColorStop(0.5, 'rgba(34,211,238,0.10)');
+      g.addColorStop(1, 'rgba(34,211,238,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(R, R, R, 0, 7); ctx.fill();
+      for (const p of ps) {
+        p.x += p.vx; p.y += p.vy;
+        const dx = p.x - R, dy = p.y - R;
+        if (dx * dx + dy * dy > (R - 6) * (R - 6)) { p.vx *= -1; p.vy *= -1; p.x += p.vx * 2; p.y += p.vy * 2; }
+      }
+      for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) {
+        const a = ps[i], b = ps[j], dx = a.x - b.x, dy = a.y - b.y, d = Math.hypot(dx, dy);
+        if (d < 56) { ctx.strokeStyle = 'rgba(13,80,100,' + (1 - d / 56) * 0.5 + ')'; ctx.lineWidth = .7; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+      }
+      for (const p of ps) { ctx.fillStyle = 'rgba(8,60,75,0.9)'; ctx.beginPath(); ctx.arc(p.x, p.y, 1.7, 0, 7); ctx.fill(); }
+      if (!reduce) requestAnimationFrame(frame);
+    }
+    frame();
+  })();
+</script>
+</body>
+</html>
