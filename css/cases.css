@@ -1,0 +1,132 @@
+.cases-section { background: var(--surface); }
+
+/* ─── Grid ─────────────────────────────────────────── */
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+/* ─── Card ─────────────────────────────────────────── */
+.case-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color var(--ease),
+    transform    var(--ease),
+    opacity      0.7s ease,
+    translate    0.7s ease;
+}
+
+/* Accent top line on hover */
+.case-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.case-card:hover::before { transform: scaleX(1); }
+
+.case-card:hover {
+  border-color: rgba(79, 110, 247, 0.35);
+  transform: translateY(-6px);
+}
+
+/* ─── Tag pill ──────────────────────────────────────── */
+.case-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: var(--r-full);
+}
+
+.case-tag--ai {
+  background: rgba(79, 110, 247, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(79, 110, 247, 0.25);
+}
+
+.case-tag--integration {
+  background: rgba(124, 58, 237, 0.12);
+  color: #a78bfa;
+  border: 1px solid rgba(124, 58, 237, 0.25);
+}
+
+.case-tag--dev {
+  background: rgba(34, 197, 94, 0.10);
+  color: var(--green);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+/* ─── Client line ───────────────────────────────────── */
+.case-client {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Task title ────────────────────────────────────── */
+.case-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--white);
+  line-height: 1.35;
+  margin: 0;
+  flex: 1;
+}
+
+/* ─── Result block ──────────────────────────────────── */
+.case-result {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.case-result-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.case-result-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ─── Stack tags ────────────────────────────────────── */
+.case-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ─── Bottom CTA ────────────────────────────────────── */
+.cases-cta { text-align: center; }

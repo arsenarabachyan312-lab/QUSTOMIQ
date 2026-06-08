@@ -47,7 +47,7 @@
 
 .ai-card:hover .ai-icon { border-color: var(--accent); }
 
-.ai-card h4 {
+.ai-card h3 {
   font-family: 'Syne', sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -205,11 +205,14 @@
   border-radius: var(--r-md);
   padding: 8px 14px;
   font-size: 13px;
-  color: var(--muted);
+  color: var(--text);
   font-family: 'Inter', sans-serif;
   outline: none;
-  cursor: default;
+  transition: border-color var(--ease);
 }
+
+.demo-input::placeholder { color: var(--muted); }
+.demo-input:focus        { border-color: var(--accent); }
 
 .demo-send-btn {
   width: 34px;

@@ -1,6 +1,8 @@
 @media (max-width: 1024px) {
   .why-grid   { gap: 48px; }
   .ai-layout  { gap: 40px; }
+  .cases-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .team-grid  { grid-template-columns: 1fr 1fr; gap: 16px; }
 }
 
 @media (max-width: 900px) {
@@ -19,6 +21,8 @@
 
   /* Grids */
   .services-grid  { grid-template-columns: 1fr; }
+  .cases-grid     { grid-template-columns: 1fr; gap: 16px; }
+  .team-grid      { grid-template-columns: 1fr; gap: 16px; }
   .stats-grid     { grid-template-columns: 1fr; }
   .process-steps  { grid-template-columns: 1fr 1fr; }
 

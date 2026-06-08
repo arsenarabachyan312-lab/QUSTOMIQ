@@ -4,32 +4,50 @@ const COUNTERS = [
   { id: 'c3', target: 98,  duration: 1800 },
 ];
 
-function animateCounter(el, target, duration) {
-  const step = target / (duration / 16);
-  let current = 0;
+// Квадратичный easeOut: быстрый старт → плавное замедление к финалу
+function easeOut(t) {
+  return 1 - (1 - t) * (1 - t);
+}
 
-  const timer = setInterval(() => {
-    current = Math.min(current + step, target);
-    el.textContent = Math.round(current);
-    if (current >= target) clearInterval(timer);
-  }, 16);
+function animateCounter(el, target, duration) {
+  // Сбрасываем к 0 только перед стартом анимации (до этого в HTML реальное значение)
+  el.textContent = '0';
+
+  const startTime = performance.now();
+
+  function frame(now) {
+    const elapsed = now - startTime;
+    const t       = Math.min(elapsed / duration, 1);
+    el.textContent = Math.round(easeOut(t) * target);
+    if (t < 1) requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
 }
 
 export function init() {
   const grid = document.getElementById('statsGrid');
   if (!grid) return;
 
+  // Собираем только существующие элементы
+  const counters = COUNTERS.map(c => ({ ...c, el: document.getElementById(c.id) }))
+                            .filter(c => c.el !== null);
+
+  if (counters.length === 0) return;
+
   let started = false;
 
   const observer = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting && !started) {
       started = true;
-      COUNTERS.forEach(({ id, target, duration }) => {
-        const el = document.getElementById(id);
-        if (el) animateCounter(el, target, duration);
-      });
+      observer.disconnect();
+      counters.forEach(({ el, target, duration }) => animateCounter(el, target, duration));
     }
-  }, { threshold: 0.5 });
+  }, {
+    // Низкий порог — срабатывает при появлении первых 15% блока,
+    // корректно работает на мобильных где сетка вытянута в колонку
+    threshold: 0.15,
+  });
 
   observer.observe(grid);
 }
