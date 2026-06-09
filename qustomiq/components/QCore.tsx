@@ -41,11 +41,11 @@ export default function QCore() {
       if (!ctx) return;
       ctx.clearRect(0, 0, S, S);
 
-      // Radial cyan glow
+      // Radial warm golden glow
       const g = ctx.createRadialGradient(R, R, 8, R, R, R);
-      g.addColorStop(0, "rgba(34,211,238,0.45)");
-      g.addColorStop(0.5, "rgba(34,211,238,0.10)");
-      g.addColorStop(1, "rgba(34,211,238,0)");
+      g.addColorStop(0, "rgba(229,212,74,0.55)");
+      g.addColorStop(0.45, "rgba(229,212,74,0.18)");
+      g.addColorStop(1, "rgba(229,212,74,0)");
       ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(R, R, R, 0, Math.PI * 2);
@@ -74,7 +74,7 @@ export default function QCore() {
           const dy = a.y - b.y;
           const d = Math.hypot(dx, dy);
           if (d < 56) {
-            ctx.strokeStyle = `rgba(13,80,100,${(1 - d / 56) * 0.5})`;
+            ctx.strokeStyle = `rgba(140,110,0,${(1 - d / 56) * 0.5})`;
             ctx.lineWidth = 0.7;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
@@ -86,7 +86,7 @@ export default function QCore() {
 
       // Particles
       for (const p of ps) {
-        ctx.fillStyle = "rgba(8,60,75,0.9)";
+        ctx.fillStyle = "rgba(100,80,0,0.85)";
         ctx.beginPath();
         ctx.arc(p.x, p.y, 1.7, 0, Math.PI * 2);
         ctx.fill();

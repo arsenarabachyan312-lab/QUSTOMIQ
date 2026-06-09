@@ -11,13 +11,13 @@ export default function Clients() {
 
   return (
     <section
-      className="py-12 border-y border-white/10 dark:border-white/[0.06] overflow-hidden relative bg-ink text-white dark:bg-white/[0.03] dark:text-ink"
+      className="py-12 border-y border-white/10 dark:border-white/[0.06] overflow-hidden relative bg-[#1A1A18] text-white dark:bg-white/[0.03] dark:text-ink"
       aria-label={label}
     >
       <SectionBg darkBg />
       <div className="relative z-[1]">
         <div className="px-6 md:px-14 mb-5">
-          <p className="font-mono text-[12px] uppercase tracking-[2px] text-white/50 dark:text-muted">
+          <p className="font-mono text-[12px] uppercase tracking-[2px] text-accent dark:text-accent">
             {label}
           </p>
         </div>

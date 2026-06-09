@@ -4,14 +4,14 @@
 
 /* ── Design tokens: light ── */
 :root {
-  --bg: #f7f8f7;
-  --ink: #0c1116;
-  --muted: #46555b;
-  --accent: #22d3ee;
-  --accent-deep: #0a96b0;
-  --accent-ink: #0a7d92;
-  --line: rgba(12, 17, 22, 0.08);
-  --panel: rgba(255, 255, 255, 0.7);
+  --bg: #F5EFE0;
+  --ink: #1A1A18;
+  --muted: #6B6456;
+  --accent: #E5D44A;
+  --accent-deep: #C9BB2A;
+  --accent-ink: #5C4E00;
+  --line: #D8D0BC;
+  --panel: rgba(237, 230, 211, 0.8);
 }
 
 /* ── Design tokens: dark ── */
@@ -19,9 +19,9 @@
   --bg: #070b10;
   --ink: #eef4f6;
   --muted: #9aa6ab;
-  --accent: #22d3ee;
-  --accent-deep: #22d3ee;
-  --accent-ink: #22d3ee;
+  --accent: #E5D44A;
+  --accent-deep: #E5D44A;
+  --accent-ink: #E5D44A;
   --line: rgba(255, 255, 255, 0.1);
   --panel: rgba(255, 255, 255, 0.04);
 }
@@ -46,7 +46,7 @@ body {
 
 /* ── Hero gradient background ── */
 .hero-bg {
-  background: radial-gradient(120% 120% at 78% 30%, #eef4f6 0%, var(--bg) 55%);
+  background: radial-gradient(120% 120% at 78% 30%, #EDE6D3 0%, var(--bg) 55%);
 }
 
 .dark .hero-bg {

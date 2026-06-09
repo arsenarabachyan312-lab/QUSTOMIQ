@@ -5,8 +5,8 @@ import { useTheme } from "@/lib/ThemeContext";
 
 function buildGrid(dark: boolean): string {
   const c = dark ? "#eef4f6" : "#0c1116";
-  const fo = "0.13";   // fill-opacity  for dots
-  const so = "0.08";   // stroke-opacity for lines
+  const fo = "0.045";  // fill-opacity  for dots
+  const so = "0.028";  // stroke-opacity for lines
   const svg =
     `<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'>` +
     `<circle cx='0'  cy='0'  r='1.3' fill='${c}' fill-opacity='${fo}'/>` +
@@ -54,11 +54,11 @@ export default function SectionBg({ darkBg = false }: Props) {
           backgroundImage: [
             gridBg,
             // top-right accent glow — larger, more saturated
-            "radial-gradient(ellipse 90% 80% at 92% 0%, rgba(34,211,238,0.22) 0%, rgba(34,211,238,0.08) 40%, transparent 70%)",
+            "radial-gradient(ellipse 90% 80% at 92% 0%, rgba(229,212,74,0.22) 0%, rgba(229,212,74,0.08) 40%, transparent 70%)",
             // bottom-left soft glow
-            "radial-gradient(ellipse 75% 70% at 4% 98%, rgba(34,211,238,0.15) 0%, rgba(34,211,238,0.05) 45%, transparent 68%)",
+            "radial-gradient(ellipse 75% 70% at 4% 98%, rgba(229,212,74,0.15) 0%, rgba(229,212,74,0.05) 45%, transparent 68%)",
             // centre-right secondary depth
-            "radial-gradient(ellipse 50% 45% at 75% 55%, rgba(34,211,238,0.07) 0%, transparent 60%)",
+            "radial-gradient(ellipse 50% 45% at 75% 55%, rgba(229,212,74,0.07) 0%, transparent 60%)",
           ].join(", "),
           backgroundRepeat: "repeat, no-repeat, no-repeat, no-repeat",
           backgroundSize: "60px 60px, 100% 100%, 100% 100%, 100% 100%",
