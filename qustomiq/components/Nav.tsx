@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLang } from "@/lib/LangContext";
 import { useTheme } from "@/lib/ThemeContext";
+import QMark from "@/components/QMark";
 
 export default function Nav() {
   const { t, locale, toggle: toggleLang } = useLang();
@@ -13,6 +14,7 @@ export default function Nav() {
     { label: t.nav.services, href: "#services" },
     { label: t.nav.ai, href: "#ai" },
     { label: t.nav.process, href: "#process" },
+    { label: t.nav.about, href: "#about" },
     { label: t.nav.contacts, href: "#contacts" },
   ];
 
@@ -23,17 +25,9 @@ export default function Nav() {
       aria-label="Main navigation"
     >
       {/* Brand */}
-      <a href="#" className="flex items-center gap-[11px] no-underline" aria-label="QUSTOMIQ">
-        {/* Q mark — CSS ring with tail */}
-        <span
-          className="relative w-8 h-8 rounded-full border-[3px] border-ink shrink-0"
-          aria-hidden="true"
-        >
-          <span className="absolute w-[13px] h-[4px] bg-ink rounded-sm bottom-[1px] right-[-1px] rotate-45 origin-right" />
-        </span>
-        <span className="font-display font-bold text-[19px] tracking-[0.5px] text-ink">
-          QUSTOMIQ
-        </span>
+      <a href="#" className="flex items-center gap-[11px] no-underline text-ink" aria-label="QUSTOMIQ">
+        <QMark size={32} />
+        <span className="font-display font-bold text-[19px] tracking-[0.5px]">QUSTOMIQ</span>
       </a>
 
       {/* Desktop links */}
@@ -117,7 +111,7 @@ export default function Nav() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-bg border-b border-[var(--line)] shadow-card-lg md:hidden z-50 py-4 px-6 flex flex-col gap-4">
+        <div className="absolute top-full left-0 right-0 bg-[var(--bg)] border-b border-[var(--line)] shadow-card-lg md:hidden z-50 py-4 px-6 flex flex-col gap-1">
           {links.map((l) => (
             <a
               key={l.href}
@@ -130,7 +124,7 @@ export default function Nav() {
           ))}
           <a
             href="#contacts"
-            className="mt-2 inline-flex items-center justify-center bg-ink text-white dark:text-[#070b10] px-[22px] py-3 rounded-pill text-[14.5px] font-semibold min-h-[44px]"
+            className="mt-3 inline-flex items-center justify-center bg-ink text-white dark:text-[#070b10] px-[22px] py-3 rounded-pill text-[14.5px] font-semibold min-h-[44px]"
             onClick={() => setMenuOpen(false)}
           >
             {t.nav.cta}

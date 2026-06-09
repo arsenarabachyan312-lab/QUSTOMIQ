@@ -5,6 +5,8 @@ import Services from "@/sections/Services";
 import Partner from "@/sections/Partner";
 import AIByDept from "@/sections/AIByDept";
 import Process from "@/sections/Process";
+import About from "@/sections/About";
+import Team from "@/sections/Team";
 import Metrics from "@/sections/Metrics";
 import Cases from "@/sections/Cases";
 import CTA from "@/sections/CTA";
@@ -21,6 +23,8 @@ export default function Home() {
         <Partner />
         <AIByDept />
         <Process />
+        <About />
+        <Team />
         <Metrics />
         <Cases />
         <CTA />

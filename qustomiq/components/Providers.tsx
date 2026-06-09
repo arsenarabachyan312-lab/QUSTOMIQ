@@ -2,12 +2,16 @@
 
 import { ThemeProvider } from "@/lib/ThemeContext";
 import { LangProvider } from "@/lib/LangContext";
+import CustomCursor from "@/components/CustomCursor";
 import type { ReactNode } from "react";
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider>
-      <LangProvider>{children}</LangProvider>
+      <LangProvider>
+        <CustomCursor />
+        {children}
+      </LangProvider>
     </ThemeProvider>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "@/lib/LangContext";
+import QMark from "@/components/QMark";
 
 export default function Footer() {
   const { t } = useLang();
@@ -15,18 +16,13 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-bg border-t border-[var(--line)] px-6 md:px-14 py-14" role="contentinfo">
+    <footer className="bg-[var(--bg)] border-t border-[var(--line)] px-6 md:px-14 py-14" role="contentinfo">
       <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-10 md:gap-16">
         {/* Brand */}
         <div>
-          <a href="#" className="flex items-center gap-[11px] no-underline mb-4" aria-label="QUSTOMIQ">
-            <span
-              className="relative w-8 h-8 rounded-full border-[3px] border-ink shrink-0"
-              aria-hidden="true"
-            >
-              <span className="absolute w-[13px] h-[4px] bg-ink rounded-sm bottom-[1px] right-[-1px] rotate-45 origin-right" />
-            </span>
-            <span className="font-display font-bold text-[19px] tracking-[0.5px] text-ink">QUSTOMIQ</span>
+          <a href="#" className="flex items-center gap-[11px] no-underline text-ink mb-4" aria-label="QUSTOMIQ">
+            <QMark size={32} />
+            <span className="font-display font-bold text-[19px] tracking-[0.5px]">QUSTOMIQ</span>
           </a>
           <p className="text-[14px] text-muted leading-[1.6] max-w-[220px]">{f.tagline}</p>
         </div>

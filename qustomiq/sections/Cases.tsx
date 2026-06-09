@@ -16,35 +16,40 @@ export default function Cases() {
           >
             {c.heading}
           </h2>
-          <p className="text-[17px] text-muted leading-[1.6]">{c.sub}</p>
+          <p className="text-[17px] text-muted leading-[1.6] max-w-[640px]">{c.sub}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {c.items.map((item, i) => (
             <article
               key={i}
-              className="bg-white dark:bg-white/[0.04] rounded-card p-7 shadow-card border border-[var(--line)] hover:shadow-card-lg hover:-translate-y-1 transition-all duration-200 flex flex-col gap-4"
+              className="bg-white dark:bg-white/[0.04] rounded-card p-7 shadow-card border border-[var(--line)] hover:shadow-card-lg hover:-translate-y-1 transition-all duration-200 flex flex-col gap-5"
             >
-              {/* Placeholder badge */}
-              {item.placeholder && (
-                <span className="self-start font-mono text-[10.5px] uppercase tracking-[1.5px] text-muted/60 border border-[var(--line)] px-2.5 py-1 rounded-pill">
-                  placeholder
-                </span>
-              )}
+              <h3 className="font-display font-semibold text-[18px] tracking-[-0.3px] leading-snug">
+                {item.title}
+              </h3>
 
-              <div>
-                <h3 className="font-display font-semibold text-[19px] tracking-[-0.3px]">{item.client}</h3>
-                <span className="font-mono text-[12px] text-accent-ink dark:text-accent tracking-[0.5px] uppercase">
-                  {item.industry}
-                </span>
-              </div>
+              <div className="flex flex-col gap-4 flex-1">
+                <div>
+                  <span className="font-mono text-[10.5px] uppercase tracking-[1.5px] text-accent-ink dark:text-accent font-semibold">
+                    {c.task_label}
+                  </span>
+                  <p className="mt-1.5 text-[13.5px] text-muted leading-[1.6]">{item.task}</p>
+                </div>
 
-              <p className="text-[14.5px] text-muted leading-[1.65] flex-1">{item.result}</p>
+                <div>
+                  <span className="font-mono text-[10.5px] uppercase tracking-[1.5px] text-accent-ink dark:text-accent font-semibold">
+                    {c.solution_label}
+                  </span>
+                  <p className="mt-1.5 text-[13.5px] text-muted leading-[1.6]">{item.solution}</p>
+                </div>
 
-              <div className="pt-2 border-t border-[var(--line)]">
-                <span className="text-[13.5px] font-semibold text-ink/50 dark:text-ink/40">
-                  Подробнее →
-                </span>
+                <div>
+                  <span className="font-mono text-[10.5px] uppercase tracking-[1.5px] text-accent-ink dark:text-accent font-semibold">
+                    {c.effect_label}
+                  </span>
+                  <p className="mt-1.5 text-[13.5px] text-ink dark:text-ink/80 leading-[1.6] font-medium">{item.effect}</p>
+                </div>
               </div>
             </article>
           ))}
