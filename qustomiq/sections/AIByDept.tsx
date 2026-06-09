@@ -53,12 +53,12 @@ export default function AIByDept() {
             {/* Dept card */}
             <div
               key={active}
-              className="bg-white dark:bg-white/[0.04] rounded-card p-8 shadow-card border border-[var(--line)] animate-[fadeUp_.4s_ease_both]"
+              className="bg-white dark:bg-white/[0.04] rounded-card p-5 sm:p-8 shadow-card border border-[var(--line)] animate-[fadeUp_.4s_ease_both]"
             >
               {/* Header row */}
-              <div className="flex items-start justify-between gap-4 mb-6">
+              <div className="flex items-start justify-between gap-3 mb-6 flex-wrap">
                 <div>
-                  <h3 className="font-display font-bold text-[22px] tracking-[-0.5px] mb-1">
+                  <h3 className="font-display font-bold text-[20px] sm:text-[22px] tracking-[-0.5px] mb-1">
                     {dept.title}
                   </h3>
                   <span className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[1.5px] text-accent bg-accent/10 px-3 py-1 rounded-pill">
@@ -68,7 +68,7 @@ export default function AIByDept() {
                 </div>
                 {/* Metric */}
                 <div className="text-right shrink-0">
-                  <div className="font-display font-bold text-[42px] leading-none tracking-[-2px] text-accent-deep dark:text-accent">
+                  <div className="font-display font-bold text-[32px] sm:text-[42px] leading-none tracking-[-2px] text-accent-deep dark:text-accent">
                     {dept.metric}
                   </div>
                   <div className="text-[13px] text-muted mt-1">{dept.metricLabel}</div>

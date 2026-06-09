@@ -44,8 +44,100 @@ body {
   background: radial-gradient(120% 120% at 78% 30%, rgba(240,165,0,0.07) 0%, transparent 55%);
 }
 
-.dark .hero-bg {
-  background: radial-gradient(120% 120% at 78% 30%, rgba(240,165,0,0.045) 0%, transparent 55%);
+/* ── Section edge fades — smooth transitions between sections ── */
+section {
+  position: relative;
+}
+section::before,
+section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 64px;
+  pointer-events: none;
+  z-index: 20;
+}
+section::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--bg), transparent);
+}
+section::after {
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+}
+/* Hero is first on the page — no top fade needed */
+section.hero-bg::before {
+  display: none;
+}
+
+/* ── Reveal on scroll ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Solar system orbit rings ── */
+@keyframes orbit-cw  { to { transform: rotate( 360deg); } }
+@keyframes orbit-ccw { to { transform: rotate(-360deg); } }
+
+.orbit-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: calc(2 * var(--orbit-r));
+  height: calc(2 * var(--orbit-r));
+  margin-left: calc(-1 * var(--orbit-r));
+  margin-top: calc(-1 * var(--orbit-r));
+  border-radius: 50%;
+  border: 1px solid rgba(240,165,0,0.08);
+}
+.orbit-inner  { --orbit-r: 138px; }
+.orbit-middle { --orbit-r: 200px; }
+.orbit-outer  { --orbit-r: 258px; }
+
+@media (min-width: 640px) {
+  .orbit-inner  { --orbit-r: 178px; }
+  .orbit-middle { --orbit-r: 244px; }
+  .orbit-outer  { --orbit-r: 308px; }
+}
+@media (min-width: 1024px) {
+  .orbit-inner  { --orbit-r: 220px; }
+  .orbit-middle { --orbit-r: 290px; }
+  .orbit-outer  { --orbit-r: 358px; }
+}
+
+/* ── Planet wrapper — responsive sizing ── */
+.planet-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  margin-left: -22px;
+  margin-top: -22px;
+}
+@media (min-width: 1024px) {
+  .planet-wrap {
+    width: 56px;
+    height: 56px;
+    margin-left: -28px;
+    margin-top: -28px;
+  }
+}
+
+.planet-inner {
+  position: relative;
+  font-size: 10px;
+}
+@media (min-width: 1024px) {
+  .planet-inner {
+    font-size: 11px;
+  }
 }
 
 /* ── Focus ── */

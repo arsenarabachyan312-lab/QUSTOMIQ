@@ -34,15 +34,15 @@ export default function Process() {
           />
 
           {p.steps.map((step, i) => (
-            <div key={i} className="relative z-10 flex flex-col items-start xl:items-center xl:text-center px-0 xl:px-4 mb-10 xl:mb-0">
+            <div key={i} className="relative z-10 flex flex-col items-start sm:items-center sm:text-center xl:items-center xl:text-center px-0 sm:px-4 xl:px-4 mb-10 xl:mb-0">
               {/* Number bubble */}
               <div className="flex items-center justify-center w-14 h-14 rounded-full border-2 border-[var(--line)] bg-bg mb-5 font-mono font-semibold text-[13px] text-accent tracking-[1px]">
                 {step.n}
               </div>
 
-              {/* Mobile connector */}
+              {/* Vertical connector — only visible in single-column layout */}
               {i < p.steps.length - 1 && (
-                <div className="xl:hidden absolute left-7 top-14 w-px h-10 bg-[var(--line)]" aria-hidden="true" />
+                <div className="sm:hidden absolute left-7 top-14 w-px h-10 bg-[var(--line)]" aria-hidden="true" />
               )}
 
               <h3 className="font-display font-semibold text-[18px] tracking-[-0.3px] mb-2">

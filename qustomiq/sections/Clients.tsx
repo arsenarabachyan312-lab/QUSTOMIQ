@@ -11,7 +11,7 @@ export default function Clients() {
 
   return (
     <section
-      className="py-12 overflow-hidden relative text-[#F0EEE8]"
+      className="py-12 relative text-[#F0EEE8]"
       style={{
         background:
           "radial-gradient(ellipse at 50% 50%, rgba(240,165,0,0.15) 0%, transparent 65%), " +
@@ -30,7 +30,7 @@ export default function Clients() {
             {label}
           </p>
         </div>
-        <div className="relative">
+        <div className="relative overflow-hidden">
           <div className="ticker-track flex gap-12 w-max">
             {doubled.map((name, i) => (
               <span
