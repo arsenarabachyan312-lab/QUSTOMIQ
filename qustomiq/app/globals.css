@@ -14,17 +14,6 @@
   --panel: rgba(17,34,54,0.8);
 }
 
-/* ── Design tokens: extra dark toggle ── */
-.dark {
-  --bg: #070F1A;
-  --ink: #F0EEE8;
-  --muted: #6A7D94;
-  --accent: #F0A500;
-  --accent-deep: #F0A500;
-  --accent-ink: #F0A500;
-  --line: rgba(240,165,0,0.10);
-  --panel: rgba(7,15,26,0.9);
-}
 
 /* ── Base ── */
 *,

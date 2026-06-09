@@ -31,7 +31,7 @@ export default function CTA() {
       }}
       aria-labelledby="cta-heading"
     >
-      <SectionBg darkBg />
+      <SectionBg />
       <div className="relative z-[1] max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         {/* Left */}
         <div>

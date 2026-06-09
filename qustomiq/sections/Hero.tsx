@@ -10,7 +10,7 @@ const QCore = dynamic(() => import("@/components/QCore"), { ssr: false });
 // 11 labels evenly distributed on a circle (44% radius from center, starting from top)
 // Positions: top% / left% — the center of each pill is at these coordinates
 const PILL_BASE =
-  "px-[12px] py-1.5 rounded-pill shadow-card border font-semibold font-mono whitespace-nowrap";
+  "px-[8px] py-[4px] sm:px-[12px] sm:py-1.5 rounded-pill shadow-card border font-semibold font-mono whitespace-nowrap";
 
 // Cycle: amber (dark text) → navy glass → darker navy glass
 const PILL_COLORS = [
@@ -80,7 +80,7 @@ export default function Hero() {
           <div className="flex flex-wrap gap-3 mt-9 items-center">
             <a
               href="#contacts"
-              className="bg-accent text-[#0D1B2A] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline hover:bg-accent-deep transition-colors whitespace-nowrap min-h-[52px] flex items-center"
+              className="bg-accent text-[#0D1B2A] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline border-0 outline-none hover:bg-accent-deep transition-colors whitespace-nowrap min-h-[52px] flex items-center"
             >
               {h.cta_primary}
             </a>
@@ -98,8 +98,8 @@ export default function Hero() {
           className="relative h-[300px] sm:h-[420px] lg:h-[560px] flex items-center justify-center overflow-hidden"
           aria-hidden="true"
         >
-          {/* Orbit ring with labels — sm+ only */}
-          <div className="hidden sm:block absolute w-[420px] h-[420px] lg:w-[560px] lg:h-[560px] animate-qspin">
+          {/* Orbit ring with labels */}
+          <div className="absolute w-[280px] h-[280px] sm:w-[420px] sm:h-[420px] lg:w-[560px] lg:h-[560px] animate-qspin">
             {SATS.map((s, i) => (
               <div
                 key={s.label}
@@ -107,7 +107,7 @@ export default function Hero() {
                 style={{ top: s.top, left: s.left }}
               >
                 <div className="animate-qspinrev">
-                  <span className={`${PILL_BASE} ${PILL_COLORS[i % 3]} text-[12px] sm:text-[13px]`}>
+                  <span className={`${PILL_BASE} ${PILL_COLORS[i % 3]} text-[10px] sm:text-[12px] lg:text-[13px]`}>
                     {s.label}
                   </span>
                 </div>
@@ -115,17 +115,24 @@ export default function Hero() {
             ))}
           </div>
 
-{/* Q ring */}
+{/* Q ring — conic-gradient engraving, padding = border width */}
           <div
-            className="relative w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] lg:w-[360px] lg:h-[360px] rounded-full border-[18px] sm:border-[25px] lg:border-[30px] border-ink flex items-center justify-center animate-qfloat"
+            className="relative w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] lg:w-[360px] lg:h-[360px] rounded-full p-[18px] sm:p-[25px] lg:p-[30px] animate-qfloat"
+            style={{
+              background: "conic-gradient(from 135deg, #FFD060 0deg, #F0A500 75deg, #D4900A 180deg, #F0A500 285deg, #FFD060 360deg)",
+              filter: "drop-shadow(0 0 16px rgba(240,165,0,0.6)) drop-shadow(0 0 4px rgba(240,165,0,0.35))",
+            }}
           >
-            {/* Q tail — proportional at all sizes */}
+            {/* Q tail — linear gradient light→dark */}
             <span
-              className="absolute bg-ink rounded-[15px] w-[54px] h-[15px] sm:w-[76px] sm:h-[20px] lg:w-[98px] lg:h-[26px]"
-              style={{ bottom: -4, right: -6, transform: "rotate(45deg)" }}
+              className="absolute rounded-[15px] w-[54px] h-[15px] sm:w-[76px] sm:h-[20px] lg:w-[98px] lg:h-[26px] bottom-[14px] sm:bottom-[21px] lg:bottom-[26px] right-[12px] sm:right-[19px] lg:right-[24px]"
+              style={{
+                transform: "rotate(45deg)",
+                background: "linear-gradient(135deg, #FFD060 0%, #F0A500 45%, #D4900A 100%)",
+              }}
             />
-            {/* Neural core */}
-            <div className="w-[162px] h-[162px] sm:w-[228px] sm:h-[228px] lg:w-[298px] lg:h-[298px] rounded-full overflow-hidden">
+            {/* Inner navy circle + neural core */}
+            <div className="w-full h-full rounded-full overflow-hidden bg-[#0D1B2A]">
               <QCore />
             </div>
           </div>

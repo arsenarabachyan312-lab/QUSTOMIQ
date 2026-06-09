@@ -16,11 +16,7 @@ export default function CustomCursor() {
     let hovered = false;
     let raf: number;
 
-    const onMove = (e: MouseEvent) => {
-      mx = e.clientX;
-      my = e.clientY;
-    };
-
+    const onMove = (e: MouseEvent) => { mx = e.clientX; my = e.clientY; };
     const onOver = (e: MouseEvent) => {
       const t = e.target as Element;
       hovered = !!t.closest("a, button, [role='button'], input, textarea, select, label");
@@ -28,16 +24,14 @@ export default function CustomCursor() {
 
     document.addEventListener("mousemove", onMove, { passive: true });
     document.addEventListener("mouseover", onOver, { passive: true });
-
     el.style.display = "block";
 
     const tick = () => {
       cx += (mx - cx) * 0.1;
       cy += (my - cy) * 0.1;
-      el.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
-      el.style.width = hovered ? "56px" : "28px";
-      el.style.height = hovered ? "56px" : "28px";
-      el.style.opacity = hovered ? "0.45" : "0.28";
+      const scale = hovered ? 1.4 : 1;
+      el.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%) scale(${scale})`;
+      el.style.opacity = hovered ? "1" : "0.8";
       raf = requestAnimationFrame(tick);
     };
 
@@ -58,16 +52,23 @@ export default function CustomCursor() {
         position: "fixed",
         top: 0,
         left: 0,
-        width: "28px",
-        height: "28px",
-        borderRadius: "50%",
-        background: "rgba(240,165,0,0.28)",
-        boxShadow: "0 0 16px 8px rgba(240,165,0,0.18), 0 0 40px 18px rgba(240,165,0,0.08)",
         pointerEvents: "none",
         zIndex: 9999,
-        transition: "width 0.18s ease, height 0.18s ease, opacity 0.18s ease",
+        transition: "opacity 0.18s ease",
         willChange: "transform",
       }}
-    />
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 28 28"
+        fill="none"
+        style={{ filter: "drop-shadow(0 0 6px rgba(240,165,0,0.8))" }}
+        aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="8" stroke="#F0A500" strokeWidth="3.5" />
+        <line x1="15" y1="15" x2="20" y2="20" stroke="#F0A500" strokeWidth="3.5" strokeLinecap="round" />
+      </svg>
+    </div>
   );
 }

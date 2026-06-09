@@ -41,15 +41,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" suppressHydrationWarning>
-      <head>
-        {/* No-flash theme script — runs before React hydration */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'){document.documentElement.classList.add('dark')}}catch(e){}})()`,
-          }}
-        />
-      </head>
+    <html lang="ru">
+      <head />
       <body
         className={`${spaceGrotesk.variable} ${sora.variable} ${jetbrainsMono.variable} font-body bg-bg text-ink`}
       >

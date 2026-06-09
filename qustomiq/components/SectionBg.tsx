@@ -1,10 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
-import { useTheme } from "@/lib/ThemeContext";
 
-function buildGrid(dark: boolean): string {
-  const c = dark ? "#B8CCE4" : "#F0A500";
+function buildGrid(): string {
+  const c = "#F0A500";
   const fo = "0.06";   // fill-opacity for dots
   const so = "0.035";  // stroke-opacity for lines
   const svg =
@@ -32,14 +31,8 @@ function buildGrid(dark: boolean): string {
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
 
-interface Props {
-  darkBg?: boolean; // force light-coloured dots on sections with a dark background
-}
-
-export default function SectionBg({ darkBg = false }: Props) {
-  const { theme } = useTheme();
-  const useLightDots = darkBg || theme === "dark";
-  const gridBg = useMemo(() => buildGrid(useLightDots), [useLightDots]);
+export default function SectionBg() {
+  const gridBg = useMemo(() => buildGrid(), []);
 
   return (
     <div

@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { useLang } from "@/lib/LangContext";
-import { useTheme } from "@/lib/ThemeContext";
 import QMark from "@/components/QMark";
 
 export default function Nav() {
   const { t, locale, toggle: toggleLang } = useLang();
-  const { theme, toggle: toggleTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
@@ -26,7 +24,7 @@ export default function Nav() {
     >
       {/* Brand */}
       <a href="#" className="flex items-center gap-[11px] no-underline text-ink" aria-label="QUSTOMIQ">
-        <QMark size={32} />
+        <QMark size={40} className="text-accent" />
         <span className="font-display font-bold text-[19px] tracking-[0.5px]">QUSTOMIQ</span>
       </a>
 
@@ -55,31 +53,6 @@ export default function Nav() {
           <span className={locale === "ru" ? "text-ink font-semibold" : "text-muted"}>RU</span>
           <span className="text-muted mx-1">/</span>
           <span className={locale === "en" ? "text-ink font-semibold" : "text-muted"}>EN</span>
-        </button>
-
-        {/* Theme toggle */}
-        <button
-          onClick={toggleTheme}
-          className="min-w-[44px] min-h-[44px] flex items-center justify-center text-muted hover:text-ink transition-colors"
-          aria-label={theme === "light" ? "Switch to dark theme" : "Switch to light theme"}
-        >
-          {theme === "light" ? (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-          ) : (
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-              <circle cx="12" cy="12" r="5" />
-              <line x1="12" y1="1" x2="12" y2="3" />
-              <line x1="12" y1="21" x2="12" y2="23" />
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-              <line x1="1" y1="12" x2="3" y2="12" />
-              <line x1="21" y1="12" x2="23" y2="12" />
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-            </svg>
-          )}
         </button>
 
         {/* CTA button */}
