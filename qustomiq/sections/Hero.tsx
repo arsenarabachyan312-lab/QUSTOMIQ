@@ -25,14 +25,6 @@ const SATS = [
   { label: "MOBILE", top: "13%",   left: "26.2%" },
 ];
 
-// 4 pills for xs screens (< sm)
-const SATS_XS = [
-  { label: "AI",  top: "5%",  left: "50%" },
-  { label: "CRM", top: "50%", left: "96%" },
-  { label: "ERP", top: "94%", left: "50%" },
-  { label: "API", top: "50%", left: "4%" },
-];
-
 export default function Hero() {
   const { t } = useLang();
   const h = t.hero;
@@ -112,22 +104,7 @@ export default function Hero() {
             ))}
           </div>
 
-          {/* Static 4-pill ring — xs only */}
-          <div className="sm:hidden absolute w-[280px] h-[280px]">
-            {SATS_XS.map((s) => (
-              <div
-                key={s.label}
-                className="absolute -translate-x-1/2 -translate-y-1/2"
-                style={{ top: s.top, left: s.left }}
-              >
-                <span className={`${PILL_CLS} text-[11px]`}>
-                  {s.label}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Q ring */}
+{/* Q ring */}
           <div
             className="relative w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] lg:w-[360px] lg:h-[360px] rounded-full border-[18px] sm:border-[25px] lg:border-[30px] border-ink flex items-center justify-center animate-qfloat"
           >

@@ -2,7 +2,6 @@ import Providers from "@/components/Providers";
 import Hero from "@/sections/Hero";
 import Clients from "@/sections/Clients";
 import Services from "@/sections/Services";
-import Partner from "@/sections/Partner";
 import AIByDept from "@/sections/AIByDept";
 import Process from "@/sections/Process";
 import About from "@/sections/About";
@@ -20,8 +19,7 @@ export default function Home() {
         <Hero />
         <Clients />
         <Services />
-        <Partner />
-        <AIByDept />
+<AIByDept />
         <Process />
         <About />
         <Team />
