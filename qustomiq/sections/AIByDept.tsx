@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLang } from "@/lib/LangContext";
 import AIHourModal from "@/components/AIHourModal";
+import SectionBg from "@/components/SectionBg";
 
 export default function AIByDept() {
   const { t } = useLang();
@@ -16,8 +17,9 @@ export default function AIByDept() {
 
   return (
     <>
-      <section id="ai" className="py-20 md:py-28 px-6 md:px-14 bg-[var(--bg)]" aria-labelledby="ai-heading">
-        <div className="max-w-[1200px] mx-auto">
+      <section id="ai" className="py-20 md:py-28 px-6 md:px-14 bg-[var(--bg)] relative" aria-labelledby="ai-heading">
+        <SectionBg />
+        <div className="relative z-[1] max-w-[1200px] mx-auto">
           {/* Header */}
           <div className="mb-12">
             <h2

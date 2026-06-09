@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "@/lib/LangContext";
+import SectionBg from "@/components/SectionBg";
 
 export default function About() {
   const { t } = useLang();
@@ -9,10 +10,11 @@ export default function About() {
   return (
     <section
       id="about"
-      className="py-20 md:py-28 px-6 md:px-14 bg-[var(--bg)]"
+      className="py-20 md:py-28 px-6 md:px-14 bg-[var(--bg)] relative"
       aria-labelledby="about-heading"
     >
-      <div className="max-w-[1200px] mx-auto">
+      <SectionBg />
+      <div className="relative z-[1] max-w-[1200px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
           <div>
             <h2

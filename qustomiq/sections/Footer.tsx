@@ -2,6 +2,7 @@
 
 import { useLang } from "@/lib/LangContext";
 import QMark from "@/components/QMark";
+import SectionBg from "@/components/SectionBg";
 
 export default function Footer() {
   const { t } = useLang();
@@ -16,8 +17,9 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[var(--bg)] border-t border-[var(--line)] px-6 md:px-14 py-14" role="contentinfo">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-10 md:gap-16">
+    <footer className="relative bg-[var(--bg)] border-t border-[var(--line)] px-6 md:px-14 py-14" role="contentinfo">
+      <SectionBg />
+      <div className="relative z-[1] max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-10 md:gap-16">
         {/* Brand */}
         <div>
           <a href="#" className="flex items-center gap-[11px] no-underline text-ink mb-4" aria-label="QUSTOMIQ">
@@ -80,7 +82,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="max-w-[1200px] mx-auto mt-10 pt-6 border-t border-[var(--line)]">
+      <div className="relative z-[1] max-w-[1200px] mx-auto mt-10 pt-6 border-t border-[var(--line)]">
         <p className="text-[12.5px] text-muted opacity-60 font-mono">{f.rights}</p>
       </div>
     </footer>

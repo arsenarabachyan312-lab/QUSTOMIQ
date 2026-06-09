@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useLang } from "@/lib/LangContext";
 import Nav from "@/components/Nav";
+import SectionBg from "@/components/SectionBg";
 
 const QCore = dynamic(() => import("@/components/QCore"), { ssr: false });
 
@@ -31,9 +32,12 @@ export default function Hero() {
 
   return (
     <section
-      className="hero-bg min-h-screen flex flex-col"
+      className="hero-bg min-h-screen flex flex-col relative"
       aria-labelledby="hero-heading"
     >
+      <SectionBg />
+
+      <div className="relative z-[1] flex flex-col flex-1">
       <Nav />
 
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_620px] items-center px-6 md:px-14 gap-12 py-12 lg:py-0">
@@ -120,6 +124,7 @@ export default function Hero() {
           </div>
         </div>
       </div>
+      </div>{/* /z-[1] wrapper */}
     </section>
   );
 }

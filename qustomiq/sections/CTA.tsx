@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLang } from "@/lib/LangContext";
+import SectionBg from "@/components/SectionBg";
 
 const fieldCls =
   "w-full px-5 py-4 rounded-btn bg-white/[0.08] dark:bg-ink/5 border border-white/10 dark:border-[var(--line)] text-white dark:text-ink placeholder:text-white/40 dark:placeholder:text-muted focus:outline-none focus:border-accent text-[15px] font-body transition-colors";
@@ -20,10 +21,11 @@ export default function CTA() {
   return (
     <section
       id="contacts"
-      className="py-20 md:py-28 px-6 md:px-14 bg-ink text-white dark:bg-white/[0.03] dark:text-ink"
+      className="py-20 md:py-28 px-6 md:px-14 bg-ink text-white dark:bg-white/[0.03] dark:text-ink relative"
       aria-labelledby="cta-heading"
     >
-      <div className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <SectionBg darkBg />
+      <div className="relative z-[1] max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         {/* Left */}
         <div>
           <h2

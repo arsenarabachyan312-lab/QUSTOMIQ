@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "@/lib/LangContext";
+import SectionBg from "@/components/SectionBg";
 
 export default function Process() {
   const { t } = useLang();
@@ -9,10 +10,11 @@ export default function Process() {
   return (
     <section
       id="process"
-      className="py-20 md:py-28 px-6 md:px-14"
+      className="py-20 md:py-28 px-6 md:px-14 relative"
       aria-labelledby="process-heading"
     >
-      <div className="max-w-[1200px] mx-auto">
+      <SectionBg />
+      <div className="relative z-[1] max-w-[1200px] mx-auto">
         <div className="mb-14">
           <h2
             id="process-heading"

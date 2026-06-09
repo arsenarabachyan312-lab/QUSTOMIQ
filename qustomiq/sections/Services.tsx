@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "@/lib/LangContext";
+import SectionBg from "@/components/SectionBg";
 
 const icons = [
   // Code / development
@@ -28,8 +29,9 @@ export default function Services() {
   const s = t.services;
 
   return (
-    <section id="services" className="py-20 md:py-28 px-6 md:px-14" aria-labelledby="services-heading">
-      <div className="max-w-[1200px] mx-auto">
+    <section id="services" className="py-20 md:py-28 px-6 md:px-14 relative" aria-labelledby="services-heading">
+      <SectionBg />
+      <div className="relative z-[1] max-w-[1200px] mx-auto">
         {/* Header */}
         <div className="mb-14">
           <h2

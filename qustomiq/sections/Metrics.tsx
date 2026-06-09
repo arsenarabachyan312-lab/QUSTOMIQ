@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "@/lib/LangContext";
+import SectionBg from "@/components/SectionBg";
 
 export default function WhyUs() {
   const { t } = useLang();
@@ -8,10 +9,11 @@ export default function WhyUs() {
 
   return (
     <section
-      className="py-20 md:py-28 px-6 md:px-14 bg-[var(--bg)]"
+      className="py-20 md:py-28 px-6 md:px-14 bg-[var(--bg)] relative"
       aria-labelledby="whyus-heading"
     >
-      <div className="max-w-[1200px] mx-auto">
+      <SectionBg />
+      <div className="relative z-[1] max-w-[1200px] mx-auto">
         <h2
           id="whyus-heading"
           className="font-display font-bold text-[clamp(36px,5vw,52px)] tracking-[-1.5px] mb-14 text-center"

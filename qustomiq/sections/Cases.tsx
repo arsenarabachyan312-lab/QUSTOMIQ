@@ -1,14 +1,16 @@
 "use client";
 
 import { useLang } from "@/lib/LangContext";
+import SectionBg from "@/components/SectionBg";
 
 export default function Cases() {
   const { t } = useLang();
   const c = t.cases;
 
   return (
-    <section id="cases" className="py-20 md:py-28 px-6 md:px-14" aria-labelledby="cases-heading">
-      <div className="max-w-[1200px] mx-auto">
+    <section id="cases" className="py-20 md:py-28 px-6 md:px-14 relative" aria-labelledby="cases-heading">
+      <SectionBg />
+      <div className="relative z-[1] max-w-[1200px] mx-auto">
         <div className="mb-14">
           <h2
             id="cases-heading"
