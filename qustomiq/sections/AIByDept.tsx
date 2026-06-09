@@ -40,7 +40,7 @@ export default function AIByDept() {
                   onClick={() => setActive(i)}
                   className={`font-body font-semibold text-[15px] px-5 py-3 rounded-pill border transition-all duration-150 text-left min-h-[44px] ${
                     active === i
-                      ? "bg-ink text-white dark:text-[#070b10] border-ink dark:bg-accent dark:border-accent"
+                      ? "bg-accent text-[#0D1B2A] border-accent"
                       : "bg-transparent text-muted border-[var(--line)] hover:border-ink/30 hover:text-ink"
                   }`}
                   aria-pressed={active === i}

@@ -5,7 +5,7 @@ import { useLang } from "@/lib/LangContext";
 import SectionBg from "@/components/SectionBg";
 
 const fieldCls =
-  "w-full px-5 py-4 rounded-btn bg-white/[0.08] dark:bg-ink/5 border border-white/10 dark:border-[var(--line)] text-white dark:text-ink placeholder:text-white/40 dark:placeholder:text-muted focus:outline-none focus:border-accent text-[15px] font-body transition-colors";
+  "w-full px-5 py-4 rounded-btn bg-[#F0EEE8]/[0.07] border border-[#F0EEE8]/[0.12] text-[#F0EEE8] placeholder:text-[#F0EEE8]/40 focus:outline-none focus:border-accent text-[15px] font-body transition-colors";
 
 export default function CTA() {
   const { t } = useLang();
@@ -21,7 +21,14 @@ export default function CTA() {
   return (
     <section
       id="contacts"
-      className="py-20 md:py-28 px-6 md:px-14 bg-ink text-white dark:bg-white/[0.03] dark:text-ink relative"
+      className="py-20 md:py-28 px-6 md:px-14 text-[#F0EEE8] relative"
+      style={{
+        background:
+          "radial-gradient(ellipse at 80% 50%, rgba(240,165,0,0.12) 0%, transparent 60%), " +
+          "radial-gradient(ellipse at 20% 50%, rgba(240,165,0,0.07) 0%, transparent 50%), " +
+          "#071220",
+        borderTop: "1px solid rgba(240,165,0,0.2)",
+      }}
       aria-labelledby="cta-heading"
     >
       <SectionBg darkBg />
@@ -50,7 +57,7 @@ export default function CTA() {
         {/* Right — form */}
         <div>
           {sent ? (
-            <div className="rounded-card bg-white/[0.08] dark:bg-ink/5 p-8 text-center">
+            <div className="rounded-card bg-[#F0EEE8]/[0.06] p-8 text-center">
               <div className="w-14 h-14 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-5">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent">
                   <polyline points="20 6 9 17 4 12" />
@@ -93,7 +100,7 @@ export default function CTA() {
 
               {/* Мессенджер — кнопки-пилюли */}
               <div>
-                <p className="text-[13px] text-white/50 dark:text-muted mb-2 font-mono uppercase tracking-[1px]">
+                <p className="text-[13px] text-[#F0EEE8]/50 mb-2 font-mono uppercase tracking-[1px]">
                   {c.messenger_label}
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -104,8 +111,8 @@ export default function CTA() {
                       onClick={() => setMessenger(opt === messenger ? "" : opt)}
                       className={`font-mono text-[12.5px] px-4 py-2 rounded-pill border transition-all min-h-[36px] ${
                         messenger === opt
-                          ? "bg-accent text-[#070b10] border-accent font-semibold"
-                          : "bg-transparent text-white/60 dark:text-muted border-white/15 dark:border-[var(--line)] hover:border-white/40 dark:hover:border-ink/40"
+                          ? "bg-accent text-[#0D1B2A] border-accent font-semibold"
+                          : "bg-transparent text-[#F0EEE8]/60 border-[#F0EEE8]/15 hover:border-[#F0EEE8]/40"
                       }`}
                     >
                       {opt}
@@ -123,7 +130,7 @@ export default function CTA() {
 
               <button
                 type="submit"
-                className="w-full mt-1 bg-accent text-[#070b10] font-display font-bold text-[15.5px] py-[17px] rounded-btn hover:opacity-90 transition-opacity min-h-[52px] tracking-[-0.2px]"
+                className="w-full mt-1 bg-accent text-[#0D1B2A] font-display font-bold text-[15.5px] py-[17px] rounded-btn hover:opacity-90 transition-opacity min-h-[52px] tracking-[-0.2px]"
               >
                 {c.submit}
               </button>

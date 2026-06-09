@@ -11,7 +11,14 @@ export default function Clients() {
 
   return (
     <section
-      className="py-12 border-y border-white/10 dark:border-white/[0.06] overflow-hidden relative bg-[#1A1A18] text-white dark:bg-white/[0.03] dark:text-ink"
+      className="py-12 border-b border-[#F0A500]/15 overflow-hidden relative text-[#F0EEE8]"
+      style={{
+        background:
+          "radial-gradient(ellipse at 80% 50%, rgba(240,165,0,0.12) 0%, transparent 60%), " +
+          "radial-gradient(ellipse at 20% 50%, rgba(240,165,0,0.07) 0%, transparent 50%), " +
+          "#071220",
+        borderTop: "1px solid rgba(240,165,0,0.2)",
+      }}
       aria-label={label}
     >
       <SectionBg darkBg />
@@ -26,7 +33,7 @@ export default function Clients() {
             {doubled.map((name, i) => (
               <span
                 key={i}
-                className="font-display font-semibold text-[17px] text-white/75 dark:text-muted whitespace-nowrap shrink-0"
+                className="font-display font-semibold text-[17px] text-[#F0EEE8]/75 whitespace-nowrap shrink-0"
               >
                 {name}
               </span>

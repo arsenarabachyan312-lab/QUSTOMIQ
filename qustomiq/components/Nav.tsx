@@ -85,7 +85,7 @@ export default function Nav() {
         {/* CTA button */}
         <a
           href="#contacts"
-          className="hidden md:flex items-center bg-ink text-white dark:text-[#070b10] px-[22px] py-3 rounded-pill text-[14.5px] font-semibold hover:opacity-80 transition-opacity no-underline whitespace-nowrap min-h-[44px]"
+          className="hidden md:flex items-center bg-accent text-[#0D1B2A] px-[22px] py-3 rounded-pill text-[14.5px] font-semibold hover:opacity-80 transition-opacity no-underline whitespace-nowrap min-h-[44px]"
         >
           {t.nav.cta}
         </a>
@@ -124,7 +124,7 @@ export default function Nav() {
           ))}
           <a
             href="#contacts"
-            className="mt-3 inline-flex items-center justify-center bg-ink text-white dark:text-[#070b10] px-[22px] py-3 rounded-pill text-[14.5px] font-semibold min-h-[44px]"
+            className="mt-3 inline-flex items-center justify-center bg-accent text-[#0D1B2A] px-[22px] py-3 rounded-pill text-[14.5px] font-semibold min-h-[44px]"
             onClick={() => setMenuOpen(false)}
           >
             {t.nav.cta}

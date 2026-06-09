@@ -2,28 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Design tokens: light ── */
+/* ── Design tokens: default (navy + amber) ── */
 :root {
-  --bg: #F5EFE0;
-  --ink: #1A1A18;
-  --muted: #6B6456;
-  --accent: #E5D44A;
-  --accent-deep: #C9BB2A;
-  --accent-ink: #5C4E00;
-  --line: #D8D0BC;
-  --panel: rgba(237, 230, 211, 0.8);
+  --bg: #0D1B2A;
+  --ink: #F0EEE8;
+  --muted: #8A9BB0;
+  --accent: #F0A500;
+  --accent-deep: #D4900A;
+  --accent-ink: #F0A500;
+  --line: rgba(240,165,0,0.15);
+  --panel: rgba(17,34,54,0.8);
 }
 
-/* ── Design tokens: dark ── */
+/* ── Design tokens: extra dark toggle ── */
 .dark {
-  --bg: #070b10;
-  --ink: #eef4f6;
-  --muted: #9aa6ab;
-  --accent: #E5D44A;
-  --accent-deep: #E5D44A;
-  --accent-ink: #E5D44A;
-  --line: rgba(255, 255, 255, 0.1);
-  --panel: rgba(255, 255, 255, 0.04);
+  --bg: #070F1A;
+  --ink: #F0EEE8;
+  --muted: #6A7D94;
+  --accent: #F0A500;
+  --accent-deep: #F0A500;
+  --accent-ink: #F0A500;
+  --line: rgba(240,165,0,0.10);
+  --panel: rgba(7,15,26,0.9);
 }
 
 /* ── Base ── */
@@ -39,22 +39,24 @@ html {
 
 body {
   color: var(--ink);
-  background-color: var(--bg);
+  background-color: #0D1B2A;
+  background-image:
+    radial-gradient(ellipse at 25% 40%, rgba(240,165,0,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 85%, rgba(240,165,0,0.04) 0%, transparent 50%),
+    linear-gradient(135deg, #0D1B2A 0%, #112236 50%, #0D1B2A 100%);
+  background-attachment: fixed;
+  background-size: 100% 100%;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 /* ── Hero gradient background ── */
 .hero-bg {
-  background: radial-gradient(120% 120% at 78% 30%, #EDE6D3 0%, var(--bg) 55%);
+  background: radial-gradient(120% 120% at 78% 30%, rgba(240,165,0,0.07) 0%, transparent 55%);
 }
 
 .dark .hero-bg {
-  background: radial-gradient(
-    120% 120% at 78% 30%,
-    #0d1f2d 0%,
-    var(--bg) 65%
-  );
+  background: radial-gradient(120% 120% at 78% 30%, rgba(240,165,0,0.045) 0%, transparent 55%);
 }
 
 /* ── Focus ── */

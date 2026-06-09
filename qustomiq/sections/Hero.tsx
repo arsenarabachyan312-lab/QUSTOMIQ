@@ -10,13 +10,13 @@ const QCore = dynamic(() => import("@/components/QCore"), { ssr: false });
 // 11 labels evenly distributed on a circle (44% radius from center, starting from top)
 // Positions: top% / left% — the center of each pill is at these coordinates
 const PILL_BASE =
-  "px-[12px] py-1.5 rounded-pill shadow-card border font-semibold font-mono text-ink whitespace-nowrap";
+  "px-[12px] py-1.5 rounded-pill shadow-card border font-semibold font-mono whitespace-nowrap";
 
-// Cycle: yellow → warm beige → light cream
+// Cycle: amber (dark text) → navy glass → darker navy glass
 const PILL_COLORS = [
-  "bg-[#E5D44A] border-[#C9BB2A]/50 dark:bg-white/10 dark:border-white/10",
-  "bg-white border-[#D8D0BC] dark:bg-white/10 dark:border-white/10",
-  "bg-[#F8F5EC] border-[#D8D0BC] dark:bg-white/10 dark:border-white/10",
+  "bg-[#F0A500] border-[#D4900A]/60 text-[#0D1B2A]",
+  "bg-[#F0EEE8]/[0.08] border-[#F0A500]/[0.2] text-ink",
+  "bg-[#F0EEE8]/[0.04] border-[#F0EEE8]/[0.08] text-ink",
 ];
 
 const SATS = [
@@ -54,7 +54,7 @@ export default function Hero() {
           <div className="inline-flex items-center gap-[9px] px-4 py-2 rounded-pill bg-[var(--panel)] border border-[var(--line)] text-[13.5px] font-medium text-accent-ink mb-7 whitespace-nowrap">
             <span
               className="w-[7px] h-[7px] rounded-full bg-accent animate-pulse shrink-0"
-              style={{ boxShadow: "0 0 0 4px rgba(229,212,74,.35)" }}
+              style={{ boxShadow: "0 0 0 4px rgba(240,165,0,.35)" }}
               aria-hidden="true"
             />
             {h.badge}
@@ -80,7 +80,7 @@ export default function Hero() {
           <div className="flex flex-wrap gap-3 mt-9 items-center">
             <a
               href="#contacts"
-              className="bg-accent text-[#1A1A18] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline hover:bg-accent-deep transition-colors whitespace-nowrap min-h-[52px] flex items-center"
+              className="bg-accent text-[#0D1B2A] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline hover:bg-accent-deep transition-colors whitespace-nowrap min-h-[52px] flex items-center"
             >
               {h.cta_primary}
             </a>

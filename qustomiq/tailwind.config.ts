@@ -19,7 +19,7 @@ const config: Config = {
         "accent-ink": "var(--accent-ink)",
         line: "var(--line)",
         panel: "var(--panel)",
-        white: "#EDE6D3",
+        white: "#112236",
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],
@@ -32,9 +32,9 @@ const config: Config = {
         btn: "12px",
       },
       boxShadow: {
-        card: "0 6px 20px rgba(26,18,0,.10)",
-        "card-lg": "0 24px 60px rgba(26,18,0,.14)",
-        glow: "0 0 40px rgba(229,212,74,.35)",
+        card: "0 4px 24px rgba(0,0,0,.5)",
+        "card-lg": "0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(240,165,0,0.08)",
+        glow: "0 0 40px rgba(240,165,0,.35)",
       },
       animation: {
         qfloat: "qfloat 7s ease-in-out infinite",
@@ -61,8 +61,8 @@ const config: Config = {
           to: { opacity: "1", transform: "translateY(0)" },
         },
         "pulse-dot": {
-          "0%, 100%": { boxShadow: "0 0 0 0 rgba(229,212,74,.5)" },
-          "50%": { boxShadow: "0 0 0 6px rgba(229,212,74,0)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(240,165,0,.5)" },
+          "50%": { boxShadow: "0 0 0 6px rgba(240,165,0,0)" },
         },
       },
     },
