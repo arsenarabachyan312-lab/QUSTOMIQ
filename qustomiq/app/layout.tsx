@@ -33,8 +33,6 @@ export default function RootLayout({
     <html lang="ru">
       <head />
       <body className="font-body bg-bg text-ink">
-        <div className="bg-blob" aria-hidden="true" />
-        <div className="bg-blob-2" aria-hidden="true" />
         <div style={{ position: "relative", zIndex: 1 }}>
           {children}
         </div>

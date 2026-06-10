@@ -18,13 +18,15 @@ export default function Nav() {
 
   return (
     <nav
-      className="flex items-center justify-between px-6 md:px-14 py-7 relative z-50"
+      className="nav-glass flex items-center justify-between px-6 md:px-14 py-7 relative z-50"
       role="navigation"
       aria-label="Main navigation"
     >
       {/* Brand */}
       <a href="#" className="flex items-center gap-[11px] no-underline text-ink" aria-label="QUSTOMIQ">
-        <QMark size={40} className="text-accent" />
+        <div className="q-logo-3d">
+          <QMark size={40} className="text-accent" />
+        </div>
         <span className="font-display font-bold text-[19px] tracking-[0.5px]">QUSTOMIQ</span>
       </a>
 

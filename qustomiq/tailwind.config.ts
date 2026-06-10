@@ -19,7 +19,7 @@ const config: Config = {
         "accent-ink": "var(--accent-ink)",
         line: "var(--line)",
         panel: "var(--panel)",
-        white: "#1C0D08",
+        white: "#FFFFFF",
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],
@@ -32,9 +32,9 @@ const config: Config = {
         btn: "12px",
       },
       boxShadow: {
-        card: "0 4px 24px rgba(0,0,0,.5)",
-        "card-lg": "0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(248,169,31,0.12)",
-        glow: "0 0 40px rgba(248,169,31,.35)",
+        card: "0 4px 24px rgba(99,39,19,0.06)",
+        "card-lg": "0 20px 60px rgba(99,39,19,0.10), 0 0 0 1px rgba(236,100,38,0.10)",
+        glow: "0 0 40px rgba(248,169,31,.20)",
       },
       animation: {
         qfloat: "qfloat 7s ease-in-out infinite",
