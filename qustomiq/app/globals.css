@@ -29,17 +29,34 @@ html {
   overflow-x: hidden;
 }
 
+/* ── Animated body background ── */
 body {
   color: var(--ink);
-  background: linear-gradient(135deg, #1C0D08, #2D1200, #632713, #1C0D08);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+  background: linear-gradient(135deg, #1C0D08, #3D1500, #632713, #8B3A1A, #2D1200, #1C0D08);
+  background-size: 600% 600%;
+  animation: bgFlow 20s ease infinite;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* ── Animated blobs — fixed behind content ── */
-body::before,
+/* ── Blob 1 — #F8A91F, top-right, 50vw, 18s ── */
+body::before {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+  width: 50vw;
+  height: 50vw;
+  top: 5%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(248,169,31,0.10) 0%, transparent 70%);
+  filter: blur(90px);
+  animation: blob1Move 18s ease-in-out infinite;
+}
+
+/* ── Blob 2 — #EC6426, bottom-left, 60vw, 24s ── */
 body::after {
   content: '';
   position: fixed;
@@ -47,52 +64,53 @@ body::after {
   pointer-events: none;
   z-index: 0;
   will-change: transform;
-}
-
-/* Blob 1 — #EC6426, top-right */
-body::before {
   width: 60vw;
   height: 60vw;
-  top: -10%;
-  right: -5%;
-  background: radial-gradient(circle, rgba(236,100,38,0.08) 0%, transparent 70%);
-  filter: blur(80px);
-  animation: blob1Drift 25s ease-in-out infinite;
-}
-
-/* Blob 2 — #F8A91F, bottom-left */
-body::after {
-  width: 50vw;
-  height: 50vw;
   bottom: -5%;
   left: -5%;
-  background: radial-gradient(circle, rgba(248,169,31,0.06) 0%, transparent 70%);
-  filter: blur(80px);
-  animation: blob2Drift 30s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(236,100,38,0.08) 0%, transparent 70%);
+  filter: blur(90px);
+  animation: blob2Move 24s ease-in-out infinite;
 }
 
-/* Blob 3 — #632713, center, via .bg-blob div in layout */
+/* ── Blob 3 — #632713, center-wide, 80vw, 30s ── */
 .bg-blob {
   position: fixed;
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
   will-change: transform;
-  width: 70vw;
-  height: 70vw;
-  top: 20%;
-  left: 15%;
+  width: 80vw;
+  height: 80vw;
+  top: 10%;
+  left: 10%;
   background: radial-gradient(circle, rgba(99,39,19,0.15) 0%, transparent 70%);
-  filter: blur(80px);
-  animation: blob3Drift 20s ease-in-out infinite;
+  filter: blur(90px);
+  animation: blob3Move 30s ease-in-out infinite;
 }
 
-/* ── Hero gradient background ── */
+/* ── Blob 4 — #F8A91F, small fast, 30vw, 14s ── */
+.bg-blob-2 {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+  width: 30vw;
+  height: 30vw;
+  top: 45%;
+  right: 15%;
+  background: radial-gradient(circle, rgba(248,169,31,0.07) 0%, transparent 70%);
+  filter: blur(90px);
+  animation: blob4Move 14s ease-in-out infinite;
+}
+
+/* ── Hero ── */
 .hero-bg {
   background: transparent;
 }
 
-/* ── Section edge fades ── */
+/* ── Section edge fades + overlay pulse ── */
 section {
   position: relative;
 }
@@ -109,13 +127,49 @@ section::after {
 section::before {
   top: 0;
   background: linear-gradient(to bottom, var(--bg), transparent);
+  animation: sectionPulse 5s ease-in-out infinite;
 }
 section::after {
   bottom: 0;
   background: linear-gradient(to bottom, transparent, var(--bg));
+  animation: sectionPulse 5s ease-in-out infinite 2.5s;
 }
 section.hero-bg::before {
   display: none;
+}
+
+/* ── Divider line between consecutive sections ── */
+section + section::before {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #F8A91F, #EC6426, #F8A91F, transparent);
+  background-size: 200% auto;
+  animation: lineFlow 3s linear infinite;
+}
+
+/* ── Heading shimmer ── */
+h1, h2, h3 {
+  background: linear-gradient(90deg, #FDE3CF, #F8A91F, #EC6426, #F8A91F, #FDE3CF);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmer 4s linear infinite;
+}
+
+/* ── Cards ── */
+.rounded-card {
+  border: 1px solid rgba(248,169,31,0.15);
+  background-color: rgba(255,255,255,0.03);
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.rounded-card:hover {
+  border-color: rgba(248,169,31,0.4);
+  background-color: rgba(248,169,31,0.05);
+}
+
+/* ── Button pulse ── */
+.bg-accent {
+  animation: btnPulse 2.5s ease infinite;
 }
 
 /* ── Reveal on scroll ── */
@@ -129,28 +183,57 @@ section.hero-bg::before {
   transform: translateY(0);
 }
 
-/* ── Keyframes ── */
-@keyframes gradientShift {
+/* ═══════════════ KEYFRAMES ═══════════════ */
+
+@keyframes bgFlow {
   0%   { background-position: 0%   50%; }
+  25%  { background-position: 50%  100%; }
   50%  { background-position: 100% 50%; }
+  75%  { background-position: 50%  0%; }
   100% { background-position: 0%   50%; }
 }
 
-@keyframes blob1Drift {
-  0%,100% { transform: translate(  0%,  0%) scale(1.00); }
-  25%     { transform: translate(  5%,  8%) scale(1.05); }
-  50%     { transform: translate( -4%,  3%) scale(0.96); }
-  75%     { transform: translate(  3%, -7%) scale(1.03); }
+@keyframes blob1Move {
+  0%,100% { transform: translate(  0%,   0%) scale(1.00); }
+  20%     { transform: translate( -4%,   8%) scale(1.06); }
+  45%     { transform: translate(  6%,   4%) scale(0.94); }
+  70%     { transform: translate(  2%, -10%) scale(1.04); }
 }
-@keyframes blob2Drift {
-  0%,100% { transform: translate(  0%,  0%) scale(1.00); }
-  33%     { transform: translate( -5%, -8%) scale(1.05); }
-  66%     { transform: translate(  5%,  5%) scale(0.95); }
+@keyframes blob2Move {
+  0%,100% { transform: translate(  0%,   0%) scale(1.00); }
+  30%     { transform: translate(  5%,  -7%) scale(1.05); }
+  60%     { transform: translate( -6%,   5%) scale(0.95); }
 }
-@keyframes blob3Drift {
-  0%,100% { transform: translate(  0%,  0%) scale(1.00); }
-  40%     { transform: translate(  4%, -8%) scale(1.04); }
-  70%     { transform: translate( -5%,  6%) scale(0.96); }
+@keyframes blob3Move {
+  0%,100% { transform: translate(  0%,   0%) scale(1.00); }
+  35%     { transform: translate(  3%,  -6%) scale(1.08); }
+  65%     { transform: translate( -3%,   7%) scale(0.93); }
+}
+@keyframes blob4Move {
+  0%,100% { transform: translate(  0%,   0%) scale(1.00); }
+  25%     { transform: translate( -6%,   8%) scale(1.10); }
+  50%     { transform: translate(  8%,  -5%) scale(0.90); }
+  75%     { transform: translate( -3%,  -8%) scale(1.05); }
+}
+
+@keyframes textShimmer {
+  0%   { background-position: 0%   center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes btnPulse {
+  0%,100% { box-shadow: 0 0  0px rgba(248,169,31,0.00); }
+  50%     { box-shadow: 0 0 20px rgba(248,169,31,0.50); }
+}
+
+@keyframes sectionPulse {
+  0%,100% { opacity: 0.30; }
+  50%     { opacity: 0.60; }
+}
+
+@keyframes lineFlow {
+  0%   { background-position:   0% center; }
+  100% { background-position: 200% center; }
 }
 
 /* ── Solar system orbit rings ── */
@@ -224,7 +307,7 @@ section.hero-bg::before {
 .ticker-track { animation: ticker 26s linear infinite; }
 .ticker-track:hover { animation-play-state: paused; }
 
-/* ── reduced-motion ── */
+/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
