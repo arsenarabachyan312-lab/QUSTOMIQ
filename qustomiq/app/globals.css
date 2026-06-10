@@ -2,16 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Design tokens: default (navy + amber) ── */
+/* ── Design tokens: warm (burnt orange + golden yellow) ── */
 :root {
-  --bg: #0D1B2A;
-  --ink: #F0EEE8;
-  --muted: #8A9BB0;
-  --accent: #F0A500;
-  --accent-deep: #D4900A;
-  --accent-ink: #F0A500;
-  --line: rgba(240,165,0,0.15);
-  --panel: rgba(17,34,54,0.8);
+  --bg: #1C0D08;
+  --ink: #FFFFFF;
+  --muted: rgba(253,227,207,0.7);
+  --accent: #F8A91F;
+  --accent-deep: #EC6426;
+  --accent-ink: #F8A91F;
+  --line: rgba(248,169,31,0.15);
+  --panel: rgba(28,13,8,0.85);
   /* Fonts — set here since @fontsource replaces next/font/google injection */
   --font-display: 'Space Grotesk';
   --font-body: 'Sora';
@@ -32,11 +32,11 @@ html {
 
 body {
   color: var(--ink);
-  background-color: #0D1B2A;
+  background-color: #1C0D08;
   background-image:
-    radial-gradient(ellipse at 25% 40%, rgba(240,165,0,0.07) 0%, transparent 55%),
-    radial-gradient(ellipse at 75% 85%, rgba(240,165,0,0.04) 0%, transparent 50%),
-    linear-gradient(135deg, #0D1B2A 0%, #112236 50%, #0D1B2A 100%);
+    radial-gradient(ellipse at 25% 40%, rgba(248,169,31,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 85%, rgba(236,100,38,0.04) 0%, transparent 50%),
+    linear-gradient(135deg, #1C0D08 0%, #2A1208 50%, #1C0D08 100%);
   background-attachment: fixed;
   background-size: 100% 100%;
   -webkit-font-smoothing: antialiased;
@@ -45,7 +45,7 @@ body {
 
 /* ── Hero gradient background ── */
 .hero-bg {
-  background: radial-gradient(120% 120% at 78% 30%, rgba(240,165,0,0.07) 0%, transparent 55%);
+  background: radial-gradient(120% 120% at 78% 30%, rgba(248,169,31,0.07) 0%, transparent 55%);
 }
 
 /* ── Section edge fades — smooth transitions between sections ── */
@@ -98,7 +98,7 @@ section.hero-bg::before {
   margin-left: calc(-1 * var(--orbit-r));
   margin-top: calc(-1 * var(--orbit-r));
   border-radius: 50%;
-  border: 1px solid rgba(240,165,0,0.08);
+  border: 1px solid rgba(236,100,38,0.25);
 }
 .orbit-inner  { --orbit-r: 138px; }
 .orbit-middle { --orbit-r: 200px; }

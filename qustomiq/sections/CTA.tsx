@@ -24,10 +24,10 @@ export default function CTA() {
       className="py-20 md:py-28 px-6 md:px-14 text-[#F0EEE8] relative"
       style={{
         background:
-          "radial-gradient(ellipse at 80% 50%, rgba(240,165,0,0.12) 0%, transparent 60%), " +
-          "radial-gradient(ellipse at 20% 50%, rgba(240,165,0,0.07) 0%, transparent 50%), " +
-          "#071220",
-        borderTop: "1px solid rgba(240,165,0,0.2)",
+          "radial-gradient(ellipse at 80% 50%, rgba(248,169,31,0.12) 0%, transparent 60%), " +
+          "radial-gradient(ellipse at 20% 50%, rgba(236,100,38,0.07) 0%, transparent 50%), " +
+          "#1C0D08",
+        borderTop: "1px solid rgba(248,169,31,0.2)",
       }}
       aria-labelledby="cta-heading"
     >
@@ -111,7 +111,7 @@ export default function CTA() {
                       onClick={() => setMessenger(opt === messenger ? "" : opt)}
                       className={`font-mono text-[12.5px] px-4 py-2 rounded-pill border transition-all min-h-[36px] ${
                         messenger === opt
-                          ? "bg-accent text-[#0D1B2A] border-accent font-semibold"
+                          ? "bg-accent text-[#1C0D08] border-accent font-semibold"
                           : "bg-transparent text-[#F0EEE8]/60 border-[#F0EEE8]/15 hover:border-[#F0EEE8]/40"
                       }`}
                     >
@@ -130,7 +130,7 @@ export default function CTA() {
 
               <button
                 type="submit"
-                className="w-full mt-1 bg-accent text-[#0D1B2A] font-display font-bold text-[15.5px] py-[17px] rounded-btn hover:opacity-90 transition-opacity min-h-[52px] tracking-[-0.2px]"
+                className="w-full mt-1 bg-accent text-[#1C0D08] font-display font-bold text-[15.5px] py-[17px] rounded-btn hover:opacity-90 transition-opacity min-h-[52px] tracking-[-0.2px]"
               >
                 {c.submit}
               </button>

@@ -14,12 +14,12 @@ export default function Clients() {
       className="py-12 relative text-[#F0EEE8]"
       style={{
         background:
-          "radial-gradient(ellipse at 50% 50%, rgba(240,165,0,0.15) 0%, transparent 65%), " +
-          "radial-gradient(ellipse at 85% 50%, rgba(240,165,0,0.10) 0%, transparent 50%), " +
-          "radial-gradient(ellipse at 15% 50%, rgba(240,165,0,0.10) 0%, transparent 50%), " +
-          "linear-gradient(135deg, #1A1200 0%, #2A1F00 50%, #1A1200 100%)",
-        borderTop: "1px solid rgba(240,165,0,0.3)",
-        borderBottom: "1px solid rgba(240,165,0,0.3)",
+          "radial-gradient(ellipse at 50% 50%, rgba(248,169,31,0.15) 0%, transparent 65%), " +
+          "radial-gradient(ellipse at 85% 50%, rgba(236,100,38,0.10) 0%, transparent 50%), " +
+          "radial-gradient(ellipse at 15% 50%, rgba(236,100,38,0.10) 0%, transparent 50%), " +
+          "linear-gradient(135deg, #1C0D08 0%, #2A1208 50%, #1C0D08 100%)",
+        borderTop: "1px solid rgba(248,169,31,0.3)",
+        borderBottom: "1px solid rgba(248,169,31,0.3)",
       }}
       aria-label={label}
     >
@@ -35,7 +35,7 @@ export default function Clients() {
             {doubled.map((name, i) => (
               <span
                 key={i}
-                className="font-display font-semibold text-[17px] text-[#F0A500] whitespace-nowrap shrink-0"
+                className="font-display font-semibold text-[17px] text-[#F8A91F] whitespace-nowrap shrink-0"
               >
                 {name}
               </span>

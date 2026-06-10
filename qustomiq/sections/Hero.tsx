@@ -157,7 +157,7 @@ export default function Hero() {
             <div className="inline-flex items-center gap-[9px] px-4 py-2 rounded-pill bg-[var(--panel)] border border-[var(--line)] text-[13.5px] font-medium text-accent-ink mb-7 whitespace-nowrap">
               <span
                 className="w-[7px] h-[7px] rounded-full bg-accent animate-pulse shrink-0"
-                style={{ boxShadow: "0 0 0 4px rgba(240,165,0,.35)" }}
+                style={{ boxShadow: "0 0 0 4px rgba(248,169,31,.35)" }}
                 aria-hidden="true"
               />
               {h.badge}
@@ -183,7 +183,7 @@ export default function Hero() {
             <div className="flex flex-wrap gap-3 mt-9 items-center">
               <a
                 href="#contacts"
-                className="bg-accent text-[#0D1B2A] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline border-0 outline-none hover:bg-accent-deep transition-colors whitespace-nowrap min-h-[52px] flex items-center"
+                className="bg-accent text-[#1C0D08] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline border-0 outline-none hover:bg-accent-deep transition-colors whitespace-nowrap min-h-[52px] flex items-center"
               >
                 {h.cta_primary}
               </a>
@@ -255,7 +255,7 @@ export default function Hero() {
                             left: "50%",
                             width: "calc(100% + 16px)",
                             height: "8px",
-                            border: `1.5px solid ${pc.border.replace(/,[\d.]+\)$/, ",0.5)")}`,
+                            border: "1.5px solid rgba(248,169,31,0.4)",
                             borderRadius: "50%",
                             transform: `translate(-50%, -50%) rotate(${20 - angle}deg)`,
                             pointerEvents: "none",
@@ -277,8 +277,8 @@ export default function Hero() {
             <div
               className="relative z-10 w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] lg:w-[360px] lg:h-[360px] rounded-full p-[18px] sm:p-[25px] lg:p-[30px] animate-qfloat"
               style={{
-                background: "conic-gradient(from 135deg, #FFD060 0deg, #F0A500 75deg, #D4900A 180deg, #F0A500 285deg, #FFD060 360deg)",
-                filter: "drop-shadow(0 0 16px rgba(240,165,0,0.6)) drop-shadow(0 0 4px rgba(240,165,0,0.35))",
+                background: "conic-gradient(from 135deg, #FFCF60 0deg, #F8A91F 75deg, #EC6426 180deg, #F8A91F 285deg, #FFCF60 360deg)",
+                filter: "drop-shadow(0 0 20px rgba(236,100,38,0.7)) drop-shadow(0 0 6px rgba(248,169,31,0.4))",
               }}
             >
               {/* Q tail */}
@@ -286,11 +286,11 @@ export default function Hero() {
                 className="absolute rounded-[15px] w-[54px] h-[15px] sm:w-[76px] sm:h-[20px] lg:w-[98px] lg:h-[26px] bottom-[14px] sm:bottom-[21px] lg:bottom-[26px] right-[12px] sm:right-[19px] lg:right-[24px]"
                 style={{
                   transform: "rotate(45deg)",
-                  background: "linear-gradient(135deg, #FFD060 0%, #F0A500 45%, #D4900A 100%)",
+                  background: "linear-gradient(135deg, #FFCF60 0%, #F8A91F 45%, #EC6426 100%)",
                 }}
               />
-              {/* Inner navy circle + neural core */}
-              <div className="w-full h-full rounded-full overflow-hidden bg-[#0D1B2A]">
+              {/* Inner dark circle + solar core */}
+              <div className="w-full h-full rounded-full overflow-hidden bg-[#0D0603]">
                 <QCore />
               </div>
             </div>

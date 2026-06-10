@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 
 function buildGrid(): string {
-  const c = "#F0A500";
+  const c = "#F8A91F";
   const fo = "0.06";   // fill-opacity for dots
   const so = "0.035";  // stroke-opacity for lines
   const svg =
@@ -47,11 +47,11 @@ export default function SectionBg() {
           backgroundImage: [
             gridBg,
             // top-right accent glow — larger, more saturated
-            "radial-gradient(ellipse 90% 80% at 92% 0%, rgba(240,165,0,0.18) 0%, rgba(240,165,0,0.06) 40%, transparent 70%)",
+            "radial-gradient(ellipse 90% 80% at 92% 0%, rgba(248,169,31,0.18) 0%, rgba(236,100,38,0.06) 40%, transparent 70%)",
             // bottom-left soft glow
-            "radial-gradient(ellipse 75% 70% at 4% 98%, rgba(240,165,0,0.12) 0%, rgba(240,165,0,0.04) 45%, transparent 68%)",
+            "radial-gradient(ellipse 75% 70% at 4% 98%, rgba(236,100,38,0.12) 0%, rgba(248,169,31,0.04) 45%, transparent 68%)",
             // centre-right secondary depth
-            "radial-gradient(ellipse 50% 45% at 75% 55%, rgba(240,165,0,0.05) 0%, transparent 60%)",
+            "radial-gradient(ellipse 50% 45% at 75% 55%, rgba(248,169,31,0.05) 0%, transparent 60%)",
           ].join(", "),
           backgroundRepeat: "repeat, no-repeat, no-repeat, no-repeat",
           backgroundSize: "60px 60px, 100% 100%, 100% 100%, 100% 100%",

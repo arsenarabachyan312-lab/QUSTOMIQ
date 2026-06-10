@@ -63,11 +63,11 @@ export default function CustomCursor() {
         height="24"
         viewBox="0 0 28 28"
         fill="none"
-        style={{ filter: "drop-shadow(0 0 6px rgba(240,165,0,0.8))" }}
+        style={{ filter: "drop-shadow(0 0 6px rgba(248,169,31,0.8))" }}
         aria-hidden="true"
       >
-        <circle cx="11" cy="11" r="8" stroke="#F0A500" strokeWidth="3.5" />
-        <line x1="15" y1="15" x2="20" y2="20" stroke="#F0A500" strokeWidth="3.5" strokeLinecap="round" />
+        <circle cx="11" cy="11" r="8" stroke="#F8A91F" strokeWidth="3.5" />
+        <line x1="15" y1="15" x2="20" y2="20" stroke="#F8A91F" strokeWidth="3.5" strokeLinecap="round" />
       </svg>
     </div>
   );
