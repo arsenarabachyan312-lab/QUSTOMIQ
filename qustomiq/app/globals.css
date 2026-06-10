@@ -337,6 +337,36 @@ section h1:first-of-type {
 @keyframes orbit-cw  { to { transform: rotate( 360deg); } }
 @keyframes orbit-ccw { to { transform: rotate(-360deg); } }
 
+/* ── Q energy core pulse ── */
+@keyframes qCorePulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 20px #FFD166, 0 0 40px #F5A623, 0 0 80px rgba(245,166,35,0.55), 0 0 120px rgba(236,100,38,0.35);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+    box-shadow: 0 0 30px #FFFFFF, 0 0 60px #FFD166, 0 0 100px rgba(245,166,35,0.75), 0 0 140px rgba(236,100,38,0.50);
+  }
+}
+
+/* ── Solar flares orbiting the energy core ── */
+.q-flare-orbit {
+  position: absolute;
+  inset: 0;
+  animation: orbit-cw 8s linear infinite;
+}
+.q-flare-dot {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 0 8px #fff, 0 0 16px #FFD166, 0 0 24px #F5A623;
+}
+
 .orbit-ring {
   position: absolute;
   top: 50%; left: 50%;

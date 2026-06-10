@@ -1,12 +1,9 @@
 "use client";
 
 import type { ReactNode } from "react";
-import dynamic from "next/dynamic";
 import { useLang } from "@/lib/LangContext";
 import Nav from "@/components/Nav";
 import SectionBg from "@/components/SectionBg";
-
-const QCore = dynamic(() => import("@/components/QCore"), { ssr: false });
 
 type OrbitConfig = {
   cls: "orbit-inner" | "orbit-middle" | "orbit-outer";
@@ -198,7 +195,7 @@ export default function Hero() {
 
           {/* Right column — solar system */}
           <div
-            className="relative h-[320px] sm:h-[520px] lg:h-[680px] flex items-center justify-center overflow-hidden"
+            className="relative h-[320px] sm:h-[520px] lg:h-[720px] flex items-center justify-center overflow-visible"
             aria-hidden="true"
             style={{
               transform: "perspective(1000px) rotateX(5deg)",
@@ -277,34 +274,72 @@ export default function Hero() {
               </div>
             ))}
 
-            {/* Q ring — "солнце" в центре */}
+            {/* Q ring — premium 3D energy portal */}
             <div
               className="relative z-10 w-[160px] h-[160px] sm:w-[280px] sm:h-[280px] lg:w-[360px] lg:h-[360px] rounded-full p-[13px] sm:p-[25px] lg:p-[30px] animate-qfloat"
               style={{
-                background: "conic-gradient(from 315deg, #FFD580 0deg, #F8A91F 55deg, #EC6426 105deg, #C05A15 150deg, #8B3A1A 180deg, #A84A20 215deg, #EC6426 270deg, #F8A91F 315deg, #FFD580 360deg)",
-                boxShadow: "inset 0 4px 16px rgba(0,0,0,0.70), inset 0 -2px 8px rgba(0,0,0,0.40), 0 20px 40px rgba(236,100,38,0.80), 0 0 60px rgba(248,169,31,0.40)",
-                filter: "drop-shadow(0 20px 40px rgba(236,100,38,0.8)) drop-shadow(0 0 60px rgba(248,169,31,0.4))",
+                background: "conic-gradient(from 315deg, #FFD700 0deg, #FFF8DC 28deg, #FFD700 58deg, #FFA500 90deg, #7A5010 128deg, #3D1E00 158deg, #7A5010 192deg, #C8840A 225deg, #FFD700 255deg, #FFF8DC 278deg, #FFD700 308deg, #FFA500 335deg, #FFD700 360deg)",
+                boxShadow: "inset 0 -6px 18px rgba(0,0,0,0.65), inset 0 4px 8px rgba(255,230,120,0.22), 0 0 40px rgba(245,166,35,0.55), 0 0 80px rgba(245,166,35,0.25), 0 20px 60px rgba(236,100,38,0.50)",
+                transform: "perspective(1200px) rotateX(8deg)",
               }}
             >
-              {/* Q tail */}
+              {/* Convex rim highlight */}
+              <span
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "50%",
+                  background: "linear-gradient(145deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.06) 35%, transparent 60%)",
+                  pointerEvents: "none",
+                  zIndex: 1,
+                }}
+              />
+
+              {/* Q tail — metallic */}
               <span
                 className="absolute rounded-[15px] w-[42px] h-[11px] sm:w-[76px] sm:h-[20px] lg:w-[98px] lg:h-[26px] bottom-[11px] sm:bottom-[21px] lg:bottom-[26px] right-[10px] sm:right-[19px] lg:right-[24px]"
                 style={{
                   transform: "rotate(45deg)",
-                  background: "linear-gradient(90deg, #FFB84D 0%, #F8A91F 40%, #8B3A1A 100%)",
-                  boxShadow: "0 4px 12px rgba(99,39,19,0.50), inset 0 1px 0 rgba(255,200,100,0.30)",
+                  background: "linear-gradient(90deg, #FFD700 0%, #FFA500 40%, #7A4500 80%, #3D2200 100%)",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,230,120,0.40), inset 0 -1px 0 rgba(0,0,0,0.40)",
+                  zIndex: 4,
                 }}
               />
-              {/* Inner dark circle + solar core */}
+
+              {/* Inner portal tunnel */}
               <div
-                className="w-full h-full rounded-full overflow-hidden"
+                className="w-full h-full rounded-full relative"
                 style={{
-                  background: "radial-gradient(circle at 50% 40%, #1a0800 60%, #3D1500 100%)",
-                  boxShadow: "inset 0 4px 20px rgba(0,0,0,0.80), inset 0 -2px 10px rgba(61,21,0,0.50)",
-                  border: "1.5px solid #4A1E0D",
+                  zIndex: 2,
+                  background: "radial-gradient(circle at 50% 50%, rgba(245,166,35,0.06) 0%, #0D0500 22%, #050100 55%, #000000 100%)",
+                  boxShadow: "inset 0 0 50px rgba(0,0,0,0.98), inset 0 0 90px rgba(0,0,0,0.85), inset 0 14px 45px rgba(0,0,0,0.75)",
                 }}
               >
-                <QCore />
+                {/* Plasma energy core */}
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    width: "34%",
+                    height: "34%",
+                    borderRadius: "50%",
+                    background: "radial-gradient(circle at 38% 32%, #FFFFFF 0%, #FFF3B0 18%, #FFD166 40%, #F5A623 65%, #EC6426 100%)",
+                    animation: "qCorePulse 2.5s ease-in-out infinite",
+                  }}
+                />
+                {/* Solar flares orbiting the core */}
+                <div className="q-flare-orbit">
+                  <div className="q-flare-dot" />
+                </div>
+                <div className="q-flare-orbit" style={{ animationDelay: "-2.67s" }}>
+                  <div className="q-flare-dot" />
+                </div>
+                <div className="q-flare-orbit" style={{ animationDelay: "-5.33s" }}>
+                  <div className="q-flare-dot" />
+                </div>
               </div>
             </div>
           </div>
