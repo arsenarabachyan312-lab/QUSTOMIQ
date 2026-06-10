@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
 import { useLang } from "@/lib/LangContext";
 import Nav from "@/components/Nav";
@@ -20,7 +21,7 @@ const ORBITS: OrbitConfig[] = [
   { cls: "orbit-outer",  dur: "45s", cw: true,  tags: ["B2B", "TLS", "DMS", "SFA"] },
 ];
 
-type PlanetStyle = { bg: string; border: string; shadow: string; color: string; ring?: true };
+type PlanetStyle = { bg: string; border: string; shadow: string; color: string };
 const PLANET_COLORS: Record<string, PlanetStyle> = {
   API:    { bg: "radial-gradient(circle at 38% 32%, #E85520, #C1440E)", border: "rgba(193,68,14,0.7)",   shadow: "0 0 12px rgba(193,68,14,0.3)",   color: "#F0EEE8" },
   AI:     { bg: "radial-gradient(circle at 38% 32%, #7B9FE4, #5B7FD4)", border: "rgba(91,127,212,0.7)",  shadow: "0 0 12px rgba(91,127,212,0.3)",  color: "#F0EEE8" },
@@ -28,11 +29,111 @@ const PLANET_COLORS: Record<string, PlanetStyle> = {
   ERP:    { bg: "radial-gradient(circle at 38% 32%, #E8DEC5, #D4C5A9)", border: "rgba(212,197,169,0.7)", shadow: "0 0 12px rgba(212,197,169,0.2)", color: "#0D1B2A" },
   WEB:    { bg: "radial-gradient(circle at 38% 32%, #35A0C8, #1E88B4)", border: "rgba(30,136,180,0.7)",  shadow: "0 0 12px rgba(30,136,180,0.3)",  color: "#F0EEE8" },
   MOBILE: { bg: "radial-gradient(circle at 38% 32%, #F0B864, #E8A44A)", border: "rgba(232,164,74,0.7)",  shadow: "0 0 12px rgba(232,164,74,0.3)",  color: "#0D1B2A" },
-  B2B:    { bg: "radial-gradient(circle at 38% 32%, #B8B8B8, #9E9E9E)", border: "rgba(158,158,158,0.6)", shadow: "0 0 12px rgba(158,158,158,0.2)", color: "#0D1B2A" },
-  SFA:    { bg: "radial-gradient(circle at 38% 32%, #D4B870, #C2A35D)", border: "rgba(194,163,93,0.7)",  shadow: "0 0 12px rgba(194,163,93,0.3)",  color: "#0D1B2A", ring: true },
+  B2B:    { bg: "radial-gradient(circle at 38% 32%, #254A78, #1B3A5C)", border: "rgba(27,58,92,0.8)",    shadow: "0 0 12px rgba(27,58,92,0.4)",    color: "#F0EEE8" },
+  SFA:    { bg: "radial-gradient(circle at 38% 32%, #D4B870, #C2A35D)", border: "rgba(194,163,93,0.7)",  shadow: "0 0 12px rgba(194,163,93,0.3)",  color: "#0D1B2A" },
   DMS:    { bg: "radial-gradient(circle at 38% 32%, #7EDDD8, #4ECDC4)", border: "rgba(78,205,196,0.7)",  shadow: "0 0 12px rgba(78,205,196,0.3)",  color: "#0D1B2A" },
   TLS:    { bg: "radial-gradient(circle at 38% 32%, #5577EE, #3B5BDB)", border: "rgba(59,91,219,0.7)",   shadow: "0 0 12px rgba(59,91,219,0.3)",   color: "#F0EEE8" },
   "1С":   { bg: "radial-gradient(circle at 38% 32%, #EF5350, #E53935)", border: "rgba(229,57,53,0.7)",   shadow: "0 0 12px rgba(229,57,53,0.3)",   color: "#F0EEE8" },
+};
+
+const PLANET_ICONS: Record<string, ReactNode> = {
+  /* 1С — красный прямоугольник #C8102E, белый жирный "1С" по центру */
+  "1С": (
+    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+      <rect width="36" height="36" rx="5" fill="#C8102E"/>
+      <text x="18" y="26" textAnchor="middle" fill="white" fontSize="20" fontWeight="900" fontFamily="Arial Black,Arial,sans-serif">1С</text>
+    </svg>
+  ),
+  /* CRM — Bitrix24: оранжевый круг, белая жирная "B" */
+  CRM: (
+    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+      <circle cx="18" cy="18" r="17" fill="#FF5A00"/>
+      <text x="18.5" y="26" textAnchor="middle" fill="white" fontSize="24" fontWeight="900" fontFamily="Arial Black,Arial,sans-serif">B</text>
+    </svg>
+  ),
+  /* ERP — SAP: белый прямоугольник, синий текст "SAP" Arial Bold — overflow hidden чтобы текст не вылезал */
+  ERP: (
+    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true" style={{ overflow: "hidden" }}>
+      <rect width="36" height="36" rx="4" fill="white"/>
+      <text x="18" y="24" textAnchor="middle" fill="#0070F2" fontSize="15" fontWeight="700" fontFamily="Arial,sans-serif">SAP</text>
+    </svg>
+  ),
+  /* API — Swagger: зелёный шестиугольник + белые фигурные скобки (строки, не объект) */
+  API: (
+    <svg viewBox="0 0 36 40" width="30" height="32" aria-hidden="true">
+      <polygon points="18,1 33,10 33,29 18,38 3,29 3,10" fill="#85EA2D"/>
+      <text x="18" y="27" textAnchor="middle" fill="white" fontSize="16" fontWeight="900" fontFamily="Arial Black,Arial,sans-serif">{"{ }"}</text>
+    </svg>
+  ),
+  /* WEB — React: тёмный фон #20232A, голубой атом #61DAFB */
+  WEB: (
+    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+      <rect width="36" height="36" rx="5" fill="#20232A"/>
+      <circle cx="18" cy="18" r="3" fill="#61DAFB"/>
+      <ellipse cx="18" cy="18" rx="14" ry="5" fill="none" stroke="#61DAFB" strokeWidth="1.6"/>
+      <ellipse cx="18" cy="18" rx="14" ry="5" fill="none" stroke="#61DAFB" strokeWidth="1.6" transform="rotate(60 18 18)"/>
+      <ellipse cx="18" cy="18" rx="14" ry="5" fill="none" stroke="#61DAFB" strokeWidth="1.6" transform="rotate(120 18 18)"/>
+    </svg>
+  ),
+  /* MOBILE — зелёный круг #3DDC84, белый текст "MOB" */
+  MOBILE: (
+    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+      <circle cx="18" cy="18" r="17" fill="#3DDC84"/>
+      <text x="18" y="23" textAnchor="middle" fill="white" fontSize="13" fontWeight="900" fontFamily="Arial Black,Arial,sans-serif">MOB</text>
+    </svg>
+  ),
+  /* B2B — тёмно-синий круг #1B3A5C, две белые фигуры людей (группа/команда) */
+  B2B: (
+    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+      <circle cx="18" cy="18" r="17" fill="#1B3A5C"/>
+      {/* Левый человек — голова */}
+      <circle cx="12" cy="13" r="4.5" fill="white"/>
+      {/* Левый человек — тело */}
+      <path d="M4 31 Q4 21 12 21 Q20 21 20 31" fill="white"/>
+      {/* Правый человек — голова */}
+      <circle cx="24" cy="13" r="4.5" fill="white"/>
+      {/* Правый человек — тело */}
+      <path d="M16 31 Q16 21 24 21 Q32 21 32 31" fill="white"/>
+    </svg>
+  ),
+  /* TLS — Телеагенты: тёмно-синий круг #1A3A6B + белая гарнитура */
+  TLS: (
+    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+      <circle cx="18" cy="18" r="17" fill="#1A3A6B"/>
+      {/* Дуга оголовья */}
+      <path d="M9 21 Q9 9 18 9 Q27 9 27 21" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
+      {/* Левый наушник */}
+      <rect x="7" y="20" width="5" height="8" rx="2.5" fill="white"/>
+      {/* Правый наушник */}
+      <rect x="24" y="20" width="5" height="8" rx="2.5" fill="white"/>
+      {/* Микрофон (рычаг + капсула) */}
+      <path d="M12 27 Q11 32 16 32" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="16" cy="32" r="2" fill="white"/>
+    </svg>
+  ),
+  /* SFA — amoCRM: фиолетовый #5B4CE4 круг, белый "amo" */
+  SFA: (
+    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+      <circle cx="18" cy="18" r="17" fill="#5B4CE4"/>
+      <text x="18" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="700" fontFamily="Arial,sans-serif" letterSpacing="0.5">amo</text>
+    </svg>
+  ),
+  /* AI — белый круг + чёрный жирный текст "AI" */
+  AI: (
+    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
+      <circle cx="18" cy="18" r="17" fill="white"/>
+      <text x="18" y="25" textAnchor="middle" fill="black" fontSize="18" fontWeight="900" fontFamily="Arial Black,Arial,sans-serif">AI</text>
+    </svg>
+  ),
+  /* DMS — Microsoft: 4 цветных квадрата Windows */
+  DMS: (
+    <svg viewBox="0 0 36 36" width="30" height="30" aria-hidden="true">
+      <rect x="1"  y="1"  width="16" height="16" rx="1" fill="#F25022"/>
+      <rect x="19" y="1"  width="16" height="16" rx="1" fill="#7FBA00"/>
+      <rect x="1"  y="19" width="16" height="16" rx="1" fill="#00A4EF"/>
+      <rect x="19" y="19" width="16" height="16" rx="1" fill="#FFB900"/>
+    </svg>
+  ),
 };
 
 export default function Hero() {
@@ -123,7 +224,7 @@ export default function Hero() {
                         transform: `rotate(${angle}deg) translateY(calc(-1 * var(--orbit-r)))`,
                       }}
                     >
-                      {/* Counter-rotate to keep text upright */}
+                      {/* Counter-rotate to keep icon upright */}
                       <div
                         className="planet-inner"
                         style={{
@@ -136,35 +237,35 @@ export default function Hero() {
                           alignItems: "center",
                           justifyContent: "center",
                           boxShadow: pc.shadow,
-                          letterSpacing: "-0.3px",
-                          fontWeight: 700,
                           color: pc.color,
-                          fontFamily: "var(--font-mono, monospace)",
                           animationName: orbit.cw ? "orbit-ccw" : "orbit-cw",
                           animationDuration: orbit.dur,
                           animationTimingFunction: "linear",
                           animationIterationCount: "infinite",
                         }}
                       >
-                        {/* Saturn ring for SFA */}
-                        {pc.ring && (
-                          <span
-                            aria-hidden="true"
-                            style={{
-                              position: "absolute",
-                              top: "50%",
-                              left: "50%",
-                              width: "155%",
-                              height: "8px",
-                              transform: "translate(-50%, -50%) rotate(-22deg)",
-                              background: "linear-gradient(90deg, transparent 0%, rgba(194,163,93,0.5) 15%, rgba(194,163,93,0.9) 40%, rgba(194,163,93,0.9) 60%, rgba(194,163,93,0.5) 85%, transparent 100%)",
-                              borderRadius: "50%",
-                              pointerEvents: "none",
-                              zIndex: 0,
-                            }}
-                          />
-                        )}
-                        <span style={{ position: "relative", zIndex: 1 }}>{tag}</span>
+                        {/* Кольцо вокруг планеты (Сатурн-стиль):
+                            rotate(20 - angle) = 20° наклон в мировом пространстве.
+                            Математика: orbit(+R) + wrap(+angle) + inner(-R) + ring(20-angle) = 20° */}
+                        <span
+                          aria-hidden="true"
+                          style={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            width: "calc(100% + 16px)",
+                            height: "8px",
+                            border: `1.5px solid ${pc.border.replace(/,[\d.]+\)$/, ",0.5)")}`,
+                            borderRadius: "50%",
+                            transform: `translate(-50%, -50%) rotate(${20 - angle}deg)`,
+                            pointerEvents: "none",
+                            zIndex: 0,
+                          }}
+                        />
+                        {/* rotate(-angle) отменяет статичный угол позиционирования planet-wrap */}
+                        <span style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", justifyContent: "center", transform: `rotate(${-angle}deg)` }}>
+                          {PLANET_ICONS[tag] ?? tag}
+                        </span>
                       </div>
                     </div>
                   );

@@ -1,27 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Sora, JetBrains_Mono } from "next/font/google";
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
+import "@fontsource/sora/400.css";
+import "@fontsource/sora/500.css";
+import "@fontsource/sora/600.css";
+import "@fontsource/sora/700.css";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+import "@fontsource/jetbrains-mono/600.css";
 import "./globals.css";
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const sora = Sora({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-mono",
-  display: "swap",
-});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -43,9 +32,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head />
-      <body
-        className={`${spaceGrotesk.variable} ${sora.variable} ${jetbrainsMono.variable} font-body bg-bg text-ink`}
-      >
+      <body className="font-body bg-bg text-ink">
         {children}
       </body>
     </html>

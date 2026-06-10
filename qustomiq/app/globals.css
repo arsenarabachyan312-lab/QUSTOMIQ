@@ -12,6 +12,10 @@
   --accent-ink: #F0A500;
   --line: rgba(240,165,0,0.15);
   --panel: rgba(17,34,54,0.8);
+  /* Fonts — set here since @fontsource replaces next/font/google injection */
+  --font-display: 'Space Grotesk';
+  --font-body: 'Sora';
+  --font-mono: 'JetBrains Mono';
 }
 
 
