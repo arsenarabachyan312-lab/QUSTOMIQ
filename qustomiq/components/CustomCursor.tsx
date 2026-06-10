@@ -27,8 +27,8 @@ export default function CustomCursor() {
     el.style.display = "block";
 
     const tick = () => {
-      cx += (mx - cx) * 0.18;
-      cy += (my - cy) * 0.18;
+      cx += (mx - cx) * 0.28;
+      cy += (my - cy) * 0.28;
       const scale = hovered ? 1.4 : 1;
       el.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%) scale(${scale})`;
       el.style.opacity = hovered ? "1" : "0.8";
