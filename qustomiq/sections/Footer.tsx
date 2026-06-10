@@ -23,7 +23,9 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <a href="#" className="flex items-center gap-[11px] no-underline text-ink mb-4" aria-label="QUSTOMIQ">
-            <QMark size={32} className="text-accent" />
+            <div className="q-logo-3d">
+              <QMark size={32} className="text-accent" />
+            </div>
             <span className="font-display font-bold text-[19px] tracking-[0.5px]">QUSTOMIQ</span>
           </a>
           <p className="text-[14px] text-muted leading-[1.6] max-w-[220px]">{f.tagline}</p>
