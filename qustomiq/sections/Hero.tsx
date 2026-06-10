@@ -200,6 +200,10 @@ export default function Hero() {
           <div
             className="relative h-[400px] sm:h-[520px] lg:h-[680px] flex items-center justify-center"
             aria-hidden="true"
+            style={{
+              transform: "perspective(1000px) rotateX(5deg)",
+              filter: "drop-shadow(0 30px 60px rgba(236,100,38,0.5))",
+            }}
           >
             {/* Orbit rings with planets */}
             {ORBITS.map((orbit) => (
@@ -277,8 +281,9 @@ export default function Hero() {
             <div
               className="relative z-10 w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] lg:w-[360px] lg:h-[360px] rounded-full p-[18px] sm:p-[25px] lg:p-[30px] animate-qfloat"
               style={{
-                background: "conic-gradient(from 135deg, #FFCF60 0deg, #F8A91F 75deg, #EC6426 180deg, #F8A91F 285deg, #FFCF60 360deg)",
-                filter: "drop-shadow(0 0 20px rgba(236,100,38,0.7)) drop-shadow(0 0 6px rgba(248,169,31,0.4))",
+                background: "conic-gradient(from 315deg, #FFD580 0deg, #F8A91F 55deg, #EC6426 105deg, #C05A15 150deg, #8B3A1A 180deg, #A84A20 215deg, #EC6426 270deg, #F8A91F 315deg, #FFD580 360deg)",
+                boxShadow: "inset 0 4px 16px rgba(0,0,0,0.70), inset 0 -2px 8px rgba(0,0,0,0.40), 0 20px 40px rgba(236,100,38,0.80), 0 0 60px rgba(248,169,31,0.40)",
+                filter: "drop-shadow(0 20px 40px rgba(236,100,38,0.8)) drop-shadow(0 0 60px rgba(248,169,31,0.4))",
               }}
             >
               {/* Q tail */}
@@ -286,11 +291,19 @@ export default function Hero() {
                 className="absolute rounded-[15px] w-[54px] h-[15px] sm:w-[76px] sm:h-[20px] lg:w-[98px] lg:h-[26px] bottom-[14px] sm:bottom-[21px] lg:bottom-[26px] right-[12px] sm:right-[19px] lg:right-[24px]"
                 style={{
                   transform: "rotate(45deg)",
-                  background: "linear-gradient(135deg, #FFCF60 0%, #F8A91F 45%, #EC6426 100%)",
+                  background: "linear-gradient(90deg, #FFB84D 0%, #F8A91F 40%, #8B3A1A 100%)",
+                  boxShadow: "0 4px 12px rgba(99,39,19,0.50), inset 0 1px 0 rgba(255,200,100,0.30)",
                 }}
               />
               {/* Inner dark circle + solar core */}
-              <div className="w-full h-full rounded-full overflow-hidden bg-[#0D0603]">
+              <div
+                className="w-full h-full rounded-full overflow-hidden"
+                style={{
+                  background: "radial-gradient(circle at 50% 40%, #1a0800 60%, #3D1500 100%)",
+                  boxShadow: "inset 0 4px 20px rgba(0,0,0,0.80), inset 0 -2px 10px rgba(61,21,0,0.50)",
+                  border: "1.5px solid #4A1E0D",
+                }}
+              >
                 <QCore />
               </div>
             </div>
