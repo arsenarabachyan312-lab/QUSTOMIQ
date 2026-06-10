@@ -1,9 +1,12 @@
 "use client";
 
 import type { ReactNode } from "react";
+import dynamic from "next/dynamic";
 import { useLang } from "@/lib/LangContext";
 import Nav from "@/components/Nav";
 import SectionBg from "@/components/SectionBg";
+
+const QCore = dynamic(() => import("@/components/QCore"), { ssr: false });
 
 type OrbitConfig = {
   cls: "orbit-inner" | "orbit-middle" | "orbit-outer";
@@ -309,37 +312,14 @@ export default function Hero() {
 
               {/* Inner portal tunnel */}
               <div
-                className="w-full h-full rounded-full relative"
+                className="w-full h-full rounded-full relative overflow-hidden"
                 style={{
                   zIndex: 2,
-                  background: "radial-gradient(circle at 50% 50%, rgba(245,166,35,0.06) 0%, #0D0500 22%, #050100 55%, #000000 100%)",
-                  boxShadow: "inset 0 0 50px rgba(0,0,0,0.98), inset 0 0 90px rgba(0,0,0,0.85), inset 0 14px 45px rgba(0,0,0,0.75)",
+                  background: "#000000",
+                  boxShadow: "inset 0 0 20px rgba(0,0,0,0.90)",
                 }}
               >
-                {/* Plasma energy core */}
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    width: "34%",
-                    height: "34%",
-                    borderRadius: "50%",
-                    background: "radial-gradient(circle at 38% 32%, #FFFFFF 0%, #FFF3B0 18%, #FFD166 40%, #F5A623 65%, #EC6426 100%)",
-                    animation: "qCorePulse 2.5s ease-in-out infinite",
-                  }}
-                />
-                {/* Solar flares orbiting the core */}
-                <div className="q-flare-orbit">
-                  <div className="q-flare-dot" />
-                </div>
-                <div className="q-flare-orbit" style={{ animationDelay: "-2.67s" }}>
-                  <div className="q-flare-dot" />
-                </div>
-                <div className="q-flare-orbit" style={{ animationDelay: "-5.33s" }}>
-                  <div className="q-flare-dot" />
-                </div>
+                <QCore />
               </div>
             </div>
           </div>
