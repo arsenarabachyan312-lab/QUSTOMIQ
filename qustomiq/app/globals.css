@@ -28,19 +28,65 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   color: var(--ink);
   background-color: #1C0D08;
   background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(248,169,31,0.015) 3px, rgba(248,169,31,0.015) 4px),
     radial-gradient(ellipse at 25% 40%, rgba(248,169,31,0.07) 0%, transparent 55%),
     radial-gradient(ellipse at 75% 85%, rgba(236,100,38,0.04) 0%, transparent 50%),
     linear-gradient(135deg, #1C0D08 0%, #2A1208 50%, #1C0D08 100%);
   background-attachment: fixed;
-  background-size: 100% 100%;
+  background-size: auto, 100% 100%, 100% 100%, 100% 100%;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* ── Animated plasma blobs — fixed behind all content ── */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+}
+body::before {
+  width: 65vw;
+  height: 65vw;
+  top: -15%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(248,169,31,0.06) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: bgBlob1 28s ease-in-out infinite;
+}
+body::after {
+  width: 55vw;
+  height: 55vw;
+  bottom: 5%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(236,100,38,0.06) 0%, transparent 70%);
+  filter: blur(90px);
+  animation: bgBlob2 35s ease-in-out infinite;
+}
+
+/* Third blob via html pseudo-element */
+html::before {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  width: 50vw;
+  height: 50vw;
+  top: 40%;
+  left: 35%;
+  background: radial-gradient(circle, rgba(248,169,31,0.05) 0%, transparent 70%);
+  filter: blur(100px);
+  animation: bgBlob3 22s ease-in-out infinite;
 }
 
 /* ── Hero gradient background ── */
@@ -84,6 +130,24 @@ section.hero-bg::before {
 .reveal.in-view {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ── Plasma blob keyframes ── */
+@keyframes bgBlob1 {
+  0%,100% { transform: translate(  0px,   0px) scale(1.00); }
+  25%     { transform: translate( 55px, -60px) scale(1.08); }
+  50%     { transform: translate( 20px,  90px) scale(0.93); }
+  75%     { transform: translate(-50px,  25px) scale(1.05); }
+}
+@keyframes bgBlob2 {
+  0%,100% { transform: translate(  0px,   0px) scale(1.00); }
+  33%     { transform: translate(-60px, -70px) scale(1.10); }
+  66%     { transform: translate( 85px,  50px) scale(0.91); }
+}
+@keyframes bgBlob3 {
+  0%,100% { transform: translate(  0px,   0px) scale(1.00); }
+  40%     { transform: translate( 70px, -40px) scale(1.07); }
+  70%     { transform: translate(-40px,  80px) scale(0.95); }
 }
 
 /* ── Solar system orbit rings ── */

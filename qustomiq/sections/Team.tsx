@@ -32,13 +32,23 @@ export default function Team() {
               key={i}
               className="bg-white dark:bg-white/[0.04] rounded-card shadow-card border border-[var(--line)] overflow-hidden flex flex-col"
             >
-              <div className="relative w-full aspect-square">
+              <div
+                className="relative w-full aspect-square"
+                style={{ border: "1px solid rgba(248,169,31,0.3)" }}
+              >
                 <Image
                   src={member.photo}
                   alt={member.name}
                   fill
                   className="object-cover object-top"
                   sizes="(max-width: 768px) 100vw, 450px"
+                />
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute", inset: 0, pointerEvents: "none",
+                    background: "linear-gradient(to top, rgba(99,39,19,0.5) 0%, transparent 60%)",
+                  }}
                 />
               </div>
 
