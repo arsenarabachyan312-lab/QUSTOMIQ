@@ -150,7 +150,7 @@ export default function Hero() {
       <div className="relative z-[1] flex flex-col flex-1">
         <Nav />
 
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_620px] items-center px-6 md:px-14 gap-12 py-12 lg:py-0">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_620px] items-center px-6 md:px-14 gap-8 lg:gap-12 py-8 lg:py-0">
           {/* Left column */}
           <div>
             {/* Badge */}
@@ -180,16 +180,16 @@ export default function Hero() {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-wrap gap-3 mt-9 items-center">
+            <div className="flex flex-col sm:flex-row gap-3 mt-9">
               <a
                 href="#contacts"
-                className="bg-accent text-[#1C0D08] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline border-0 outline-none hover:bg-accent-deep transition-colors whitespace-nowrap min-h-[52px] flex items-center"
+                className="bg-accent text-[#1C0D08] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline border-0 outline-none hover:bg-accent-deep transition-colors min-h-[52px] flex items-center justify-center sm:justify-start"
               >
                 {h.cta_primary}
               </a>
               <a
                 href="#services"
-                className="text-ink px-6 py-[16px] text-[15.5px] font-semibold no-underline hover:opacity-70 transition-opacity whitespace-nowrap min-h-[52px] flex items-center"
+                className="text-ink px-6 py-[16px] text-[15.5px] font-semibold no-underline hover:opacity-70 transition-opacity min-h-[52px] flex items-center justify-center sm:justify-start border border-[var(--line)] rounded-btn sm:border-0"
               >
                 {h.cta_secondary}
               </a>
@@ -198,7 +198,7 @@ export default function Hero() {
 
           {/* Right column — solar system */}
           <div
-            className="relative h-[400px] sm:h-[520px] lg:h-[680px] flex items-center justify-center"
+            className="relative h-[320px] sm:h-[520px] lg:h-[680px] flex items-center justify-center overflow-hidden"
             aria-hidden="true"
             style={{
               transform: "perspective(1000px) rotateX(5deg)",
@@ -279,7 +279,7 @@ export default function Hero() {
 
             {/* Q ring — "солнце" в центре */}
             <div
-              className="relative z-10 w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] lg:w-[360px] lg:h-[360px] rounded-full p-[18px] sm:p-[25px] lg:p-[30px] animate-qfloat"
+              className="relative z-10 w-[160px] h-[160px] sm:w-[280px] sm:h-[280px] lg:w-[360px] lg:h-[360px] rounded-full p-[13px] sm:p-[25px] lg:p-[30px] animate-qfloat"
               style={{
                 background: "conic-gradient(from 315deg, #FFD580 0deg, #F8A91F 55deg, #EC6426 105deg, #C05A15 150deg, #8B3A1A 180deg, #A84A20 215deg, #EC6426 270deg, #F8A91F 315deg, #FFD580 360deg)",
                 boxShadow: "inset 0 4px 16px rgba(0,0,0,0.70), inset 0 -2px 8px rgba(0,0,0,0.40), 0 20px 40px rgba(236,100,38,0.80), 0 0 60px rgba(248,169,31,0.40)",
@@ -288,7 +288,7 @@ export default function Hero() {
             >
               {/* Q tail */}
               <span
-                className="absolute rounded-[15px] w-[54px] h-[15px] sm:w-[76px] sm:h-[20px] lg:w-[98px] lg:h-[26px] bottom-[14px] sm:bottom-[21px] lg:bottom-[26px] right-[12px] sm:right-[19px] lg:right-[24px]"
+                className="absolute rounded-[15px] w-[42px] h-[11px] sm:w-[76px] sm:h-[20px] lg:w-[98px] lg:h-[26px] bottom-[11px] sm:bottom-[21px] lg:bottom-[26px] right-[10px] sm:right-[19px] lg:right-[24px]"
                 style={{
                   transform: "rotate(45deg)",
                   background: "linear-gradient(90deg, #FFB84D 0%, #F8A91F 40%, #8B3A1A 100%)",
