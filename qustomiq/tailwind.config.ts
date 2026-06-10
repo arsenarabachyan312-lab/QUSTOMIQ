@@ -32,9 +32,9 @@ const config: Config = {
         btn: "12px",
       },
       boxShadow: {
-        card: "0 4px 24px rgba(99,39,19,0.06)",
-        "card-lg": "0 20px 60px rgba(99,39,19,0.10), 0 0 0 1px rgba(236,100,38,0.10)",
-        glow: "0 0 40px rgba(248,169,31,.20)",
+        card: "0 4px 24px rgba(0,0,0,0.30)",
+        "card-lg": "0 20px 60px rgba(0,0,0,0.50), 0 0 0 1px rgba(245,166,35,0.15)",
+        glow: "0 0 40px rgba(245,166,35,0.25)",
       },
       animation: {
         qfloat: "qfloat 7s ease-in-out infinite",

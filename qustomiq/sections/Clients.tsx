@@ -17,9 +17,9 @@ export default function Clients() {
           "radial-gradient(ellipse at 50% 50%, rgba(248,169,31,0.15) 0%, transparent 65%), " +
           "radial-gradient(ellipse at 85% 50%, rgba(236,100,38,0.10) 0%, transparent 50%), " +
           "radial-gradient(ellipse at 15% 50%, rgba(236,100,38,0.10) 0%, transparent 50%), " +
-          "linear-gradient(135deg, #1C0D08 0%, #2A1208 50%, #1C0D08 100%)",
-        borderTop: "1px solid rgba(248,169,31,0.3)",
-        borderBottom: "1px solid rgba(248,169,31,0.3)",
+          "linear-gradient(135deg, #0D0F14 0%, #111318 50%, #0D0F14 100%)",
+        borderTop: "1px solid rgba(245,166,35,0.25)",
+        borderBottom: "1px solid rgba(245,166,35,0.25)",
       }}
       aria-label={label}
     >

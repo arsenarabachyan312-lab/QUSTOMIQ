@@ -167,24 +167,24 @@ export default function Cases() {
               key={i}
               className="flex flex-col gap-5 p-7 rounded-2xl cursor-default"
               style={{
-                background: "rgba(255,255,255,0.82)",
+                background: "rgba(255,255,255,0.04)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
-                border: "1px solid rgba(236,100,38,0.13)",
-                boxShadow: "0 4px 24px rgba(99,39,19,0.06)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                boxShadow: "0 4px 24px rgba(0,0,0,0.30)",
                 transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease",
               }}
               onMouseEnter={e => {
                 const el = e.currentTarget;
                 el.style.transform = "translateY(-4px)";
-                el.style.boxShadow = "0 16px 48px rgba(99,39,19,0.14), 0 0 0 1px rgba(236,100,38,0.22)";
-                el.style.borderColor = "rgba(236,100,38,0.28)";
+                el.style.boxShadow = "0 16px 48px rgba(0,0,0,0.50), 0 0 0 1px rgba(245,166,35,0.25)";
+                el.style.borderColor = "rgba(245,166,35,0.30)";
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget;
                 el.style.transform = "translateY(0)";
-                el.style.boxShadow = "0 4px 24px rgba(99,39,19,0.06)";
-                el.style.borderColor = "rgba(236,100,38,0.13)";
+                el.style.boxShadow = "0 4px 24px rgba(0,0,0,0.30)";
+                el.style.borderColor = "rgba(255,255,255,0.08)";
               }}
             >
               {/* Icon + Tag */}
@@ -206,7 +206,7 @@ export default function Cases() {
               {/* Title */}
               <h3
                 className="font-display font-semibold text-[17px] tracking-[-0.3px] leading-snug"
-                style={{ color: "#1A0A00" }}
+                style={{ color: "#FFFFFF" }}
               >
                 {item.title}
               </h3>
@@ -214,7 +214,7 @@ export default function Cases() {
               {/* Description */}
               <p
                 className="text-[13.5px] leading-[1.65] flex-1"
-                style={{ color: "rgba(92,51,23,0.72)" }}
+                style={{ color: "rgba(255,255,255,0.60)" }}
               >
                 {item.desc}
               </p>
@@ -222,7 +222,7 @@ export default function Cases() {
               {/* Metrics */}
               <div
                 className="grid grid-cols-3 gap-2 pt-3"
-                style={{ borderTop: "1px solid rgba(236,100,38,0.10)" }}
+                style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
               >
                 {item.metrics.map((m, mi) => (
                   <div key={mi} className="text-center">
@@ -234,7 +234,7 @@ export default function Cases() {
                     </div>
                     <div
                       className="text-[10px] mt-1 leading-tight"
-                      style={{ color: "rgba(92,51,23,0.60)" }}
+                      style={{ color: "rgba(255,255,255,0.50)" }}
                     >
                       {m.label}
                     </div>
@@ -249,9 +249,9 @@ export default function Cases() {
                     key={si}
                     className="font-mono text-[10px] px-2 py-0.5 rounded"
                     style={{
-                      background: "rgba(236,100,38,0.06)",
-                      color: "rgba(99,39,19,0.65)",
-                      border: "1px solid rgba(236,100,38,0.12)",
+                      background: "rgba(255,255,255,0.06)",
+                      color: "rgba(255,255,255,0.55)",
+                      border: "1px solid rgba(255,255,255,0.10)",
                     }}
                   >
                     {s}

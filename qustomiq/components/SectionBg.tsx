@@ -14,7 +14,7 @@ export default function SectionBg() {
           backgroundImage: [
             "radial-gradient(ellipse 80% 60% at 95% 5%,  rgba(248,169,31,0.07) 0%, transparent 70%)",
             "radial-gradient(ellipse 70% 55% at  3% 95%, rgba(236,100,38,0.05) 0%, transparent 65%)",
-            "radial-gradient(ellipse 50% 40% at 50% 50%, rgba(253,227,207,0.08) 0%, transparent 60%)",
+            "radial-gradient(ellipse 50% 40% at 50% 50%, rgba(245,166,35,0.05) 0%, transparent 60%)",
           ].join(", "),
         }}
       />

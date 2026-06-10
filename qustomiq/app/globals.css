@@ -2,16 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Design tokens — Light Theme ── */
+/* ── Design tokens — Dark Theme ── */
 :root {
-  --bg: #FFFFFF;
-  --ink: #1A0A00;
-  --muted: rgba(92,51,23,0.70);
-  --accent: #F8A91F;
+  --bg: #0D0F14;
+  --ink: #FFFFFF;
+  --muted: rgba(255,255,255,0.60);
+  --accent: #F5A623;
   --accent-deep: #EC6426;
-  --accent-ink: #EC6426;
-  --line: rgba(236,100,38,0.12);
-  --panel: rgba(255,255,255,0.90);
+  --accent-ink: #F5A623;
+  --line: rgba(255,255,255,0.08);
+  --panel: rgba(13,15,20,0.90);
   --font-display: 'Space Grotesk';
   --font-body: 'Inter';
   --font-mono: 'JetBrains Mono';
@@ -29,17 +29,10 @@ html {
   overflow-x: hidden;
 }
 
-/* ── Body — white + subtle diagonal texture ── */
+/* ── Body — deep dark ── */
 body {
   color: var(--ink);
-  background-color: #FFFFFF;
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 58px,
-    rgba(253,227,207,0.30) 58px,
-    rgba(253,227,207,0.30) 60px
-  );
+  background-color: #0D0F14;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -56,7 +49,7 @@ body::before {
   height: 50vw;
   top: -5%;
   right: -5%;
-  background: radial-gradient(circle, rgba(248,169,31,0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(245,166,35,0.12) 0%, transparent 70%);
   filter: blur(120px);
   animation: blob1Move 25s ease-in-out infinite;
 }
@@ -73,12 +66,12 @@ body::after {
   height: 40vw;
   bottom: -5%;
   left: -5%;
-  background: radial-gradient(circle, rgba(236,100,38,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(236,100,38,0.10) 0%, transparent 70%);
   filter: blur(120px);
   animation: blob2Move 30s ease-in-out infinite;
 }
 
-/* ── Hero warm glow behind heading (left side) ── */
+/* ── Hero accent glow behind heading ── */
 section.hero-bg {
   position: relative;
 }
@@ -90,7 +83,7 @@ section.hero-bg::before {
   right: 0;
   top: 0;
   height: 100%;
-  background: radial-gradient(ellipse 600px 400px at 20% 50%, rgba(253,227,207,0.60) 0%, transparent 70%);
+  background: radial-gradient(ellipse 600px 400px at 20% 50%, rgba(245,166,35,0.07) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
   animation: none;
@@ -122,14 +115,14 @@ section::after {
 /* ── Animated divider line between consecutive sections ── */
 section + section::before {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(248,169,31,0.30), rgba(236,100,38,0.30), rgba(248,169,31,0.30), transparent);
+  background: linear-gradient(90deg, transparent, rgba(245,166,35,0.30), rgba(236,100,38,0.30), rgba(245,166,35,0.30), transparent);
   background-size: 200% auto;
   animation: lineFlow 3s linear infinite;
 }
 
 /* ── Heading colors + typography scale ── */
 h1 {
-  color: #632713;
+  color: #FFFFFF;
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 800 !important;
   line-height: 1.1;
@@ -141,7 +134,7 @@ h1 {
   animation: none !important;
 }
 h2 {
-  color: #EC6426;
+  color: #F5A623;
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   font-weight: 700;
   line-height: 1.2;
@@ -153,7 +146,7 @@ h2 {
   animation: none !important;
 }
 h3 {
-  color: #EC6426;
+  color: #FFFFFF;
   font-size: clamp(1.15rem, 2vw, 1.5rem);
   font-weight: 600 !important;
   line-height: 1.3;
@@ -169,7 +162,7 @@ p {
   font-size: clamp(1rem, 1.5vw, 1.125rem);
   line-height: 1.75;
   font-weight: 400;
-  color: rgba(26,10,0,0.85);
+  color: rgba(255,255,255,0.75);
 }
 
 /* Lead paragraph — larger intro text */
@@ -179,19 +172,19 @@ p {
   opacity: 0.8;
 }
 
-/* ── Cards — frosted glass ── */
+/* ── Cards — dark glass ── */
 .rounded-card {
-  background: rgba(255,255,255,0.80);
+  background: rgba(255,255,255,0.04);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(236,100,38,0.15);
-  box-shadow: 0 4px 24px rgba(99,39,19,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.30);
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 .rounded-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(99,39,19,0.12);
-  border-color: rgba(236,100,38,0.30);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.50);
+  border-color: rgba(245,166,35,0.30);
 }
 .rounded-card h3 {
   font-size: 1.25rem;
@@ -203,32 +196,32 @@ p {
   line-height: 1.7;
 }
 
-/* ── Primary buttons — orange with white text ── */
+/* ── Primary buttons — gold with dark text ── */
 a.bg-accent,
 button.bg-accent {
-  background-color: #EC6426;
-  color: white;
+  background-color: #F5A623;
+  color: #0D0F14;
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   min-height: 48px;
-  box-shadow: 0 4px 16px rgba(236,100,38,0.30);
+  box-shadow: 0 4px 16px rgba(245,166,35,0.30);
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
   animation: none;
 }
 a.bg-accent:hover,
 button.bg-accent:hover {
   background-color: #F8A91F;
-  color: white;
-  box-shadow: 0 6px 24px rgba(248,169,31,0.40);
+  color: #0D0F14;
+  box-shadow: 0 6px 24px rgba(245,166,35,0.45);
 }
 
 /* ── Navbar glass ── */
 .nav-glass {
-  background: rgba(255,255,255,0.90);
+  background: rgba(13,15,20,0.90);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(236,100,38,0.12);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 .nav-glass a {
   font-size: 0.95rem;
@@ -248,7 +241,7 @@ button.bg-accent:hover {
     drop-shadow(1px  1px 0px #8B3A1A)
     drop-shadow(2px  2px 0px #6B2A0A)
     drop-shadow(3px  3px 0px #4A1A05)
-    drop-shadow(0px  4px 8px rgba(99,39,19,0.50));
+    drop-shadow(0px  4px 8px rgba(0,0,0,0.60));
   transition: all 0.4s ease;
   cursor: pointer;
 }
@@ -266,7 +259,7 @@ button.bg-accent:hover {
     drop-shadow(0px -1px 0px rgba(255,200,100,0.60))
     drop-shadow(1px  1px 0px #8B3A1A)
     drop-shadow(2px  2px 0px #6B2A0A)
-    drop-shadow(0px  6px 14px rgba(99,39,19,0.40));
+    drop-shadow(0px  6px 14px rgba(0,0,0,0.50));
   transform: perspective(300px) rotateX(0deg) rotateY(0deg) scale(1.1);
 }
 
@@ -361,7 +354,7 @@ section h1:first-of-type {
   margin-left: calc(-1 * var(--orbit-r));
   margin-top: calc(-1 * var(--orbit-r));
   border-radius: 50%;
-  border: 1px solid rgba(236,100,38,0.25);
+  border: 1px solid rgba(245,166,35,0.20);
 }
 /* Mobile: orbits scaled to fit 320px container with 160px Q ring */
 .orbit-inner  { --orbit-r: 96px; }

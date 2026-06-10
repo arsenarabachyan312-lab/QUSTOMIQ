@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
+    <html lang="ru" className="dark">
       <head />
       <body className="font-body bg-bg text-ink">
         <div style={{ position: "relative", zIndex: 1 }}>

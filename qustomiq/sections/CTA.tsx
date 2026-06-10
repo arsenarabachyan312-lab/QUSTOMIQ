@@ -5,7 +5,7 @@ import { useLang } from "@/lib/LangContext";
 import SectionBg from "@/components/SectionBg";
 
 const fieldCls =
-  "w-full px-5 py-4 rounded-btn bg-white border border-[rgba(236,100,38,0.15)] text-ink placeholder:text-muted/60 focus:outline-none focus:border-accent-deep text-[15px] font-body transition-colors shadow-sm";
+  "w-full px-5 py-4 rounded-btn bg-white/[0.05] border border-[rgba(255,255,255,0.10)] text-ink placeholder:text-muted/60 focus:outline-none focus:border-accent text-[15px] font-body transition-colors";
 
 export default function CTA() {
   const { t } = useLang();
@@ -24,11 +24,10 @@ export default function CTA() {
       className="py-20 md:py-28 px-6 md:px-14 relative"
       style={{
         background:
-          "radial-gradient(ellipse at 80% 50%, rgba(248,169,31,0.08) 0%, transparent 60%), " +
-          "radial-gradient(ellipse at 20% 50%, rgba(236,100,38,0.05) 0%, transparent 50%), " +
-          "radial-gradient(ellipse at 50% 100%, rgba(253,227,207,0.30) 0%, transparent 60%), " +
-          "#FFFFFF",
-        borderTop: "1px solid rgba(236,100,38,0.12)",
+          "radial-gradient(ellipse at 80% 50%, rgba(245,166,35,0.08) 0%, transparent 60%), " +
+          "radial-gradient(ellipse at 20% 50%, rgba(236,100,38,0.06) 0%, transparent 50%), " +
+          "#111318",
+        borderTop: "1px solid rgba(255,255,255,0.08)",
       }}
       aria-labelledby="cta-heading"
     >

@@ -183,7 +183,7 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-3 mt-9">
               <a
                 href="#contacts"
-                className="bg-accent text-[#1C0D08] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline border-0 outline-none hover:bg-accent-deep transition-colors min-h-[52px] flex items-center justify-center sm:justify-start"
+                className="bg-accent text-[#0D0F14] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline border-0 outline-none hover:bg-accent-deep transition-colors min-h-[52px] flex items-center justify-center sm:justify-start"
               >
                 {h.cta_primary}
               </a>
