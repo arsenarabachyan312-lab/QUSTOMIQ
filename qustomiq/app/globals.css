@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Design tokens: warm (burnt orange + golden yellow) ── */
+/* ── Design tokens ── */
 :root {
   --bg: #1C0D08;
   --ink: #FFFFFF;
@@ -12,12 +12,10 @@
   --accent-ink: #F8A91F;
   --line: rgba(248,169,31,0.15);
   --panel: rgba(28,13,8,0.85);
-  /* Fonts — set here since @fontsource replaces next/font/google injection */
   --font-display: 'Space Grotesk';
   --font-body: 'Sora';
   --font-mono: 'JetBrains Mono';
 }
-
 
 /* ── Base ── */
 *,
@@ -33,67 +31,68 @@ html {
 
 body {
   color: var(--ink);
-  background-color: #1C0D08;
-  background-image:
-    radial-gradient(ellipse at 25% 40%, rgba(248,169,31,0.07) 0%, transparent 55%),
-    radial-gradient(ellipse at 75% 85%, rgba(236,100,38,0.04) 0%, transparent 50%),
-    linear-gradient(135deg, #1C0D08 0%, #2A1208 50%, #1C0D08 100%);
-  background-attachment: fixed;
-  background-size: 100% 100%;
+  background: linear-gradient(135deg, #1C0D08, #2D1200, #632713, #1C0D08);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* ── Animated plasma blobs — fixed behind all content ── */
+/* ── Animated blobs — fixed behind content ── */
 body::before,
 body::after {
   content: '';
   position: fixed;
   border-radius: 50%;
   pointer-events: none;
-  z-index: -1;
-}
-body::before {
-  width: 65vw;
-  height: 65vw;
-  top: -15%;
-  right: -10%;
-  background: radial-gradient(circle, rgba(248,169,31,0.06) 0%, transparent 70%);
-  filter: blur(80px);
-  animation: bgBlob1 28s ease-in-out infinite;
-}
-body::after {
-  width: 55vw;
-  height: 55vw;
-  bottom: 5%;
-  left: -8%;
-  background: radial-gradient(circle, rgba(236,100,38,0.06) 0%, transparent 70%);
-  filter: blur(90px);
-  animation: bgBlob2 35s ease-in-out infinite;
+  z-index: 0;
+  will-change: transform;
 }
 
-/* Third blob via html pseudo-element */
-html::before {
-  content: '';
+/* Blob 1 — #EC6426, top-right */
+body::before {
+  width: 60vw;
+  height: 60vw;
+  top: -10%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(236,100,38,0.08) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: blob1Drift 25s ease-in-out infinite;
+}
+
+/* Blob 2 — #F8A91F, bottom-left */
+body::after {
+  width: 50vw;
+  height: 50vw;
+  bottom: -5%;
+  left: -5%;
+  background: radial-gradient(circle, rgba(248,169,31,0.06) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: blob2Drift 30s ease-in-out infinite;
+}
+
+/* Blob 3 — #632713, center, via .bg-blob div in layout */
+.bg-blob {
   position: fixed;
   border-radius: 50%;
   pointer-events: none;
-  z-index: -1;
-  width: 50vw;
-  height: 50vw;
-  top: 40%;
-  left: 35%;
-  background: radial-gradient(circle, rgba(248,169,31,0.05) 0%, transparent 70%);
-  filter: blur(100px);
-  animation: bgBlob3 22s ease-in-out infinite;
+  z-index: 0;
+  will-change: transform;
+  width: 70vw;
+  height: 70vw;
+  top: 20%;
+  left: 15%;
+  background: radial-gradient(circle, rgba(99,39,19,0.15) 0%, transparent 70%);
+  filter: blur(80px);
+  animation: blob3Drift 20s ease-in-out infinite;
 }
 
 /* ── Hero gradient background ── */
 .hero-bg {
-  background: radial-gradient(120% 120% at 78% 30%, rgba(248,169,31,0.07) 0%, transparent 55%);
+  background: transparent;
 }
 
-/* ── Section edge fades — smooth transitions between sections ── */
+/* ── Section edge fades ── */
 section {
   position: relative;
 }
@@ -115,7 +114,6 @@ section::after {
   bottom: 0;
   background: linear-gradient(to bottom, transparent, var(--bg));
 }
-/* Hero is first on the page — no top fade needed */
 section.hero-bg::before {
   display: none;
 }
@@ -131,22 +129,28 @@ section.hero-bg::before {
   transform: translateY(0);
 }
 
-/* ── Plasma blob keyframes ── */
-@keyframes bgBlob1 {
-  0%,100% { transform: translate(  0px,   0px) scale(1.00); }
-  25%     { transform: translate( 55px, -60px) scale(1.08); }
-  50%     { transform: translate( 20px,  90px) scale(0.93); }
-  75%     { transform: translate(-50px,  25px) scale(1.05); }
+/* ── Keyframes ── */
+@keyframes gradientShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
 }
-@keyframes bgBlob2 {
-  0%,100% { transform: translate(  0px,   0px) scale(1.00); }
-  33%     { transform: translate(-60px, -70px) scale(1.10); }
-  66%     { transform: translate( 85px,  50px) scale(0.91); }
+
+@keyframes blob1Drift {
+  0%,100% { transform: translate(  0%,  0%) scale(1.00); }
+  25%     { transform: translate(  5%,  8%) scale(1.05); }
+  50%     { transform: translate( -4%,  3%) scale(0.96); }
+  75%     { transform: translate(  3%, -7%) scale(1.03); }
 }
-@keyframes bgBlob3 {
-  0%,100% { transform: translate(  0px,   0px) scale(1.00); }
-  40%     { transform: translate( 70px, -40px) scale(1.07); }
-  70%     { transform: translate(-40px,  80px) scale(0.95); }
+@keyframes blob2Drift {
+  0%,100% { transform: translate(  0%,  0%) scale(1.00); }
+  33%     { transform: translate( -5%, -8%) scale(1.05); }
+  66%     { transform: translate(  5%,  5%) scale(0.95); }
+}
+@keyframes blob3Drift {
+  0%,100% { transform: translate(  0%,  0%) scale(1.00); }
+  40%     { transform: translate(  4%, -8%) scale(1.04); }
+  70%     { transform: translate( -5%,  6%) scale(0.96); }
 }
 
 /* ── Solar system orbit rings ── */
@@ -178,7 +182,7 @@ section.hero-bg::before {
   .orbit-outer  { --orbit-r: 358px; }
 }
 
-/* ── Planet wrapper — responsive sizing ── */
+/* ── Planet wrapper ── */
 .planet-wrap {
   position: absolute;
   top: 50%;
@@ -202,9 +206,7 @@ section.hero-bg::before {
   font-size: 10px;
 }
 @media (min-width: 1024px) {
-  .planet-inner {
-    font-size: 11px;
-  }
+  .planet-inner { font-size: 11px; }
 }
 
 /* ── Focus ── */
