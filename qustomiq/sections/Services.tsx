@@ -1,6 +1,7 @@
 "use client";
 import { useLang } from "@/lib/LangContext";
 import SectionBg from "@/components/SectionBg";
+import MeshCanvas from "@/components/MeshCanvas";
 import type { MouseEvent } from "react";
 
 /* ── Animated SVG icons ────────────────────────────────────────
@@ -56,11 +57,15 @@ export default function Services() {
   const tilt = useTilt(10);
 
   return (
-    <section id="services" className="py-20 md:py-28 px-6 md:px-14 relative" aria-labelledby="services-heading">
+    <section id="services" className="py-20 md:py-28 px-6 md:px-14 relative overflow-hidden" aria-labelledby="services-heading">
       <SectionBg />
+
+      {/* Living Mesh — glowing 3D grid behind the cards */}
+      <MeshCanvas className="hidden sm:block absolute inset-y-0 right-0 w-[55%] pointer-events-none" />
+
       <div className="relative z-[1] max-w-[1200px] mx-auto">
         <div className="mb-14 reveal">
-          <span className="section-label">{s.label ?? "Что мы делаем"}</span>
+          <span className="section-label">Что мы делаем</span>
           <h2 id="services-heading" className="mb-4">{s.heading}</h2>
           <p className="max-w-[480px]">{s.sub}</p>
         </div>

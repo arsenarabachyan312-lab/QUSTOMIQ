@@ -2,6 +2,7 @@
 
 import { useLang } from "@/lib/LangContext";
 import SectionBg from "@/components/SectionBg";
+import FlowCanvas from "@/components/FlowCanvas";
 import { type ReactNode, useRef, useEffect, useState, type MouseEvent } from "react";
 
 /* ── SVG icons ─────────────────────────────────────────────── */
@@ -207,8 +208,22 @@ export default function Cases() {
   const c = t.cases;
 
   return (
-    <section id="cases" className="py-20 md:py-28 px-6 md:px-14 relative" aria-labelledby="cases-heading">
+    <section id="cases" className="py-20 md:py-28 px-6 md:px-14 relative overflow-hidden" aria-labelledby="cases-heading">
       <SectionBg />
+
+      {/* Flow Field — northern-lights lines at bottom */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-[280px] pointer-events-none"
+        style={{
+          zIndex: 0,
+          maskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 18%, black 38%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 18%, black 38%)",
+        }}
+        aria-hidden="true"
+      >
+        <FlowCanvas className="w-full h-full" />
+      </div>
+
       <div className="relative z-[1] max-w-[1200px] mx-auto">
         <div className="mb-14 reveal">
           <span className="section-label">Кейсы</span>
