@@ -17,32 +17,31 @@ export default function AIByDept() {
 
   return (
     <>
-      <section id="ai" className="py-20 md:py-28 px-6 md:px-14 bg-[var(--bg)] relative" aria-labelledby="ai-heading">
+      <section id="ai" className="py-20 md:py-28 px-6 md:px-14 relative" aria-labelledby="ai-heading">
         <SectionBg />
         <div className="relative z-[1] max-w-[1200px] mx-auto">
           {/* Header */}
-          <div className="mb-12">
-            <h2
-              id="ai-heading"
-              className="font-display font-bold text-[clamp(36px,5vw,52px)] tracking-[-1.5px] mb-4"
-            >
-              {ai.heading}
-            </h2>
-            <p className="text-[17px] text-muted max-w-[460px] leading-[1.6]">{ai.sub}</p>
+          <div className="mb-12 reveal">
+            <span className="section-label">AI по отделам</span>
+            <h2 id="ai-heading" className="mb-4">{ai.heading}</h2>
+            <p style={{ fontSize: 17, maxWidth: 460, lineHeight: 1.6 }}>{ai.sub}</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-8">
             {/* Tab switcher */}
-            <div className="flex flex-row lg:flex-col gap-3 flex-wrap">
+            <div className="flex flex-row lg:flex-col gap-2 flex-wrap">
               {tabs.map((tab, i) => (
                 <button
                   key={tab}
                   onClick={() => setActive(i)}
-                  className={`font-body font-semibold text-[15px] px-5 py-3 rounded-pill border transition-all duration-150 text-left min-h-[44px] ${
-                    active === i
-                      ? "bg-accent text-[#1C0D08] border-accent"
-                      : "bg-transparent text-muted border-[var(--line)] hover:border-ink/30 hover:text-ink"
-                  }`}
+                  style={{
+                    fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 15,
+                    padding: "10px 20px", borderRadius: 50, minHeight: 44,
+                    border: `1px solid ${active === i ? "var(--primary)" : "var(--border)"}`,
+                    background: active === i ? "rgba(16,185,129,0.15)" : "transparent",
+                    color: active === i ? "var(--primary)" : "var(--muted)",
+                    cursor: "pointer", transition: "all 0.15s ease", textAlign: "left",
+                  }}
                   aria-pressed={active === i}
                 >
                   {tab}
@@ -53,34 +52,48 @@ export default function AIByDept() {
             {/* Dept card */}
             <div
               key={active}
-              className="bg-white dark:bg-white/[0.04] rounded-card p-5 sm:p-8 shadow-card border border-[var(--line)] animate-[fadeUp_.4s_ease_both]"
+              className="rounded-card p-5 sm:p-8"
+              style={{ animation: "fadeInUp 0.35s ease both" }}
             >
               {/* Header row */}
               <div className="flex items-start justify-between gap-3 mb-6 flex-wrap">
                 <div>
-                  <h3 className="font-display font-bold text-[20px] sm:text-[22px] tracking-[-0.5px] mb-1">
+                  <h3 className="font-display font-bold mb-2" style={{ fontSize: "clamp(18px, 2.5vw, 22px)", letterSpacing: "-0.5px" }}>
                     {dept.title}
                   </h3>
-                  <span className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[1.5px] text-accent bg-accent/10 px-3 py-1 rounded-pill">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  <span style={{
+                    display: "inline-flex", alignItems: "center", gap: 6,
+                    fontFamily: "var(--font-mono)", fontSize: 11,
+                    textTransform: "uppercase", letterSpacing: "1.5px",
+                    color: "var(--primary)",
+                    background: "rgba(16,185,129,0.10)",
+                    padding: "4px 12px", borderRadius: 50,
+                  }}>
+                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--primary)", display: "inline-block" }} />
                     {ai.live}
                   </span>
                 </div>
+
                 {/* Metric */}
-                <div className="text-right shrink-0">
-                  <div className="font-display font-bold text-[32px] sm:text-[42px] leading-none tracking-[-2px] text-accent-deep dark:text-accent">
+                <div style={{ textAlign: "right", flexShrink: 0 }}>
+                  <div className="font-display font-bold" style={{
+                    fontSize: "clamp(28px, 4vw, 42px)", lineHeight: 1,
+                    letterSpacing: "-2px", color: "var(--secondary)",
+                  }}>
                     {dept.metric}
                   </div>
-                  <div className="text-[13px] text-muted mt-1">{dept.metricLabel}</div>
+                  <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 4 }}>{dept.metricLabel}</div>
                 </div>
               </div>
 
               {/* Tasks */}
-              <ul className="flex flex-col gap-2 mb-6">
+              <ul className="flex flex-col gap-2 mb-6" style={{ listStyle: "none", padding: 0, margin: 0 }}>
                 {dept.tasks.map((task) => (
-                  <li key={task} className="flex items-center gap-3 text-[15px]">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent shrink-0" aria-hidden="true">
-                      <polyline points="20 6 9 17 4 12" />
+                  <li key={task} className="flex items-center gap-3" style={{ fontSize: 15 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                      stroke="var(--primary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                      aria-hidden="true" style={{ flexShrink: 0 }}>
+                      <polyline points="20 6 9 17 4 12"/>
                     </svg>
                     {task}
                   </li>
@@ -92,25 +105,31 @@ export default function AIByDept() {
                 {dept.stack.map((s) => (
                   <span
                     key={s}
-                    className="font-mono text-[11.5px] px-[10px] py-[5px] rounded-pill bg-[var(--bg)] border border-[var(--line)] text-muted"
+                    style={{
+                      fontFamily: "var(--font-mono)", fontSize: 11.5,
+                      padding: "5px 10px", borderRadius: 50,
+                      background: "var(--surface-2)", border: "1px solid var(--border)",
+                      color: "var(--muted)",
+                    }}
                   >
                     {s}
                   </span>
                 ))}
               </div>
 
-              {/* Hour with AI CTA */}
-              <div className="pt-5 border-t border-[var(--line)] flex items-center justify-between gap-4 flex-wrap">
+              {/* Hour CTA */}
+              <div style={{
+                paddingTop: 20, borderTop: "1px solid var(--border)",
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                gap: 16, flexWrap: "wrap",
+              }}>
                 <div>
-                  <p className="font-semibold text-[14.5px] mb-0.5">
+                  <p style={{ fontWeight: 600, fontSize: 14.5, marginBottom: 4 }}>
                     Какой AI подойдёт именно вам?
                   </p>
-                  <p className="text-[13px] text-muted">Бесплатная 60-минутная сессия с экспертом</p>
+                  <p style={{ fontSize: 13, color: "var(--muted)" }}>Бесплатная 60-минутная сессия с экспертом</p>
                 </div>
-                <button
-                  onClick={() => setModalOpen(true)}
-                  className="flex items-center gap-2 bg-accent text-[#070b10] font-display font-bold text-[14px] px-5 py-3 rounded-pill hover:opacity-90 transition-opacity whitespace-nowrap min-h-[44px] shrink-0"
-                >
+                <button onClick={() => setModalOpen(true)} className="btn-primary" style={{ flexShrink: 0 }}>
                   {ai.hourCta}
                 </button>
               </div>

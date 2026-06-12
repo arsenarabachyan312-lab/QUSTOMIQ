@@ -1,328 +1,145 @@
 "use client";
-
-import type { ReactNode } from "react";
-import dynamic from "next/dynamic";
-import { useLang } from "@/lib/LangContext";
+import { useEffect } from "react";
 import Nav from "@/components/Nav";
-import SectionBg from "@/components/SectionBg";
-
-const QCore = dynamic(() => import("@/components/QCore"), { ssr: false });
-
-type OrbitConfig = {
-  cls: "orbit-inner" | "orbit-middle" | "orbit-outer";
-  dur: string;
-  cw: boolean;
-  tags: string[];
-};
-
-const ORBITS: OrbitConfig[] = [
-  { cls: "orbit-inner",  dur: "18s", cw: true,  tags: ["CRM", "AI", "API"] },
-  { cls: "orbit-middle", dur: "30s", cw: false, tags: ["ERP", "1С", "WEB", "MOBILE"] },
-  { cls: "orbit-outer",  dur: "45s", cw: true,  tags: ["B2B", "TLS", "DMS", "SFA"] },
-];
-
-type PlanetStyle = { bg: string; border: string; shadow: string; color: string };
-const PLANET_COLORS: Record<string, PlanetStyle> = {
-  API:    { bg: "radial-gradient(circle at 38% 32%, #E85520, #C1440E)", border: "rgba(193,68,14,0.7)",   shadow: "0 0 12px rgba(193,68,14,0.3)",   color: "#F0EEE8" },
-  AI:     { bg: "radial-gradient(circle at 38% 32%, #7B9FE4, #5B7FD4)", border: "rgba(91,127,212,0.7)",  shadow: "0 0 12px rgba(91,127,212,0.3)",  color: "#F0EEE8" },
-  CRM:    { bg: "radial-gradient(circle at 38% 32%, #D4A050, #C88B3A)", border: "rgba(200,139,58,0.7)",  shadow: "0 0 12px rgba(200,139,58,0.3)",  color: "#F0EEE8" },
-  ERP:    { bg: "radial-gradient(circle at 38% 32%, #E8DEC5, #D4C5A9)", border: "rgba(212,197,169,0.7)", shadow: "0 0 12px rgba(212,197,169,0.2)", color: "#0D1B2A" },
-  WEB:    { bg: "radial-gradient(circle at 38% 32%, #35A0C8, #1E88B4)", border: "rgba(30,136,180,0.7)",  shadow: "0 0 12px rgba(30,136,180,0.3)",  color: "#F0EEE8" },
-  MOBILE: { bg: "radial-gradient(circle at 38% 32%, #F0B864, #E8A44A)", border: "rgba(232,164,74,0.7)",  shadow: "0 0 12px rgba(232,164,74,0.3)",  color: "#0D1B2A" },
-  B2B:    { bg: "radial-gradient(circle at 38% 32%, #254A78, #1B3A5C)", border: "rgba(27,58,92,0.8)",    shadow: "0 0 12px rgba(27,58,92,0.4)",    color: "#F0EEE8" },
-  SFA:    { bg: "radial-gradient(circle at 38% 32%, #D4B870, #C2A35D)", border: "rgba(194,163,93,0.7)",  shadow: "0 0 12px rgba(194,163,93,0.3)",  color: "#0D1B2A" },
-  DMS:    { bg: "radial-gradient(circle at 38% 32%, #7EDDD8, #4ECDC4)", border: "rgba(78,205,196,0.7)",  shadow: "0 0 12px rgba(78,205,196,0.3)",  color: "#0D1B2A" },
-  TLS:    { bg: "radial-gradient(circle at 38% 32%, #5577EE, #3B5BDB)", border: "rgba(59,91,219,0.7)",   shadow: "0 0 12px rgba(59,91,219,0.3)",   color: "#F0EEE8" },
-  "1С":   { bg: "radial-gradient(circle at 38% 32%, #EF5350, #E53935)", border: "rgba(229,57,53,0.7)",   shadow: "0 0 12px rgba(229,57,53,0.3)",   color: "#F0EEE8" },
-};
-
-const PLANET_ICONS: Record<string, ReactNode> = {
-  /* 1С — красный прямоугольник #C8102E, белый жирный "1С" по центру */
-  "1С": (
-    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
-      <rect width="36" height="36" rx="5" fill="#C8102E"/>
-      <text x="18" y="26" textAnchor="middle" fill="white" fontSize="20" fontWeight="900" fontFamily="Arial Black,Arial,sans-serif">1С</text>
-    </svg>
-  ),
-  /* CRM — Bitrix24: оранжевый круг, белая жирная "B" */
-  CRM: (
-    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
-      <circle cx="18" cy="18" r="17" fill="#FF5A00"/>
-      <text x="18.5" y="26" textAnchor="middle" fill="white" fontSize="24" fontWeight="900" fontFamily="Arial Black,Arial,sans-serif">B</text>
-    </svg>
-  ),
-  /* ERP — SAP: белый прямоугольник, синий текст "SAP" Arial Bold — overflow hidden чтобы текст не вылезал */
-  ERP: (
-    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true" style={{ overflow: "hidden" }}>
-      <rect width="36" height="36" rx="4" fill="white"/>
-      <text x="18" y="24" textAnchor="middle" fill="#0070F2" fontSize="15" fontWeight="700" fontFamily="Arial,sans-serif">SAP</text>
-    </svg>
-  ),
-  /* API — Swagger: зелёный шестиугольник + белые фигурные скобки (строки, не объект) */
-  API: (
-    <svg viewBox="0 0 36 40" width="30" height="32" aria-hidden="true">
-      <polygon points="18,1 33,10 33,29 18,38 3,29 3,10" fill="#85EA2D"/>
-      <text x="18" y="27" textAnchor="middle" fill="white" fontSize="16" fontWeight="900" fontFamily="Arial Black,Arial,sans-serif">{"{ }"}</text>
-    </svg>
-  ),
-  /* WEB — React: тёмный фон #20232A, голубой атом #61DAFB */
-  WEB: (
-    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
-      <rect width="36" height="36" rx="5" fill="#20232A"/>
-      <circle cx="18" cy="18" r="3" fill="#61DAFB"/>
-      <ellipse cx="18" cy="18" rx="14" ry="5" fill="none" stroke="#61DAFB" strokeWidth="1.6"/>
-      <ellipse cx="18" cy="18" rx="14" ry="5" fill="none" stroke="#61DAFB" strokeWidth="1.6" transform="rotate(60 18 18)"/>
-      <ellipse cx="18" cy="18" rx="14" ry="5" fill="none" stroke="#61DAFB" strokeWidth="1.6" transform="rotate(120 18 18)"/>
-    </svg>
-  ),
-  /* MOBILE — зелёный круг #3DDC84, белый текст "MOB" */
-  MOBILE: (
-    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
-      <circle cx="18" cy="18" r="17" fill="#3DDC84"/>
-      <text x="18" y="23" textAnchor="middle" fill="white" fontSize="13" fontWeight="900" fontFamily="Arial Black,Arial,sans-serif">MOB</text>
-    </svg>
-  ),
-  /* B2B — тёмно-синий круг #1B3A5C, две белые фигуры людей (группа/команда) */
-  B2B: (
-    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
-      <circle cx="18" cy="18" r="17" fill="#1B3A5C"/>
-      {/* Левый человек — голова */}
-      <circle cx="12" cy="13" r="4.5" fill="white"/>
-      {/* Левый человек — тело */}
-      <path d="M4 31 Q4 21 12 21 Q20 21 20 31" fill="white"/>
-      {/* Правый человек — голова */}
-      <circle cx="24" cy="13" r="4.5" fill="white"/>
-      {/* Правый человек — тело */}
-      <path d="M16 31 Q16 21 24 21 Q32 21 32 31" fill="white"/>
-    </svg>
-  ),
-  /* TLS — Телеагенты: тёмно-синий круг #1A3A6B + белая гарнитура */
-  TLS: (
-    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
-      <circle cx="18" cy="18" r="17" fill="#1A3A6B"/>
-      {/* Дуга оголовья */}
-      <path d="M9 21 Q9 9 18 9 Q27 9 27 21" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
-      {/* Левый наушник */}
-      <rect x="7" y="20" width="5" height="8" rx="2.5" fill="white"/>
-      {/* Правый наушник */}
-      <rect x="24" y="20" width="5" height="8" rx="2.5" fill="white"/>
-      {/* Микрофон (рычаг + капсула) */}
-      <path d="M12 27 Q11 32 16 32" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-      <circle cx="16" cy="32" r="2" fill="white"/>
-    </svg>
-  ),
-  /* SFA — amoCRM: фиолетовый #5B4CE4 круг, белый "amo" */
-  SFA: (
-    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
-      <circle cx="18" cy="18" r="17" fill="#5B4CE4"/>
-      <text x="18" y="22" textAnchor="middle" fill="white" fontSize="11" fontWeight="700" fontFamily="Arial,sans-serif" letterSpacing="0.5">amo</text>
-    </svg>
-  ),
-  /* AI — белый круг + чёрный жирный текст "AI" */
-  AI: (
-    <svg viewBox="0 0 36 36" width="32" height="32" aria-hidden="true">
-      <circle cx="18" cy="18" r="17" fill="white"/>
-      <text x="18" y="25" textAnchor="middle" fill="black" fontSize="18" fontWeight="900" fontFamily="Arial Black,Arial,sans-serif">AI</text>
-    </svg>
-  ),
-  /* DMS — Microsoft: 4 цветных квадрата Windows */
-  DMS: (
-    <svg viewBox="0 0 36 36" width="30" height="30" aria-hidden="true">
-      <rect x="1"  y="1"  width="16" height="16" rx="1" fill="#F25022"/>
-      <rect x="19" y="1"  width="16" height="16" rx="1" fill="#7FBA00"/>
-      <rect x="1"  y="19" width="16" height="16" rx="1" fill="#00A4EF"/>
-      <rect x="19" y="19" width="16" height="16" rx="1" fill="#FFB900"/>
-    </svg>
-  ),
-};
+import ParticleSphere from "@/components/ParticleSphere";
 
 export default function Hero() {
-  const { t } = useLang();
-  const h = t.hero;
+  /* Global scroll-reveal observer — watches all .reveal on the page */
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in-view");
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
   return (
     <section
-      className="hero-bg min-h-screen flex flex-col relative"
-      aria-labelledby="hero-heading"
+      className="relative min-h-screen flex flex-col overflow-hidden"
+      style={{ background: "var(--bg)" }}
     >
-      <SectionBg />
+      {/* ── Background layers ── */}
+      <div className="bg-blobs" aria-hidden="true">
+        <div className="blob blob-emerald" />
+        <div className="blob blob-violet" />
+        <div className="blob blob-emerald-2" />
+      </div>
+      <div className="dot-grid" aria-hidden="true" />
 
-      <div className="relative z-[1] flex flex-col flex-1">
-        <Nav />
+      {/* ── Navbar ── */}
+      <Nav />
 
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_620px] items-center px-6 md:px-14 gap-8 lg:gap-12 py-8 lg:py-0">
-          {/* Left column */}
-          <div>
-            {/* Badge */}
-            <div className="inline-flex items-center gap-[9px] px-4 py-2 rounded-pill bg-[var(--panel)] border border-[var(--line)] text-[13.5px] font-medium text-accent-ink mb-7 whitespace-nowrap">
-              <span
-                className="w-[7px] h-[7px] rounded-full bg-accent animate-pulse shrink-0"
-                style={{ boxShadow: "0 0 0 4px rgba(248,169,31,.35)" }}
-                aria-hidden="true"
-              />
-              {h.badge}
-            </div>
+      {/* ── Main content ── */}
+      <div className="relative z-10 flex-1 flex items-center w-full max-w-[1380px] mx-auto px-6 md:px-12 lg:px-20 pt-6 pb-16">
 
-            {/* H1 */}
-            <h1
-              id="hero-heading"
-              className="font-display font-bold text-[clamp(44px,8vw,72px)] leading-[.98] tracking-[-2.5px] m-0"
-            >
-              {h.h1_before}
-              <br />
-              {h.h1_line2_pre}
-              <span className="text-accent-deep">{h.h1_accent}</span>
-            </h1>
-
-            {/* Subheading */}
-            <p className="text-[17px] leading-[1.6] text-muted mt-6 max-w-[460px]">
-              {h.sub}
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 mt-9">
-              <a
-                href="#contacts"
-                className="bg-accent text-[#0D0F14] px-[28px] py-[16px] rounded-btn text-[15.5px] font-semibold no-underline border-0 outline-none hover:bg-accent-deep transition-colors min-h-[52px] flex items-center justify-center sm:justify-start"
-              >
-                {h.cta_primary}
-              </a>
-              <a
-                href="#services"
-                className="text-ink px-6 py-[16px] text-[15.5px] font-semibold no-underline hover:opacity-70 transition-opacity min-h-[52px] flex items-center justify-center sm:justify-start border border-[var(--line)] rounded-btn sm:border-0"
-              >
-                {h.cta_secondary}
-              </a>
-            </div>
+        {/* Left: copy */}
+        <div className="flex-1 max-w-[640px] reveal">
+          {/* Badge */}
+          <div className="badge mb-8">
+            <span className="badge-dot" />
+            IT-компания нового поколения
           </div>
 
-          {/* Right column — solar system */}
-          <div
-            className="relative h-[320px] sm:h-[520px] lg:h-[720px] flex items-center justify-center overflow-visible"
-            aria-hidden="true"
-            style={{
-              transform: "perspective(1000px) rotateX(5deg)",
-              filter: "drop-shadow(0 30px 60px rgba(236,100,38,0.5))",
-            }}
+          {/* Heading */}
+          <h1 className="mb-6">
+            Автоматизация<br />
+            бизнеса с помощью{" "}
+            <span className="gradient-text">AI</span>
+          </h1>
+
+          {/* Sub */}
+          <p
+            className="lead mb-10 max-w-[520px]"
+            style={{ color: "var(--muted)" }}
           >
-            {/* Orbit rings with planets */}
-            {ORBITS.map((orbit) => (
-              <div
-                key={orbit.cls}
-                className={`orbit-ring ${orbit.cls}`}
-                style={{
-                  animationName: orbit.cw ? "orbit-cw" : "orbit-ccw",
-                  animationDuration: orbit.dur,
-                  animationTimingFunction: "linear",
-                  animationIterationCount: "infinite",
-                }}
+            Строим кастомные AI-системы, CRM и аналитику для FMCG,
+            ритейла и производства — от прототипа до промышленной эксплуатации.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex gap-4 flex-wrap">
+            <a href="#contacts" className="btn-primary">
+              Обсудить проект
+              <svg
+                width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" strokeWidth="2.5"
+                strokeLinecap="round" strokeLinejoin="round"
               >
-                {orbit.tags.map((tag, i) => {
-                  const angle = (360 / orbit.tags.length) * i;
-                  const pc = PLANET_COLORS[tag] ?? PLANET_COLORS["API"];
-                  return (
-                    <div
-                      key={tag}
-                      className="planet-wrap"
-                      style={{
-                        transform: `rotate(${angle}deg) translateY(calc(-1 * var(--orbit-r)))`,
-                      }}
-                    >
-                      {/* Counter-rotate to keep icon upright */}
-                      <div
-                        className="planet-inner"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          borderRadius: "50%",
-                          background: pc.bg,
-                          border: `1px solid ${pc.border}`,
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          boxShadow: pc.shadow,
-                          color: pc.color,
-                          animationName: orbit.cw ? "orbit-ccw" : "orbit-cw",
-                          animationDuration: orbit.dur,
-                          animationTimingFunction: "linear",
-                          animationIterationCount: "infinite",
-                        }}
-                      >
-                        {/* Кольцо вокруг планеты (Сатурн-стиль):
-                            rotate(20 - angle) = 20° наклон в мировом пространстве.
-                            Математика: orbit(+R) + wrap(+angle) + inner(-R) + ring(20-angle) = 20° */}
-                        <span
-                          aria-hidden="true"
-                          style={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            width: "calc(100% + 16px)",
-                            height: "8px",
-                            border: "1.5px solid rgba(248,169,31,0.4)",
-                            borderRadius: "50%",
-                            transform: `translate(-50%, -50%) rotate(${20 - angle}deg)`,
-                            pointerEvents: "none",
-                            zIndex: 0,
-                          }}
-                        />
-                        {/* rotate(-angle) отменяет статичный угол позиционирования planet-wrap */}
-                        <span style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", justifyContent: "center", transform: `rotate(${-angle}deg)` }}>
-                          {PLANET_ICONS[tag] ?? tag}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </a>
+            <a href="#cases" className="btn-ghost">
+              Смотреть кейсы
+            </a>
+          </div>
+
+          {/* Stats row */}
+          <div className="flex gap-10 mt-14 flex-wrap">
+            {[
+              { v: "50+",   l: "проектов" },
+              { v: "5 лет", l: "на рынке" },
+              { v: "98%",   l: "SLA" },
+            ].map(({ v, l }) => (
+              <div key={l}>
+                <div
+                  className="font-display font-bold"
+                  style={{
+                    fontSize: "clamp(1.6rem,3vw,2.1rem)",
+                    background: "var(--gradient)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    lineHeight: 1.1,
+                  }}
+                >
+                  {v}
+                </div>
+                <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 4 }}>
+                  {l}
+                </div>
               </div>
             ))}
-
-            {/* Q ring — premium 3D energy portal */}
-            <div
-              className="relative z-10 w-[160px] h-[160px] sm:w-[280px] sm:h-[280px] lg:w-[360px] lg:h-[360px] rounded-full p-[13px] sm:p-[25px] lg:p-[30px] animate-qfloat"
-              style={{
-                background: "conic-gradient(from 315deg, #FFD700 0deg, #FFF8DC 28deg, #FFD700 58deg, #FFA500 90deg, #7A5010 128deg, #3D1E00 158deg, #7A5010 192deg, #C8840A 225deg, #FFD700 255deg, #FFF8DC 278deg, #FFD700 308deg, #FFA500 335deg, #FFD700 360deg)",
-                boxShadow: "inset 0 -6px 18px rgba(0,0,0,0.65), inset 0 4px 8px rgba(255,230,120,0.22), 0 0 40px rgba(245,166,35,0.55), 0 0 80px rgba(245,166,35,0.25), 0 20px 60px rgba(236,100,38,0.50)",
-                transform: "perspective(1200px) rotateX(8deg)",
-              }}
-            >
-              {/* Convex rim highlight */}
-              <span
-                aria-hidden="true"
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  borderRadius: "50%",
-                  background: "linear-gradient(145deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.06) 35%, transparent 60%)",
-                  pointerEvents: "none",
-                  zIndex: 1,
-                }}
-              />
-
-              {/* Q tail — metallic */}
-              <span
-                className="absolute rounded-[15px] w-[42px] h-[11px] sm:w-[76px] sm:h-[20px] lg:w-[98px] lg:h-[26px] bottom-[11px] sm:bottom-[21px] lg:bottom-[26px] right-[10px] sm:right-[19px] lg:right-[24px]"
-                style={{
-                  transform: "rotate(45deg)",
-                  background: "linear-gradient(90deg, #FFD700 0%, #FFA500 40%, #7A4500 80%, #3D2200 100%)",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,230,120,0.40), inset 0 -1px 0 rgba(0,0,0,0.40)",
-                  zIndex: 4,
-                }}
-              />
-
-              {/* Inner portal tunnel */}
-              <div
-                className="w-full h-full rounded-full relative overflow-hidden"
-                style={{
-                  zIndex: 2,
-                  background: "#000000",
-                  boxShadow: "inset 0 0 20px rgba(0,0,0,0.90)",
-                }}
-              >
-                <QCore />
-              </div>
-            </div>
           </div>
+        </div>
+
+        {/* Right: particle sphere */}
+        <div
+          className="hidden lg:flex flex-1 items-center justify-center"
+          aria-hidden="true"
+        >
+          <ParticleSphere className="w-[580px] h-[580px]" />
+        </div>
+      </div>
+
+      {/* ── Scroll indicator ── */}
+      <div className="relative z-10 flex justify-center pb-8" aria-hidden="true">
+        <div
+          style={{
+            width: 24, height: 40,
+            borderRadius: 12,
+            border: "1.5px solid rgba(255,255,255,0.14)",
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            paddingTop: 6,
+          }}
+        >
+          <div
+            style={{
+              width: 4, height: 8,
+              borderRadius: 2,
+              background: "var(--primary)",
+              animation: "scrollDot 2.2s ease-in-out infinite",
+            }}
+          />
         </div>
       </div>
     </section>

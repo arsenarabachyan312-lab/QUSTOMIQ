@@ -1,11 +1,53 @@
 "use client";
-
 import { useState } from "react";
 import { useLang } from "@/lib/LangContext";
 import SectionBg from "@/components/SectionBg";
 
-const fieldCls =
-  "w-full px-5 py-4 rounded-btn bg-white/[0.05] border border-[rgba(255,255,255,0.10)] text-ink placeholder:text-muted/60 focus:outline-none focus:border-accent text-[15px] font-body transition-colors";
+const fieldStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "14px 18px",
+  borderRadius: 12,
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid var(--border)",
+  color: "var(--ink)",
+  fontSize: 15,
+  fontFamily: "var(--font-body)",
+  outline: "none",
+  transition: "border-color 0.2s ease",
+};
+
+const fieldFocusStyle: React.CSSProperties = {
+  borderColor: "var(--primary)",
+};
+
+function Field({ type = "text", placeholder, required = false }: {
+  type?: string; placeholder: string; required?: boolean;
+}) {
+  const [focus, setFocus] = useState(false);
+  return (
+    <input
+      type={type}
+      placeholder={placeholder}
+      required={required}
+      style={{ ...fieldStyle, ...(focus ? fieldFocusStyle : {}) }}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+    />
+  );
+}
+
+function TextArea({ placeholder, rows = 3 }: { placeholder: string; rows?: number }) {
+  const [focus, setFocus] = useState(false);
+  return (
+    <textarea
+      placeholder={placeholder}
+      rows={rows}
+      style={{ ...fieldStyle, ...(focus ? fieldFocusStyle : {}), resize: "none" }}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+    />
+  );
+}
 
 export default function CTA() {
   const { t } = useLang();
@@ -13,94 +55,117 @@ export default function CTA() {
   const [sent, setSent] = useState(false);
   const [messenger, setMessenger] = useState("");
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setSent(true);
-  }
-
   return (
     <section
       id="contacts"
       className="py-20 md:py-28 px-6 md:px-14 relative"
       style={{
-        background:
-          "radial-gradient(ellipse at 80% 50%, rgba(245,166,35,0.08) 0%, transparent 60%), " +
-          "radial-gradient(ellipse at 20% 50%, rgba(236,100,38,0.06) 0%, transparent 50%), " +
-          "#111318",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
+        background: "var(--surface)",
+        borderTop: "1px solid var(--border)",
       }}
       aria-labelledby="cta-heading"
     >
       <SectionBg />
       <div className="relative z-[1] max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         {/* Left */}
-        <div>
-          <h2
-            id="cta-heading"
-            className="font-display font-bold text-[clamp(36px,4.5vw,52px)] tracking-[-1.5px] leading-[1.05] mb-5"
-          >
-            {c.heading}
-          </h2>
-          <p className="text-[17px] leading-[1.65] text-muted mb-8">{c.sub}</p>
+        <div className="reveal">
+          <span className="section-label">Контакты</span>
+          <h2 id="cta-heading" className="mb-5">{c.heading}</h2>
+          <p className="mb-8" style={{ maxWidth: 440 }}>{c.sub}</p>
 
-          <div className="flex items-center gap-3 text-[14.5px] text-muted">
+          <div className="flex items-center gap-3 flex-wrap" style={{ fontSize: 14, color: "var(--muted)" }}>
             <span>{c.or}</span>
             <a
               href={`mailto:${c.email}`}
-              className="text-accent-deep underline underline-offset-2 hover:opacity-80 transition-opacity font-medium"
+              className="no-underline transition-colors duration-200"
+              style={{ color: "var(--primary)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.75")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
             >
               {c.email}
             </a>
           </div>
+
+          {/* Feature list */}
+          <div className="mt-10 flex flex-col gap-4">
+            {[
+              "Ответ в течение 24 часов",
+              "Бесплатная консультация",
+              "NDA по запросу",
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-3">
+                <div style={{
+                  width: 20, height: 20,
+                  borderRadius: "50%",
+                  background: "rgba(16,185,129,0.15)",
+                  border: "1px solid rgba(16,185,129,0.40)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  flexShrink: 0,
+                }}>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                    stroke="#10B981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </div>
+                <span style={{ fontSize: 14, color: "var(--muted)" }}>{item}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Right — form */}
-        <div>
+        <div className="reveal reveal-delay-2">
           {sent ? (
-            <div className="rounded-card p-8 text-center">
-              <div className="w-14 h-14 rounded-full bg-accent/20 flex items-center justify-center mx-auto mb-5">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent-deep">
-                  <polyline points="20 6 9 17 4 12" />
+            <div
+              className="rounded-card"
+              style={{
+                padding: "40px 32px",
+                textAlign: "center",
+                background: "rgba(16,185,129,0.06)",
+                border: "1px solid rgba(16,185,129,0.25)",
+              }}
+            >
+              <div style={{
+                width: 56, height: 56,
+                borderRadius: "50%",
+                background: "rgba(16,185,129,0.15)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                margin: "0 auto 20px",
+              }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="#10B981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
                 </svg>
               </div>
-              <p className="font-display font-semibold text-[20px] text-ink">Заявка отправлена!</p>
-              <p className="text-[14.5px] text-muted mt-2">Ответим в течение 24 часов.</p>
+              <p style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 20, color: "var(--ink)", marginBottom: 8 }}>
+                Заявка отправлена!
+              </p>
+              <p style={{ fontSize: 14.5, color: "var(--muted)" }}>
+                Ответим в течение 24 часов.
+              </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3" noValidate>
-              {/* Row: Имя + Компания */}
+            <form
+              onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+              className="flex flex-col gap-3"
+              noValidate
+            >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  placeholder={c.name_placeholder}
-                  required
-                  className={fieldCls}
-                />
-                <input
-                  type="text"
-                  placeholder={c.company_placeholder}
-                  className={fieldCls}
-                />
+                <Field placeholder={c.name_placeholder}    required />
+                <Field placeholder={c.company_placeholder} />
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Field placeholder={c.position_placeholder} />
+                <Field placeholder={c.contact_placeholder}  required />
               </div>
 
-              {/* Row: Должность + Телефон/email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  placeholder={c.position_placeholder}
-                  className={fieldCls}
-                />
-                <input
-                  type="text"
-                  placeholder={c.contact_placeholder}
-                  required
-                  className={fieldCls}
-                />
-              </div>
-
-              {/* Мессенджер */}
+              {/* Messenger */}
               <div>
-                <p className="text-[13px] text-muted mb-2 font-mono uppercase tracking-[1px]">
+                <p style={{
+                  fontFamily: "var(--font-mono)", fontSize: 11.5,
+                  textTransform: "uppercase", letterSpacing: "0.10em",
+                  color: "var(--muted)", marginBottom: 10,
+                }}>
                   {c.messenger_label}
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -109,11 +174,14 @@ export default function CTA() {
                       key={opt}
                       type="button"
                       onClick={() => setMessenger(opt === messenger ? "" : opt)}
-                      className={`font-mono text-[12.5px] px-4 py-2 rounded-pill border transition-all min-h-[36px] ${
-                        messenger === opt
-                          ? "bg-accent text-white border-accent font-semibold"
-                          : "bg-transparent text-muted border-[rgba(236,100,38,0.2)] hover:border-accent-deep hover:text-ink"
-                      }`}
+                      style={{
+                        fontFamily: "var(--font-mono)", fontSize: 12.5,
+                        padding: "6px 16px", borderRadius: 50, minHeight: 36,
+                        border: `1px solid ${messenger === opt ? "var(--primary)" : "var(--border)"}`,
+                        background: messenger === opt ? "rgba(16,185,129,0.15)" : "transparent",
+                        color: messenger === opt ? "var(--primary)" : "var(--muted)",
+                        cursor: "pointer", transition: "all 0.2s ease",
+                      }}
                     >
                       {opt}
                     </button>
@@ -121,17 +189,9 @@ export default function CTA() {
                 </div>
               </div>
 
-              {/* Задача */}
-              <textarea
-                placeholder={c.task_placeholder}
-                rows={3}
-                className={`${fieldCls} resize-none`}
-              />
+              <TextArea placeholder={c.task_placeholder} />
 
-              <button
-                type="submit"
-                className="w-full mt-1 bg-accent font-display font-bold text-[15.5px] py-[17px] rounded-btn min-h-[52px] tracking-[-0.2px]"
-              >
+              <button type="submit" className="btn-primary w-full mt-1">
                 {c.submit}
               </button>
             </form>
