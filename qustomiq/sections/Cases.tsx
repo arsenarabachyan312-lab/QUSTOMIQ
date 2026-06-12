@@ -163,7 +163,7 @@ export default function Cases() {
           <p style={{ maxWidth: 640 }}>{c.sub}</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
           {CASES.map((item, i) => {
             const color = accentColor(item.accent);
             const bg    = accentBg(item.accent);

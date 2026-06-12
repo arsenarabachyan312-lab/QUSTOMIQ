@@ -38,6 +38,7 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ═══════════════════════════════════════════
@@ -403,20 +404,120 @@ a.bg-accent:hover, button.bg-accent:hover {
 .reveal-delay-4 { transition-delay: 0.40s; }
 
 /* ═══════════════════════════════════════════
-   MOBILE
+   RESPONSIVE — SECTION PADDING
 ═══════════════════════════════════════════ */
-@media (max-width: 768px) {
-  h1 { font-size: clamp(2.1rem, 9vw, 3rem) !important; }
-  h2 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; }
 
-  section[id] {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+/* All sections get clamp padding */
+section {
+  padding-left:  clamp(1rem, 5vw, 3.5rem);
+  padding-right: clamp(1rem, 5vw, 3.5rem);
+}
+
+/* Vertical padding via Tailwind already handles most cases,
+   but we ensure no section overflows horizontally */
+section > * { max-width: 100%; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤ 640px)
+═══════════════════════════════════════════ */
+@media (max-width: 640px) {
+  /* Override Tailwind px-6/px-14 on sections */
+  section {
+    padding-left:  1rem !important;
+    padding-right: 1rem !important;
   }
 
-  .btn-primary, .btn-ghost {
+  /* Typography */
+  h1 { font-size: clamp(2rem, 10vw, 2.8rem) !important; }
+  h2 { font-size: clamp(1.6rem, 8vw, 2.2rem) !important; }
+  h3 { font-size: clamp(1.1rem, 5vw, 1.4rem) !important; }
+
+  /* Section vertical padding */
+  section[id], section.py-20, section.py-12 {
+    padding-top:    clamp(2.5rem, 10vw, 4rem) !important;
+    padding-bottom: clamp(2.5rem, 10vw, 4rem) !important;
+  }
+
+  /* Hero buttons — full width, stacked */
+  .hero-ctas .btn-primary,
+  .hero-ctas .btn-ghost {
     width: 100%;
     justify-content: center;
+  }
+
+  /* Cards: ensure full width */
+  .rounded-card { border-radius: 16px; }
+
+  /* Badge smaller */
+  .badge { font-size: 11px; padding: 5px 11px; }
+
+  /* Lead text */
+  .lead { font-size: 1rem !important; }
+
+  /* Inputs touch-friendly */
+  input, textarea, select, button { min-height: 48px; }
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE — TABLET (641px – 1024px)
+═══════════════════════════════════════════ */
+@media (min-width: 641px) and (max-width: 1024px) {
+  section {
+    padding-left:  clamp(1.5rem, 4vw, 2.5rem) !important;
+    padding-right: clamp(1.5rem, 4vw, 2.5rem) !important;
+  }
+
+  h1 { font-size: clamp(2.4rem, 6vw, 4rem) !important; }
+  h2 { font-size: clamp(1.8rem, 4.5vw, 2.8rem) !important; }
+}
+
+/* ═══════════════════════════════════════════
+   TOUCH DEVICES — disable hover effects
+═══════════════════════════════════════════ */
+@media (hover: none) {
+  /* No card lift on touch */
+  .rounded-card:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--border);
+  }
+  .rounded-card:hover::before { opacity: 0; }
+
+  /* Active state instead of hover for cards */
+  .rounded-card:active {
+    border-color: rgba(16,185,129,0.25);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.30);
+  }
+
+  /* No btn transform on touch */
+  .btn-primary:hover {
+    transform: none;
+    box-shadow: none;
+    filter: none;
+  }
+  .btn-ghost:hover {
+    transform: none;
+    border-color: var(--border);
+    background: rgba(255,255,255,0.04);
+  }
+
+  /* Disable spotlight — no mouse on touch */
+  .spotlight-card {
+    background: var(--surface) !important;
+  }
+
+  /* No nav link color transitions needed on touch */
+  .rounded-card:hover .btn-primary { filter: none; }
+}
+
+/* Active tap feedback on touch */
+@media (hover: none) {
+  .btn-primary:active {
+    filter: brightness(0.92);
+    transform: scale(0.98);
+  }
+  .btn-ghost:active {
+    background: rgba(255,255,255,0.07);
   }
 }
 

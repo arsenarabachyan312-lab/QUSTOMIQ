@@ -1,14 +1,14 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-const N = 130;
+const N_DESKTOP = 130;
+const N_MOBILE  = 60;
 const AUTO_SPEED = 0.0022;
 const CONNECT_DIST_SQ = 0.27;
 const MAX_LINKS = 4;
 
 type P3 = readonly [number, number, number];
 
-/* Fibonacci sphere — evenly distributed points on unit sphere */
 function fibonacci(n: number): P3[] {
   const pts: P3[] = [];
   const phi = Math.PI * (3 - Math.sqrt(5));
@@ -30,11 +30,18 @@ function rotX(p: P3, a: number): P3 {
   return [p[0], p[1] * c - p[2] * s, p[1] * s + p[2] * c];
 }
 
-const BASE = fibonacci(N);
-/* Pre-assign emerald/violet per particle: 2/3 emerald, 1/3 violet */
-const COLORS = BASE.map((_, i) => (i % 3 !== 2 ? 0 : 1)); // 0=emerald 1=violet
+const BASE_DESKTOP = fibonacci(N_DESKTOP);
+const BASE_MOBILE  = fibonacci(N_MOBILE);
+const COLORS_DESKTOP = BASE_DESKTOP.map((_, i) => (i % 3 !== 2 ? 0 : 1));
+const COLORS_MOBILE  = BASE_MOBILE.map((_, i)  => (i % 3 !== 2 ? 0 : 1));
 
-export default function ParticleSphere({ className }: { className?: string }) {
+interface Props {
+  className?: string;
+  /** Force fewer particles (mobile background usage) */
+  lite?: boolean;
+}
+
+export default function ParticleSphere({ className, lite }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouse = useRef({ tx: 0, ty: 0 });
   const angle = useRef(0);
@@ -46,11 +53,20 @@ export default function ParticleSphere({ className }: { className?: string }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    /* Detect touch — disable mouse parallax on touch devices */
+    const isTouch = navigator.maxTouchPoints > 0;
+
+    /* Choose particle count */
+    const isMobileScreen = window.innerWidth < 640;
+    const N      = (lite || isMobileScreen) ? N_MOBILE  : N_DESKTOP;
+    const BASE   = (lite || isMobileScreen) ? BASE_MOBILE  : BASE_DESKTOP;
+    const COLORS = (lite || isMobileScreen) ? COLORS_MOBILE : COLORS_DESKTOP;
+
     let raf: number;
 
-    /* Handle HiDPI */
+    /* HiDPI resize */
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2); // cap at 2x
       canvas.width  = canvas.offsetWidth  * dpr;
       canvas.height = canvas.offsetHeight * dpr;
     };
@@ -58,31 +74,37 @@ export default function ParticleSphere({ className }: { className?: string }) {
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
 
-    /* Track mouse / touch globally for parallax */
-    const onMove = (e: MouseEvent | TouchEvent) => {
+    /* Mouse/touch parallax — only on non-touch devices */
+    const onMouseMove = (e: MouseEvent) => {
+      if (isTouch) return;
       const rect = canvas.getBoundingClientRect();
-      const px = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const py = "touches" in e ? e.touches[0].clientY : e.clientY;
-      mouse.current.tx = (px - rect.left - rect.width  / 2) / rect.width;
-      mouse.current.ty = (py - rect.top  - rect.height / 2) / rect.height;
+      mouse.current.tx = (e.clientX - rect.left - rect.width  / 2) / rect.width;
+      mouse.current.ty = (e.clientY - rect.top  - rect.height / 2) / rect.height;
     };
-    window.addEventListener("mousemove",  onMove, { passive: true });
-    window.addEventListener("touchmove",  onMove, { passive: true });
+    if (!isTouch) {
+      window.addEventListener("mousemove", onMouseMove, { passive: true });
+    }
 
     const frame = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const w  = canvas.width;
-      const h  = canvas.height;
-      const cx = w / 2;
-      const cy = h / 2;
-      const R  = Math.min(w, h) * 0.38;
+      /* Skip drawing if canvas is hidden (display:none parent) */
+      if (canvas.offsetWidth === 0 || canvas.offsetHeight === 0) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
 
-      /* Advance rotation */
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w   = canvas.width;
+      const h   = canvas.height;
+      const cx  = w / 2;
+      const cy  = h / 2;
+      const R   = Math.min(w, h) * 0.38;
+
       angle.current += AUTO_SPEED;
-      tiltX.current += (mouse.current.ty * 0.55 - tiltX.current) * 0.04;
-      const yOff = mouse.current.tx * 0.45;
+      if (!isTouch) {
+        tiltX.current += (mouse.current.ty * 0.55 - tiltX.current) * 0.04;
+      }
+      const yOff = isTouch ? 0 : mouse.current.tx * 0.45;
 
-      /* Transform all points */
       const pts: P3[] = new Array(N);
       for (let i = 0; i < N; i++) {
         let p = rotY(BASE[i], angle.current + yOff);
@@ -92,7 +114,6 @@ export default function ParticleSphere({ className }: { className?: string }) {
 
       ctx.clearRect(0, 0, w, h);
 
-      /* Projected 2D coords */
       const FOV = 2.6;
       const px2: number[] = new Array(N);
       const py2: number[] = new Array(N);
@@ -102,10 +123,10 @@ export default function ParticleSphere({ className }: { className?: string }) {
         const sc  = (R * (FOV - 0.5)) / z;
         px2[i]   = cx + pts[i][0] * sc;
         py2[i]   = cy + pts[i][1] * sc;
-        depth[i] = (pts[i][2] + 1) / 2; // 0=back 1=front
+        depth[i] = (pts[i][2] + 1) / 2;
       }
 
-      /* Draw connections */
+      /* Connections */
       for (let i = 0; i < N; i++) {
         let links = 0;
         for (let j = i + 1; j < N && links < MAX_LINKS; j++) {
@@ -114,7 +135,7 @@ export default function ParticleSphere({ className }: { className?: string }) {
           const dz = pts[i][2] - pts[j][2];
           const d2 = dx * dx + dy * dy + dz * dz;
           if (d2 < CONNECT_DIST_SQ) {
-            const avgD = (depth[i] + depth[j]) * 0.5;
+            const avgD   = (depth[i] + depth[j]) * 0.5;
             const falloff = 1 - d2 / CONNECT_DIST_SQ;
             const opacity = avgD * 0.28 * falloff;
             ctx.strokeStyle = COLORS[i] === 0
@@ -130,20 +151,18 @@ export default function ParticleSphere({ className }: { className?: string }) {
         }
       }
 
-      /* Draw particles back-to-front */
+      /* Particles back-to-front */
       const order = Array.from({ length: N }, (_, i) => i)
         .sort((a, b) => pts[a][2] - pts[b][2]);
 
       for (const i of order) {
-        const x = px2[i];
-        const y = py2[i];
+        const x = px2[i], y = py2[i];
         const d = depth[i];
         const r = (1.1 + d * 2.2) * dpr;
         const op = 0.2 + d * 0.8;
         const isEm = COLORS[i] === 0;
         const [cr, cg, cb] = isEm ? [16, 185, 129] : [167, 139, 250];
 
-        /* Glow for front-facing particles */
         if (d > 0.60) {
           const gr = r * 3.5;
           const g  = ctx.createRadialGradient(x, y, 0, x, y, gr);
@@ -155,7 +174,6 @@ export default function ParticleSphere({ className }: { className?: string }) {
           ctx.fill();
         }
 
-        /* Core dot */
         ctx.fillStyle = `rgba(${cr},${cg},${cb},${op})`;
         ctx.beginPath();
         ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -169,11 +187,10 @@ export default function ParticleSphere({ className }: { className?: string }) {
 
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("touchmove", onMove);
+      if (!isTouch) window.removeEventListener("mousemove", onMouseMove);
       ro.disconnect();
     };
-  }, []);
+  }, [lite]);
 
   return (
     <canvas

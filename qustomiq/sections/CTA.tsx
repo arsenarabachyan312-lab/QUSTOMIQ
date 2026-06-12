@@ -5,7 +5,8 @@ import SectionBg from "@/components/SectionBg";
 
 const fieldStyle: React.CSSProperties = {
   width: "100%",
-  padding: "14px 18px",
+  padding: "15px 18px",
+  minHeight: 52,
   borderRadius: 12,
   background: "rgba(255,255,255,0.04)",
   border: "1px solid var(--border)",

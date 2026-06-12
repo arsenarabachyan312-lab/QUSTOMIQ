@@ -49,11 +49,11 @@ export default function Services() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
           {s.items.map((item, i) => (
             <article
               key={i}
-              className={`rounded-card spotlight-card reveal reveal-delay-${i + 1} flex flex-col p-7 cursor-default`}
+              className={`rounded-card spotlight-card reveal reveal-delay-${i + 1} flex flex-col p-5 sm:p-7 cursor-default`}
               onMouseMove={spotlight}
             >
               {/* Icon */}
