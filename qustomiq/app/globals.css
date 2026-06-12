@@ -388,20 +388,7 @@ a.bg-accent:hover, button.bg-accent:hover {
   margin-bottom: 1rem;
 }
 
-/* Scroll reveal */
-.reveal {
-  opacity: 0;
-  transform: translateY(36px);
-  transition: opacity 0.70s ease, transform 0.70s ease;
-}
-.reveal.in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-delay-1 { transition-delay: 0.10s; }
-.reveal-delay-2 { transition-delay: 0.20s; }
-.reveal-delay-3 { transition-delay: 0.30s; }
-.reveal-delay-4 { transition-delay: 0.40s; }
+/* Scroll reveal — defined in PREMIUM ANIMATIONS block below */
 
 /* ═══════════════════════════════════════════
    RESPONSIVE — SECTION PADDING
@@ -583,3 +570,122 @@ section > * { max-width: 100%; }
 /* QCore orbit rings */
 @keyframes orbit-cw  { to { transform: rotate( 360deg); } }
 @keyframes orbit-ccw { to { transform: rotate(-360deg); } }
+
+/* ═══════════════════════════════════════════
+   PREMIUM ANIMATIONS
+═══════════════════════════════════════════ */
+
+/* ── SVG icon "draw on reveal" ─────────────────────────────
+   Parent gets .reveal, icon has .icon-draw
+   When parent enters viewport → .in-view added → strokes animate
+──────────────────────────────────────────────────────────── */
+.icon-draw path,
+.icon-draw line,
+.icon-draw polyline,
+.icon-draw circle,
+.icon-draw rect {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal.in-view .icon-draw path,
+.reveal.in-view .icon-draw line,
+.reveal.in-view .icon-draw polyline,
+.reveal.in-view .icon-draw circle,
+.reveal.in-view .icon-draw rect {
+  stroke-dashoffset: 0;
+}
+/* Staggered delays per card */
+.reveal-delay-1 .icon-draw path { transition-delay: 0.15s; }
+.reveal-delay-2 .icon-draw path { transition-delay: 0.25s; }
+.reveal-delay-3 .icon-draw path { transition-delay: 0.35s; }
+.reveal-delay-4 .icon-draw path { transition-delay: 0.45s; }
+
+/* ── Shimmer text (AI section metric) ─────────────────────── */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--secondary) 0%,
+    #ffffff 40%,
+    var(--secondary) 60%,
+    #A78BFA 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmerSlide 3.5s linear infinite;
+}
+@keyframes shimmerSlide {
+  0%   { background-position: 150% center; }
+  100% { background-position: -50% center; }
+}
+
+/* ── CTA background pulse ─────────────────────────────────── */
+@keyframes ctaPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.08); }
+}
+
+/* ── Team photo zoom on hover ─────────────────────────────── */
+.group:hover .group-hover\:scale-108 {
+  transform: scale(1.08);
+}
+
+/* ── Tilt card — GPU-accelerated ─────────────────────────── */
+.tilt-card {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* ── Scroll progress bar global cursor hide ──────────────── */
+@media (hover: hover) and (pointer: fine) {
+  /* Custom cursor active — hide default on all interactive elements */
+  a, button, input, textarea, select, [role="button"] {
+    cursor: none !important;
+  }
+}
+
+/* ── Process step bubble pulse (keyframe) ─────────────────── */
+@keyframes stepPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+  50%       { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+}
+
+/* ── Gradient border animate on card hover ─────────────────
+   .rounded-card::before already has opacity 0→1
+   Add a rotation for extra premium
+──────────────────────────────────────────────────────────── */
+.rounded-card:hover::before {
+  opacity: 1;
+  animation: borderRotate 4s linear infinite;
+}
+@keyframes borderRotate {
+  from { filter: hue-rotate(0deg); }
+  to   { filter: hue-rotate(360deg); }
+}
+
+/* ── Section entrance: slightly deeper translateY ─────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(44px);
+  transition: opacity 0.75s cubic-bezier(0.23, 1, 0.32, 1),
+              transform 0.75s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Stagger delays — must come AFTER .reveal to not be overridden by transition shorthand */
+.reveal-delay-1 { transition-delay: 0.10s; }
+.reveal-delay-2 { transition-delay: 0.20s; }
+.reveal-delay-3 { transition-delay: 0.30s; }
+.reveal-delay-4 { transition-delay: 0.40s; }
+
+/* ── Blob parallax on scroll — moved in JS / or pure CSS hint */
+.blob { will-change: transform; }
+
+/* ── Smooth transition for nav active states ──────────────── */
+.nav-glass {
+  will-change: background, padding;
+}
