@@ -11,6 +11,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        /* Project design tokens */
         bg:            "var(--bg)",
         ink:           "var(--ink)",
         muted:         "var(--muted)",
@@ -23,6 +24,24 @@ const config: Config = {
         secondary:     "var(--secondary)",
         surface:       "var(--surface)",
         white:         "#FFFFFF",
+        /* Shadcn/UI compatibility — maps to project tokens */
+        background:    "var(--bg)",
+        foreground:    "var(--ink)",
+        border:        "var(--border)",
+        input:         "var(--border)",
+        ring:          "var(--primary)",
+        card: {
+          DEFAULT:     "var(--surface)",
+          foreground:  "var(--ink)",
+        },
+        destructive: {
+          DEFAULT:     "#ef4444",
+          foreground:  "#ffffff",
+        },
+        popover: {
+          DEFAULT:     "var(--surface)",
+          foreground:  "var(--ink)",
+        },
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],
