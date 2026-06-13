@@ -1,166 +1,236 @@
 "use client";
-import { motion } from "framer-motion";
+
+import dynamic from "next/dynamic";
+import { motion, useReducedMotion } from "framer-motion";
 import Nav from "@/components/Nav";
-import ParticleSphere from "@/components/ParticleSphere";
+import MagneticButton from "@/components/magnetic/MagneticButton";
+import { ru } from "@/lib/i18n/ru";
+import { EASE_OUT } from "@/lib/animations";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 22 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.65, ease: EASE, delay },
+const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        position: "absolute", inset: 0,
+        background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(16,185,129,0.07) 0%, transparent 70%)",
+      }}
+    />
+  ),
 });
 
+function item(delay: number) {
+  return {
+    initial:    { opacity: 0, y: 40 },
+    animate:    { opacity: 1, y: 0 },
+    transition: { duration: 0.7, ease: EASE_OUT, delay },
+  } as const;
+}
+
 export default function Hero() {
+  const reduce = useReducedMotion();
+
   return (
     <section
-      className="relative min-h-screen flex flex-col"
-      style={{ background: "var(--bg)", overflow: "hidden" }}
+      id="hero"
+      style={{
+        position: "relative",
+        minHeight: "100svh",
+        display: "flex",
+        flexDirection: "column",
+        background: "var(--obsidian)",
+        overflow: "hidden",
+      }}
     >
-      {/* ── Backgrounds ── */}
-      <div className="bg-blobs" aria-hidden="true">
-        <div className="blob blob-emerald" />
-        <div className="blob blob-violet" />
-        <div className="blob blob-emerald-2" />
+      {/* WebGL particle background */}
+      <div aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+        {!reduce && <HeroScene />}
       </div>
-      <div className="dot-grid" aria-hidden="true" />
 
-      {/* ── Navbar ── */}
+      {/* Bottom fade — blend particles into page */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          bottom: 0, left: 0, right: 0,
+          height: "35%",
+          background: "linear-gradient(to top, var(--obsidian), transparent)",
+          zIndex: 1,
+          pointerEvents: "none",
+        }}
+      />
+
       <Nav />
 
-      {/* ── Main content ── */}
+      {/* Content */}
       <div
-        className="relative z-10 flex-1 flex flex-col lg:flex-row items-center w-full mx-auto"
+        className="q-container"
         style={{
-          maxWidth: 1320,
-          paddingLeft:  "clamp(1rem, 5vw, 3.5rem)",
-          paddingRight: "clamp(1rem, 5vw, 3.5rem)",
-          paddingTop:   "clamp(2rem, 5vw, 4rem)",
-          paddingBottom: "clamp(2.5rem, 5vw, 5rem)",
-          gap: "clamp(2rem, 5vw, 0rem)",
+          position: "relative",
+          zIndex: 2,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          paddingTop: "10rem",
+          paddingBottom: "8rem",
         }}
       >
-        {/* Mobile sphere — absolute background behind text */}
-        <div
-          className="sm:hidden absolute inset-0 flex items-center justify-center pointer-events-none"
-          aria-hidden="true"
-          style={{ opacity: 0.35, zIndex: 0 }}
-        >
-          <ParticleSphere className="w-[300px] h-[300px]" lite />
-        </div>
-
-        {/* Left: copy */}
-        <div className="relative z-10 flex-shrink-0 w-full lg:max-w-[600px]">
-          {/* Badge */}
-          <motion.div {...fadeUp(0)} className="badge mb-6 sm:mb-8" style={{ fontSize: "clamp(11px, 2.5vw, 13px)" }}>
-            <span className="badge-dot" />
-            SFA · DMS · AI · Интеграции
-          </motion.div>
-
-          {/* Heading */}
-          <motion.h1 {...fadeUp(0.1)} className="mb-5 sm:mb-6">
-            Автоматизация<br />
-            бизнеса с помощью{" "}
-            <span className="gradient-text">AI</span>
-          </motion.h1>
-
-          {/* Sub */}
-          <motion.p
-            {...fadeUp(0.2)}
-            className="lead mb-8 sm:mb-10"
-            style={{ color: "var(--muted)", maxWidth: 520 }}
+        {/* Badge */}
+        <motion.div {...(reduce ? {} : item(0))}>
+          <span
+            className="eyebrow"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "rgba(16,185,129,0.08)",
+              border: "1px solid rgba(16,185,129,0.2)",
+              padding: "6px 16px",
+              borderRadius: 50,
+              marginBottom: 32,
+            }}
           >
-            Строим кастомные AI-системы, CRM и аналитику для FMCG,
-            ритейла и производства — от прототипа до промышленной эксплуатации.
-          </motion.p>
+            <span
+              style={{
+                width: 6, height: 6, borderRadius: "50%",
+                background: "var(--emerald)",
+                boxShadow: "0 0 8px #10B981",
+              }}
+            />
+            {ru.hero.badge}
+          </span>
+        </motion.div>
 
-          {/* CTAs */}
-          <motion.div {...fadeUp(0.3)} className="hero-ctas flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <a href="#contacts" className="btn-primary">
-              Обсудить проект
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
-            <a href="#cases" className="btn-ghost">
-              Смотреть кейсы
-            </a>
-          </motion.div>
+        {/* H1 */}
+        <motion.h1
+          {...(reduce ? {} : item(0.15))}
+          style={{
+            fontSize: "clamp(2.6rem, 7.5vw, 4.75rem)",
+            maxWidth: 820,
+            marginBottom: 24,
+            lineHeight: 1.05,
+          }}
+        >
+          {ru.hero.h1_1}
+          <br />
+          <span className="grad-vi">{ru.hero.h1_2}</span>
+        </motion.h1>
 
-          {/* Stats row */}
+        {/* Sub */}
+        <motion.p
+          {...(reduce ? {} : item(0.25))}
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "clamp(13px, 2vw, 15px)",
+            color: "var(--mist)",
+            letterSpacing: "0.07em",
+            marginBottom: 48,
+          }}
+        >
+          {ru.hero.sub}
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          {...(reduce ? {} : item(0.35))}
+          style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}
+        >
+          <MagneticButton>
+            <a
+              href="#cases"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: "var(--emerald)",
+                color: "#000",
+                fontWeight: 600,
+                fontSize: 15,
+                padding: "14px 30px",
+                borderRadius: 50,
+                textDecoration: "none",
+                transition: "opacity 0.2s",
+              }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.85")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")}
+            >
+              {ru.hero.cta_primary}
+            </a>
+          </MagneticButton>
+
+          <a
+            href="#contact"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              border: "1px solid rgba(255,255,255,0.1)",
+              color: "var(--mist)",
+              fontWeight: 500,
+              fontSize: 15,
+              padding: "14px 30px",
+              borderRadius: 50,
+              textDecoration: "none",
+              transition: "all 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLAnchorElement;
+              el.style.borderColor = "rgba(255,255,255,0.22)";
+              el.style.color = "var(--snow)";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLAnchorElement;
+              el.style.borderColor = "rgba(255,255,255,0.1)";
+              el.style.color = "var(--mist)";
+            }}
+          >
+            {ru.hero.cta_secondary}
+          </a>
+        </motion.div>
+
+        {/* Scroll hint */}
+        <motion.div
+          {...(reduce ? {} : {
+            initial: { opacity: 0 },
+            animate: { opacity: 1 },
+            transition: { delay: 0.9, duration: 0.8 },
+          })}
+          style={{
+            position: "absolute",
+            bottom: "2.5rem",
+            left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 8,
+          }}
+          aria-hidden="true"
+        >
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 10,
+              color: "var(--mist)",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+            }}
+          >
+            {ru.hero.scroll_hint}
+          </span>
           <motion.div
-            {...fadeUp(0.4)}
-            className="flex flex-wrap mt-10 sm:mt-14"
-            style={{ gap: "clamp(1.5rem, 5vw, 2.5rem)" }}
+            animate={reduce ? {} : { y: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           >
-            {[
-              { v: "50+",     l: "проектов" },
-              { v: "6 нед.",  l: "до MVP" },
-              { v: "98%",     l: "SLA" },
-            ].map(({ v, l }) => (
-              <div key={l}>
-                <div
-                  className="font-display font-bold"
-                  style={{
-                    fontSize: "clamp(1.5rem, 3.5vw, 2.1rem)",
-                    background: "var(--gradient)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    lineHeight: 1.1,
-                  }}
-                >
-                  {v}
-                </div>
-                <div style={{ fontSize: "clamp(11px, 1.5vw, 13px)", color: "var(--muted)", marginTop: 4 }}>
-                  {l}
-                </div>
-              </div>
-            ))}
+            <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+              <path d="M1 1l7 7 7-7" stroke="var(--mist)" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
           </motion.div>
-        </div>
-
-        {/* Tablet sphere — in flow below text, centered */}
-        <div
-          className="hidden sm:flex lg:hidden justify-center items-center w-full flex-shrink-0"
-          aria-hidden="true"
-        >
-          <ParticleSphere className="w-[380px] h-[380px] sm:w-[420px] sm:h-[420px]" />
-        </div>
-
-        {/* Desktop sphere — right column */}
-        <div
-          className="hidden lg:flex flex-1 items-center justify-center flex-shrink-0"
-          aria-hidden="true"
-          style={{ minWidth: 0 }}
-        >
-          <ParticleSphere className="w-[540px] h-[540px] xl:w-[600px] xl:h-[600px]" />
-        </div>
+        </motion.div>
       </div>
-
-      {/* ── Scroll indicator ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.1, duration: 0.8 }}
-        className="relative z-10 flex justify-center pb-6 sm:pb-8"
-        aria-hidden="true"
-      >
-        <div style={{
-          width: 24, height: 40, borderRadius: 12,
-          border: "1.5px solid rgba(255,255,255,0.14)",
-          display: "flex", alignItems: "flex-start",
-          justifyContent: "center", paddingTop: 6,
-        }}>
-          <div style={{
-            width: 4, height: 8, borderRadius: 2,
-            background: "var(--primary)",
-            animation: "scrollDot 2.2s ease-in-out infinite",
-          }} />
-        </div>
-      </motion.div>
     </section>
   );
 }

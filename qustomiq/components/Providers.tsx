@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import Lenis from "lenis";
-import { LangProvider } from "@/lib/LangContext";
-import CustomCursor from "@/components/CustomCursor";
-import ScrollProgress from "@/components/ScrollProgress";
-import RevealOnScroll from "@/components/RevealOnScroll";
-import type { ReactNode } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -15,25 +14,18 @@ export default function Providers({ children }: { children: ReactNode }) {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
-    let raf: number;
-    function tick(time: number) {
-      lenis.raf(time);
-      raf = requestAnimationFrame(tick);
-    }
-    raf = requestAnimationFrame(tick);
+    /* Sync Lenis scroll position with GSAP ScrollTrigger */
+    lenis.on("scroll", ScrollTrigger.update);
+
+    const tick = (time: number) => { lenis.raf(time * 1000); };
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      cancelAnimationFrame(raf);
       lenis.destroy();
+      gsap.ticker.remove(tick);
     };
   }, []);
 
-  return (
-    <LangProvider>
-      <ScrollProgress />
-      <CustomCursor />
-      <RevealOnScroll />
-      {children}
-    </LangProvider>
-  );
+  return <>{children}</>;
 }

@@ -1,157 +1,189 @@
 "use client";
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { useLang } from "@/lib/LangContext";
-import SectionBg from "@/components/SectionBg";
-import DNAHelix from "@/components/DNAHelix";
-import type { MouseEvent } from "react";
 
-const icons = [
-  <svg key="dev" width="22" height="22" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-  </svg>,
-  <svg key="int" width="22" height="22" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-  </svg>,
-  <svg key="ai" width="22" height="22" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26A7 7 0 0 1 12 2z"/>
-    <line x1="10" y1="20" x2="14" y2="20"/><line x1="10" y1="22" x2="14" y2="22"/>
-  </svg>,
-  <svg key="sup" width="22" height="22" viewBox="0 0 24 24" fill="none"
-    stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-  </svg>,
-];
+import { motion, useReducedMotion } from "framer-motion";
+import { ru } from "@/lib/i18n/ru";
+import { EASE_OUT } from "@/lib/animations";
 
-const iconBg    = ["rgba(16,185,129,0.12)", "rgba(167,139,250,0.12)", "rgba(16,185,129,0.12)", "rgba(167,139,250,0.12)"];
-const iconColor = ["var(--primary)", "var(--secondary)", "var(--primary)", "var(--secondary)"];
-const hoverGlow = [
-  "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(16,185,129,0.30)",
-  "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(167,139,250,0.30)",
-  "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(16,185,129,0.30)",
-  "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(167,139,250,0.30)",
-];
+type IconKey = "sfa" | "dms" | "ai" | "portal" | "api" | "bi";
 
-function useSpotlight() {
-  const onMove = (e: MouseEvent<HTMLElement>) => {
-    const el = e.currentTarget;
-    const r  = el.getBoundingClientRect();
-    el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width  * 100).toFixed(1)}%`);
-    el.style.setProperty("--my", `${((e.clientY - r.top)  / r.height * 100).toFixed(1)}%`);
-  };
-  return { onMouseMove: onMove };
-}
+const ICONS: Record<IconKey, JSX.Element> = {
+  sfa: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+    </svg>
+  ),
+  dms: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+      <line x1="10" y1="9" x2="8" y2="9"/>
+    </svg>
+  ),
+  ai: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26A7 7 0 0 1 12 2z"/>
+      <line x1="10" y1="20" x2="14" y2="20"/>
+      <line x1="10" y1="22" x2="14" y2="22"/>
+    </svg>
+  ),
+  portal: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+      <line x1="8" y1="21" x2="16" y2="21"/>
+      <line x1="12" y1="17" x2="12" y2="21"/>
+    </svg>
+  ),
+  api: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </svg>
+  ),
+  bi: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+      <line x1="6" y1="20" x2="6" y2="14"/>
+    </svg>
+  ),
+};
+
+const ICON_COLORS: IconKey[] = ["sfa", "dms", "ai", "portal", "api", "bi"];
 
 export default function Services() {
-  const { t } = useLang();
-  const s = t.services;
-  const spotlight = useSpotlight();
-
-  const gridRef = useRef(null);
-  const inView  = useInView(gridRef, { once: true, margin: "0px 0px -80px 0px" });
+  const reduce = useReducedMotion();
+  const { eyebrow, heading, more, items } = ru.services;
 
   return (
     <section
       id="services"
-      className="py-20 md:py-28 px-6 md:px-14 relative overflow-hidden"
-      aria-labelledby="services-heading"
+      style={{
+        paddingBlock: "var(--section-py)",
+        background: "var(--obsidian)",
+      }}
     >
-      <SectionBg />
-
-      <div className="relative z-[1] max-w-[1200px] mx-auto">
+      <div className="q-container">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={reduce ? false : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
-          className="mb-14"
+          transition={{ duration: 0.65, ease: EASE_OUT }}
+          style={{ marginBottom: "clamp(3rem, 6vw, 4.5rem)" }}
         >
-          <div className="flex items-center gap-3 mb-4">
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
             <div style={{
               width: 24, height: 2,
-              background: "linear-gradient(90deg,#10B981,#34F5C5)",
+              background: "var(--g-em)",
               borderRadius: 1,
               flexShrink: 0,
             }} />
-            <span style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              textTransform: "uppercase",
-              letterSpacing: "0.14em",
-              color: "var(--primary)",
-            }}>
-              ЧТО МЫ ДЕЛАЕМ
-            </span>
+            <span className="eyebrow">{eyebrow}</span>
           </div>
-          <h2 id="services-heading" className="mb-4">{s.heading}</h2>
-          <p style={{ color: "var(--muted)", maxWidth: 480 }}>{s.sub}</p>
+          <h2 style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>{heading}</h2>
         </motion.div>
 
-        {/* Cards + DNA helix */}
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-8 xl:gap-14 items-center">
-          {/* Card grid */}
-          <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-            {s.items.map((item, i) => (
+        {/* Cards grid */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 340px), 1fr))",
+            gap: "1.25rem",
+          }}
+        >
+          {items.map((item, i) => {
+            const iconKey = ICON_COLORS[i] as IconKey;
+            const isEven  = i % 2 === 0;
+
+            return (
               <motion.article
                 key={i}
-                initial={{ opacity: 0, y: 24 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] as const, delay: i * 0.09 }}
-                whileHover={{ y: -6, boxShadow: hoverGlow[i] }}
-                className="spotlight-card flex flex-col cursor-default"
-                style={{
-                  background: "#0F1115",
-                  borderRadius: 22,
-                  padding: 32,
-                  border: "1px solid var(--border)",
-                  willChange: "transform",
-                  position: "relative",
-                  overflow: "hidden",
+                initial={reduce ? false : { opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "0px 0px -40px 0px" }}
+                transition={{ duration: 0.6, ease: EASE_OUT, delay: (i % 2) * 0.08 }}
+                whileHover={reduce ? {} : {
+                  y: -4,
+                  boxShadow: isEven
+                    ? "0 0 32px rgba(16,185,129,0.13), 0 20px 40px rgba(0,0,0,0.4)"
+                    : "0 0 32px rgba(167,139,250,0.13), 0 20px 40px rgba(0,0,0,0.4)",
                 }}
-                onMouseMove={spotlight.onMouseMove}
+                className="q-card"
+                style={{
+                  cursor: "default",
+                  display: "flex",
+                  flexDirection: "column",
+                  transition: "border-color 0.25s ease, background 0.25s ease",
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = isEven
+                    ? "rgba(16,185,129,0.28)"
+                    : "rgba(167,139,250,0.28)";
+                  el.style.background = "var(--surface2)";
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = "var(--border)";
+                  el.style.background  = "var(--surface)";
+                }}
               >
                 {/* Icon */}
-                <motion.div
-                  className="mb-5 w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: iconBg[i], color: iconColor[i] }}
-                  whileHover={{ scale: 1.12 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                <div
+                  style={{
+                    width: 44, height: 44,
+                    borderRadius: 12,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: 20,
+                    background: isEven
+                      ? "rgba(16,185,129,0.10)"
+                      : "rgba(167,139,250,0.10)",
+                    color: isEven ? "var(--emerald)" : "var(--violet)",
+                  }}
                 >
-                  {icons[i]}
-                </motion.div>
+                  {ICONS[iconKey]}
+                </div>
 
-                <h3 className="mb-3" style={{ fontSize: "1.05rem" }}>{item.title}</h3>
-                <p className="flex-1" style={{ fontSize: "0.9rem", color: "var(--muted)", lineHeight: 1.65 }}>
+                <h3 style={{ fontSize: "1.05rem", marginBottom: 10 }}>{item.title}</h3>
+                <p style={{ fontSize: "0.9rem", color: "var(--mist)", lineHeight: 1.7, flex: 1 }}>
                   {item.desc}
                 </p>
 
-                <div className="flex flex-wrap gap-2 mt-5">
-                  {item.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      style={{
-                        fontSize: 11, padding: "4px 10px", borderRadius: 50,
-                        background: "rgba(255,255,255,0.04)", border: "1px solid var(--border)",
-                        color: "var(--muted)", fontFamily: "var(--font-mono)", letterSpacing: "0.03em",
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                <div style={{ marginTop: 20 }}>
+                  <span
+                    style={{
+                      fontSize: 13,
+                      color: isEven ? "var(--emerald)" : "var(--violet)",
+                      fontWeight: 500,
+                      cursor: "pointer",
+                      borderBottom: "1px solid transparent",
+                      transition: "border-color 0.2s",
+                      paddingBottom: 1,
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderBottomColor = isEven
+                        ? "var(--emerald)"
+                        : "var(--violet)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderBottomColor = "transparent";
+                    }}
+                  >
+                    {more}
+                  </span>
                 </div>
               </motion.article>
-            ))}
-          </div>
-
-          {/* DNA Helix — right column, desktop only */}
-          <div className="hidden xl:flex items-center justify-center">
-            <DNAHelix className="w-[300px] h-[500px]" />
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

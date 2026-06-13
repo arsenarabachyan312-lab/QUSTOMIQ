@@ -1,60 +1,103 @@
 "use client";
 
-import { useLang } from "@/lib/LangContext";
-import SectionBg from "@/components/SectionBg";
-import type { MouseEvent } from "react";
+import { useEffect, useRef } from "react";
+import { useInView, useReducedMotion } from "framer-motion";
+import { gsap } from "gsap";
+import { ru } from "@/lib/i18n/ru";
 
-function spotlight(e: MouseEvent<HTMLElement>) {
-  const el = e.currentTarget;
-  const r  = el.getBoundingClientRect();
-  el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width  * 100).toFixed(1)}%`);
-  el.style.setProperty("--my", `${((e.clientY - r.top)  / r.height * 100).toFixed(1)}%`);
+function Counter({
+  value,
+  suffix,
+  label,
+}: {
+  value: number;
+  suffix: string;
+  label: string;
+}) {
+  const ref    = useRef<HTMLSpanElement>(null);
+  const reduce = useReducedMotion();
+  const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
+
+  useEffect(() => {
+    if (!inView || !ref.current) return;
+    if (reduce) {
+      ref.current.textContent = value + suffix;
+      return;
+    }
+    const obj = { val: 0 };
+    const ctx = gsap.context(() => {
+      gsap.to(obj, {
+        val: value,
+        duration: 1.8,
+        ease: "power2.out",
+        delay: 0,
+        onUpdate() {
+          if (ref.current) {
+            ref.current.textContent = Math.round(obj.val) + suffix;
+          }
+        },
+      });
+    });
+    return () => ctx.revert();
+  }, [inView, value, suffix, reduce]);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+      <div
+        style={{
+          fontFamily: "var(--font-display)",
+          fontWeight: 700,
+          fontSize: "clamp(2rem, 5vw, 3.2rem)",
+          background: "var(--g-em)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          lineHeight: 1.1,
+        }}
+      >
+        <span ref={ref}>0{suffix}</span>
+      </div>
+      <p
+        style={{
+          fontFamily: "var(--font-mono)",
+          fontSize: 12,
+          color: "var(--mist)",
+          letterSpacing: "0.08em",
+          textAlign: "center",
+          lineHeight: 1.5,
+        }}
+      >
+        {label}
+      </p>
+    </div>
+  );
 }
 
-export default function WhyUs() {
-  const { t } = useLang();
-  const w = t.whyus;
+export default function Metrics() {
+  const { items } = ru.metrics;
 
   return (
     <section
-      className="py-20 md:py-28 px-6 md:px-14 relative"
-      aria-labelledby="whyus-heading"
+      style={{
+        background: "var(--surface)",
+        borderTop: "1px solid var(--border)",
+        borderBottom: "1px solid var(--border)",
+        paddingBlock: "clamp(3rem, 7vw, 5rem)",
+      }}
     >
-      <SectionBg />
-      <div className="relative z-[1] max-w-[1200px] mx-auto">
-        <div className="mb-14 reveal text-center">
-          <span className="section-label">Почему мы</span>
-          <h2 id="whyus-heading">{w.heading}</h2>
-        </div>
-
-        <div className="grid grid-cols-2 xl:grid-cols-4 gap-5 md:gap-6">
-          {w.items.map((item, i) => (
+      <div className="q-container">
+        <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: 0 }}>
+          {items.map((item, i) => (
             <div
               key={i}
-              className={`rounded-card spotlight-card reveal reveal-delay-${i + 1} flex flex-col items-center text-center gap-3 p-6 md:p-8 cursor-default`}
-              onMouseMove={spotlight}
+              style={{
+                paddingInline: "clamp(1rem, 3vw, 2rem)",
+                borderRight: i < items.length - 1
+                  ? "1px solid rgba(255,255,255,0.07)"
+                  : "none",
+              }}
             >
-              <div style={{
-                width: 44, height: 44, borderRadius: "50%", marginBottom: 4,
-                background: i % 2 === 0 ? "rgba(16,185,129,0.12)" : "rgba(167,139,250,0.12)",
-                border: `1px solid ${i % 2 === 0 ? "rgba(16,185,129,0.30)" : "rgba(167,139,250,0.30)"}`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
-                <div style={{
-                  width: 10, height: 10, borderRadius: "50%",
-                  background: i % 2 === 0 ? "var(--primary)" : "var(--secondary)",
-                }} />
-              </div>
-              <span style={{
-                fontFamily: "var(--font-display)", fontWeight: 700,
-                fontSize: "clamp(16px, 1.8vw, 20px)", lineHeight: 1.25,
-                letterSpacing: "-0.4px", color: "var(--ink)",
-              }}>
-                {item.title}
-              </span>
-              <span style={{ fontSize: 13.5, color: "var(--muted)", lineHeight: 1.55 }}>
-                {item.desc}
-              </span>
+              <Counter value={item.value} suffix={item.suffix} label={item.label} />
             </div>
           ))}
         </div>
