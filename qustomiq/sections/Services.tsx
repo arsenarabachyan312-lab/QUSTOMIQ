@@ -57,6 +57,37 @@ const ICONS: Record<IconKey, JSX.Element> = {
 
 const ICON_KEYS: IconKey[] = ["sfa", "dms", "ai", "portal", "api", "bi"];
 const CARD_NUMS            = ["01", "02", "03", "04", "05", "06"];
+const TILT                 = 14;   /* max degrees */
+
+function applyTilt(e: React.MouseEvent<HTMLElement>) {
+  const el   = e.currentTarget as HTMLElement;
+  const rect = el.getBoundingClientRect();
+  const cx   = e.clientX - rect.left;
+  const cy   = e.clientY - rect.top;
+  const rotX = ((cy - rect.height / 2) / (rect.height / 2)) * -TILT;
+  const rotY = ((cx - rect.width  / 2) / (rect.width  / 2)) *  TILT;
+  el.style.transition = "none";
+  el.style.transform  = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02,1.02,1.02)`;
+
+  const glare = el.querySelector<HTMLElement>("[data-glare]");
+  if (glare) {
+    const gx = (cx / rect.width)  * 100;
+    const gy = (cy / rect.height) * 100;
+    glare.style.background = `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,255,255,0.07) 0%, transparent 60%)`;
+    glare.style.opacity    = "1";
+  }
+}
+
+function resetTilt(e: React.MouseEvent<HTMLElement>) {
+  const el    = e.currentTarget as HTMLElement;
+  const glare = el.querySelector<HTMLElement>("[data-glare]");
+  el.style.transition  = "transform 0.55s cubic-bezier(0.22,1,0.36,1), border-color 0.25s, box-shadow 0.25s, background 0.25s";
+  el.style.transform   = "";
+  el.style.borderColor = "rgba(255,255,255,0.05)";
+  el.style.boxShadow   = "none";
+  el.style.background  = "var(--surface)";
+  if (glare) glare.style.opacity = "0";
+}
 
 export default function Services() {
   const reduce = useReducedMotion();
@@ -80,12 +111,7 @@ export default function Services() {
           style={{ marginBottom: "clamp(3rem, 6vw, 4.5rem)" }}
         >
           <span className="eyebrow" style={{ marginBottom: 16 }}>{eyebrow}</span>
-          <h2
-            style={{
-              fontSize: "clamp(2rem, 5vw, 3rem)",
-              letterSpacing: "-0.02em",
-            }}
-          >
+          <h2 style={{ fontSize: "clamp(2rem, 5vw, 3rem)", letterSpacing: "-0.02em" }}>
             {heading}
           </h2>
         </motion.div>
@@ -93,7 +119,7 @@ export default function Services() {
         {/* Cards grid */}
         <motion.div
           variants={reduce ? {} : {
-            hidden: {},
+            hidden:  {},
             visible: { transition: { staggerChildren: 0.08 } },
           }}
           initial="hidden"
@@ -113,44 +139,55 @@ export default function Services() {
               <motion.article
                 key={i}
                 variants={reduce ? {} : {
-                  hidden:   { opacity: 0, y: 24 },
-                  visible:  { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_OUT } },
+                  hidden:  { opacity: 0, y: 24 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_OUT } },
                 }}
                 className="q-card"
                 style={{
-                  cursor: "default",
-                  display: "flex",
-                  flexDirection: "column",
-                  position: "relative",
-                  overflow: "hidden",
+                  cursor:      "default",
+                  display:     "flex",
+                  flexDirection:"column",
+                  position:    "relative",
+                  overflow:    "hidden",
+                  willChange:  "transform",
+                  transition:  "transform 0.55s cubic-bezier(0.22,1,0.36,1), border-color 0.25s, box-shadow 0.25s, background 0.25s",
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor  = "rgba(16,185,129,0.3)";
-                  el.style.boxShadow    = "0 0 40px rgba(16,185,129,0.08), 0 20px 40px rgba(0,0,0,0.3)";
-                  el.style.transform    = "translateY(-4px)";
-                  el.style.background   = "var(--surface2)";
+                  el.style.borderColor = "rgba(16,185,129,0.3)";
+                  el.style.boxShadow   = "0 0 40px rgba(16,185,129,0.08), 0 20px 40px rgba(0,0,0,0.3)";
+                  el.style.background  = "var(--surface2)";
                 }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "rgba(255,255,255,0.05)";
-                  el.style.boxShadow   = "none";
-                  el.style.transform   = "translateY(0)";
-                  el.style.background  = "var(--surface)";
-                }}
+                onMouseMove={reduce ? undefined : applyTilt}
+                onMouseLeave={reduce ? undefined : resetTilt}
               >
+                {/* Glare overlay */}
+                <div
+                  data-glare=""
+                  aria-hidden="true"
+                  style={{
+                    position:      "absolute",
+                    inset:         0,
+                    borderRadius:  "inherit",
+                    pointerEvents: "none",
+                    opacity:       0,
+                    zIndex:        2,
+                    transition:    "opacity 0.2s",
+                  }}
+                />
+
                 {/* Watermark number */}
                 <div
                   aria-hidden="true"
                   style={{
-                    position: "absolute",
-                    top: -8, right: 12,
-                    fontFamily: "var(--font-mono)",
-                    fontWeight: 700,
-                    fontSize: 80,
-                    lineHeight: 1,
-                    color: "rgba(255,255,255,0.04)",
-                    userSelect: "none",
+                    position:      "absolute",
+                    top:           -8, right: 12,
+                    fontFamily:    "var(--font-mono)",
+                    fontWeight:    700,
+                    fontSize:      80,
+                    lineHeight:    1,
+                    color:         "rgba(255,255,255,0.04)",
+                    userSelect:    "none",
                     letterSpacing: "-0.05em",
                   }}
                 >
@@ -160,19 +197,17 @@ export default function Services() {
                 {/* Icon */}
                 <div
                   style={{
-                    width: 48, height: 48,
-                    borderRadius: 12,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: 20,
-                    background: isEven
-                      ? "var(--emerald-dim)"
-                      : "var(--violet-dim)",
-                    color: isEven ? "var(--emerald)" : "var(--violet)",
-                    flexShrink: 0,
-                    position: "relative",
-                    zIndex: 1,
+                    width:           48, height: 48,
+                    borderRadius:    12,
+                    display:         "flex",
+                    alignItems:      "center",
+                    justifyContent:  "center",
+                    marginBottom:    20,
+                    background:      isEven ? "var(--emerald-dim)" : "var(--violet-dim)",
+                    color:           isEven ? "var(--emerald)"     : "var(--violet)",
+                    flexShrink:      0,
+                    position:        "relative",
+                    zIndex:          3,
                   }}
                 >
                   {ICONS[iconKey]}
@@ -180,35 +215,35 @@ export default function Services() {
 
                 <h3
                   style={{
-                    fontSize: "1.05rem",
-                    marginBottom: 10,
+                    fontSize:      "1.05rem",
+                    marginBottom:  10,
                     letterSpacing: "-0.01em",
-                    position: "relative",
-                    zIndex: 1,
+                    position:      "relative",
+                    zIndex:        3,
                   }}
                 >
                   {item.title}
                 </h3>
                 <p
                   style={{
-                    fontSize: "0.9rem",
-                    color: "var(--text-muted)",
+                    fontSize:  "0.9rem",
+                    color:     "var(--text-muted)",
                     lineHeight: 1.75,
-                    flex: 1,
-                    position: "relative",
-                    zIndex: 1,
+                    flex:      1,
+                    position:  "relative",
+                    zIndex:    3,
                   }}
                 >
                   {item.desc}
                 </p>
 
-                <div style={{ marginTop: 20, position: "relative", zIndex: 1 }}>
+                <div style={{ marginTop: 20, position: "relative", zIndex: 3 }}>
                   <span
                     style={{
-                      fontSize: 13,
-                      color: isEven ? "var(--emerald)" : "var(--violet)",
-                      fontWeight: 500,
-                      cursor: "pointer",
+                      fontSize:     13,
+                      color:        isEven ? "var(--emerald)" : "var(--violet)",
+                      fontWeight:   500,
+                      cursor:       "pointer",
                       borderBottom: "1px solid transparent",
                       paddingBottom: 1,
                     }}

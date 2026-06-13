@@ -3,6 +3,7 @@ import Metrics  from "@/sections/Metrics";
 import Services from "@/sections/Services";
 import Process  from "@/sections/Process";
 import Cases    from "@/sections/Cases";
+import BI       from "@/sections/BI";
 import Contact  from "@/sections/Contact";
 import Footer   from "@/sections/Footer";
 
@@ -15,6 +16,7 @@ export default function Home() {
         <Services />
         <Process />
         <Cases />
+        <BI />
         <Contact />
       </main>
       <Footer />
