@@ -9,7 +9,7 @@ export default function Footer() {
     <footer
       style={{
         background: "var(--surface)",
-        borderTop: "1px solid var(--border)",
+        borderTop: "1px solid rgba(255,255,255,0.06)",
         paddingBlock: "clamp(3rem, 6vw, 4.5rem)",
       }}
       role="contentinfo"
@@ -27,21 +27,38 @@ export default function Footer() {
                 fontFamily: "var(--font-display)",
                 fontWeight: 700,
                 fontSize: 18,
-                color: "var(--snow)",
+                color: "var(--text-primary)",
                 textDecoration: "none",
-                letterSpacing: "-0.01em",
-                display: "inline-block",
-                marginBottom: 12,
+                letterSpacing: "-0.02em",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 2,
+                marginBottom: 10,
               }}
             >
               QUSTOMIQ
+              <span
+                style={{
+                  display: "inline-block",
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  background: "var(--emerald)",
+                  boxShadow: "0 0 6px var(--emerald)",
+                  marginLeft: 2,
+                  marginBottom: 6,
+                  flexShrink: 0,
+                }}
+              />
             </a>
             <p
               style={{
-                fontSize: 14,
-                color: "var(--mist)",
+                fontSize: 12,
+                fontFamily: "var(--font-mono)",
+                color: "var(--text-hint)",
                 lineHeight: 1.6,
-                maxWidth: 220,
+                maxWidth: 240,
+                letterSpacing: "0.04em",
               }}
             >
               {f.tagline}
@@ -54,29 +71,36 @@ export default function Footer() {
               <p
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: 11,
+                  fontSize: 10,
                   textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: "var(--mist)",
-                  opacity: 0.6,
-                  marginBottom: 16,
+                  letterSpacing: "0.15em",
+                  color: "var(--text-hint)",
+                  marginBottom: 18,
                 }}
               >
                 {col.heading}
               </p>
-              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+              <ul
+                style={{
+                  listStyle: "none",
+                  margin: 0,
+                  padding: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                }}
+              >
                 {col.links.map((link, i) => (
                   <li key={link}>
                     <a
                       href={col.hrefs[i]}
                       style={{
                         fontSize: 14,
-                        color: "var(--mist)",
+                        color: "var(--text-muted)",
                         textDecoration: "none",
-                        transition: "color 0.2s",
                       }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = "var(--snow)")}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--mist)")}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
                     >
                       {link}
                     </a>
@@ -92,7 +116,7 @@ export default function Footer() {
           style={{
             marginTop: "clamp(2.5rem, 5vw, 3.5rem)",
             paddingTop: 24,
-            borderTop: "1px solid var(--border)",
+            borderTop: "1px solid rgba(255,255,255,0.04)",
             display: "flex",
             flexWrap: "wrap",
             gap: 16,
@@ -100,23 +124,29 @@ export default function Footer() {
             alignItems: "center",
           }}
         >
-          <p style={{ fontSize: 12, color: "var(--mist)", opacity: 0.5, fontFamily: "var(--font-mono)" }}>
+          <p
+            style={{
+              fontSize: 12,
+              color: "var(--text-hint)",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.04em",
+            }}
+          >
             {f.rights}
           </p>
           <a
-            href="#"
+            href={`mailto:${f.email}`}
             style={{
               fontSize: 12,
-              color: "var(--mist)",
-              opacity: 0.5,
+              color: "var(--text-hint)",
               textDecoration: "none",
               fontFamily: "var(--font-mono)",
-              transition: "opacity 0.2s",
+              letterSpacing: "0.04em",
             }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.9")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.5")}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--emerald)")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--text-hint)")}
           >
-            {f.privacy}
+            {f.email}
           </a>
         </div>
       </div>

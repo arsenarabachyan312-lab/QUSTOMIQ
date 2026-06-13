@@ -13,7 +13,7 @@ const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
     <div
       style={{
         position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(16,185,129,0.07) 0%, transparent 70%)",
+        background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(16,185,129,0.06) 0%, transparent 70%)",
       }}
     />
   ),
@@ -23,7 +23,7 @@ function item(delay: number) {
   return {
     initial:    { opacity: 0, y: 40 },
     animate:    { opacity: 1, y: 0 },
-    transition: { duration: 0.7, ease: EASE_OUT, delay },
+    transition: { duration: 0.75, ease: EASE_OUT, delay },
   } as const;
 }
 
@@ -47,15 +47,31 @@ export default function Hero() {
         {!reduce && <HeroScene />}
       </div>
 
-      {/* Bottom fade — blend particles into page */}
+      {/* Subtle grid overlay — creates depth */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: "none",
+          backgroundImage: [
+            "linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px)",
+            "linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)",
+          ].join(", "),
+          backgroundSize: "80px 80px",
+        }}
+      />
+
+      {/* Bottom fade */}
       <div
         aria-hidden="true"
         style={{
           position: "absolute",
           bottom: 0, left: 0, right: 0,
-          height: "35%",
-          background: "linear-gradient(to top, var(--obsidian), transparent)",
-          zIndex: 1,
+          height: "40%",
+          background: "linear-gradient(to top, var(--obsidian) 0%, transparent 100%)",
+          zIndex: 2,
           pointerEvents: "none",
         }}
       />
@@ -67,7 +83,7 @@ export default function Hero() {
         className="q-container"
         style={{
           position: "relative",
-          zIndex: 2,
+          zIndex: 3,
           flex: 1,
           display: "flex",
           flexDirection: "column",
@@ -86,18 +102,19 @@ export default function Hero() {
               display: "inline-flex",
               alignItems: "center",
               gap: 8,
-              background: "rgba(16,185,129,0.08)",
-              border: "1px solid rgba(16,185,129,0.2)",
+              background: "rgba(16,185,129,0.07)",
+              border: "1px solid rgba(16,185,129,0.18)",
               padding: "6px 16px",
               borderRadius: 50,
-              marginBottom: 32,
+              marginBottom: 36,
             }}
           >
             <span
               style={{
                 width: 6, height: 6, borderRadius: "50%",
                 background: "var(--emerald)",
-                boxShadow: "0 0 8px #10B981",
+                boxShadow: "0 0 10px var(--emerald)",
+                flexShrink: 0,
               }}
             />
             {ru.hero.badge}
@@ -108,10 +125,11 @@ export default function Hero() {
         <motion.h1
           {...(reduce ? {} : item(0.15))}
           style={{
-            fontSize: "clamp(2.6rem, 7.5vw, 4.75rem)",
-            maxWidth: 820,
+            fontSize: "clamp(2.8rem, 7.5vw, 4.75rem)",
+            maxWidth: 860,
             marginBottom: 24,
             lineHeight: 1.05,
+            letterSpacing: "-0.03em",
           }}
         >
           {ru.hero.h1_1}
@@ -124,10 +142,11 @@ export default function Hero() {
           {...(reduce ? {} : item(0.25))}
           style={{
             fontFamily: "var(--font-mono)",
-            fontSize: "clamp(13px, 2vw, 15px)",
-            color: "var(--mist)",
-            letterSpacing: "0.07em",
+            fontSize: "clamp(12px, 1.8vw, 14px)",
+            color: "var(--text-muted)",
+            letterSpacing: "0.06em",
             marginBottom: 48,
+            maxWidth: 560,
           }}
         >
           {ru.hero.sub}
@@ -147,15 +166,23 @@ export default function Hero() {
                 gap: 8,
                 background: "var(--emerald)",
                 color: "#000",
-                fontWeight: 600,
-                fontSize: 15,
+                fontWeight: 700,
+                fontSize: 14,
                 padding: "14px 30px",
                 borderRadius: 50,
                 textDecoration: "none",
-                transition: "opacity 0.2s",
+                letterSpacing: "-0.01em",
               }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.85")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background  = "#0ea472";
+                el.style.boxShadow   = "0 0 32px rgba(16,185,129,0.35)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = "var(--emerald)";
+                el.style.boxShadow  = "none";
+              }}
             >
               {ru.hero.cta_primary}
             </a>
@@ -168,45 +195,78 @@ export default function Hero() {
               alignItems: "center",
               gap: 8,
               border: "1px solid rgba(255,255,255,0.1)",
-              color: "var(--mist)",
+              color: "var(--text-muted)",
               fontWeight: 500,
-              fontSize: 15,
+              fontSize: 14,
               padding: "14px 30px",
               borderRadius: 50,
               textDecoration: "none",
-              transition: "all 0.2s",
+              letterSpacing: "-0.01em",
             }}
             onMouseEnter={(e) => {
               const el = e.currentTarget as HTMLAnchorElement;
-              el.style.borderColor = "rgba(255,255,255,0.22)";
-              el.style.color = "var(--snow)";
+              el.style.borderColor = "rgba(255,255,255,0.2)";
+              el.style.color = "var(--text-primary)";
             }}
             onMouseLeave={(e) => {
               const el = e.currentTarget as HTMLAnchorElement;
               el.style.borderColor = "rgba(255,255,255,0.1)";
-              el.style.color = "var(--mist)";
+              el.style.color = "var(--text-muted)";
             }}
           >
             {ru.hero.cta_secondary}
           </a>
         </motion.div>
 
-        {/* Scroll hint */}
+        {/* Glassmorphism stats card — bottom right */}
+        <motion.div
+          {...(reduce ? {} : {
+            initial: { opacity: 0, x: 20 },
+            animate: { opacity: 1, x: 0 },
+            transition: { delay: 0.7, duration: 0.6, ease: EASE_OUT },
+          })}
+          style={{
+            position: "absolute",
+            bottom: "5rem",
+            right: 0,
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            background: "rgba(11,15,14,0.7)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: 14,
+            padding: "14px 20px",
+          }}
+          aria-hidden="true"
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 11,
+              color: "var(--text-muted)",
+              letterSpacing: "0.08em",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {ru.hero.stats}
+          </p>
+        </motion.div>
+
+        {/* Scroll cue */}
         <motion.div
           {...(reduce ? {} : {
             initial: { opacity: 0 },
             animate: { opacity: 1 },
-            transition: { delay: 0.9, duration: 0.8 },
+            transition: { delay: 1.0, duration: 0.8 },
           })}
           style={{
             position: "absolute",
-            bottom: "2.5rem",
+            bottom: "2rem",
             left: "50%",
             transform: "translateX(-50%)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 8,
+            gap: 10,
           }}
           aria-hidden="true"
         >
@@ -214,21 +274,27 @@ export default function Hero() {
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: 10,
-              color: "var(--mist)",
-              letterSpacing: "0.14em",
+              color: "var(--text-hint)",
+              letterSpacing: "0.15em",
               textTransform: "uppercase",
             }}
           >
             {ru.hero.scroll_hint}
           </span>
-          <motion.div
-            animate={reduce ? {} : { y: [0, 6, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
-              <path d="M1 1l7 7 7-7" stroke="var(--mist)" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </motion.div>
+          {/* Animated emerald line growing downward */}
+          <div style={{ position: "relative", width: 1, height: 40, background: "rgba(255,255,255,0.08)" }}>
+            <motion.div
+              animate={reduce ? {} : { scaleY: [0, 1, 0], y: [0, 0, 40] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              style={{
+                position: "absolute",
+                top: 0, left: 0, right: 0,
+                height: "100%",
+                background: "var(--emerald)",
+                transformOrigin: "top",
+              }}
+            />
+          </div>
         </motion.div>
       </div>
     </section>

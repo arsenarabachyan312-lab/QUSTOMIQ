@@ -63,7 +63,7 @@ export default function Process() {
   return (
     <section
       id="process"
-      style={{ background: "var(--obsidian)", overflow: "hidden" }}
+      style={{ background: "var(--surface)", overflow: "hidden" }}
     >
       <div ref={containerRef}>
         <div className="q-container" style={{ paddingTop: "var(--section-py)", paddingBottom: "3rem" }}>
@@ -73,25 +73,19 @@ export default function Process() {
             viewport={{ once: true }}
             transition={{ duration: 0.65, ease: EASE_OUT }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-              <div style={{
-                width: 24, height: 2,
-                background: "var(--g-mix)",
-                borderRadius: 1,
-                flexShrink: 0,
-              }} />
-              <span className="eyebrow">{eyebrow}</span>
-            </div>
+            <span className="eyebrow" style={{ marginBottom: 16 }}>{eyebrow}</span>
             <h2 style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>{heading}</h2>
           </motion.div>
 
+          {/* Progress line */}
           <div
             style={{
               marginTop: 40,
-              height: 1,
-              background: "var(--border)",
+              height: 2,
+              background: "rgba(255,255,255,0.06)",
               position: "relative",
               overflow: "hidden",
+              borderRadius: 1,
             }}
           >
             <div
@@ -99,14 +93,16 @@ export default function Process() {
               style={{
                 position: "absolute",
                 inset: 0,
-                background: "var(--g-em)",
+                background: "var(--emerald)",
                 transformOrigin: "left",
                 transform: "scaleX(0)",
+                boxShadow: "0 0 8px rgba(16,185,129,0.6)",
               }}
             />
           </div>
         </div>
 
+        {/* Horizontal step track */}
         <div
           ref={trackRef}
           style={{
@@ -127,21 +123,25 @@ export default function Process() {
               style={{
                 flexShrink: 0,
                 width: "clamp(280px, 28vw, 360px)",
-                background: "var(--surface)",
-                border: "1px solid var(--border)",
+                background: "var(--obsidian)",
+                border: "1px solid rgba(255,255,255,0.06)",
                 borderRadius: 20,
                 padding: "36px 32px",
                 position: "relative",
                 overflow: "hidden",
-                transition: "border-color 0.3s",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(16,185,129,0.3)";
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = "rgba(16,185,129,0.25)";
+                el.style.boxShadow   = "0 0 48px rgba(16,185,129,0.06)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                const el = e.currentTarget as HTMLElement;
+                el.style.borderColor = "rgba(255,255,255,0.06)";
+                el.style.boxShadow   = "none";
               }}
             >
+              {/* Watermark step number */}
               <div
                 aria-hidden="true"
                 style={{
@@ -149,10 +149,11 @@ export default function Process() {
                   top: -10, right: 16,
                   fontFamily: "var(--font-mono)",
                   fontWeight: 700,
-                  fontSize: 110,
-                  color: "rgba(255,255,255,0.03)",
+                  fontSize: 96,
+                  color: "rgba(16,185,129,0.06)",
                   lineHeight: 1,
                   userSelect: "none",
+                  letterSpacing: "-0.05em",
                 }}
               >
                 {step.n}
@@ -162,14 +163,22 @@ export default function Process() {
               <h3
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontSize: "1.5rem",
+                  fontSize: "1.4rem",
                   marginBottom: 14,
                   lineHeight: 1.2,
+                  letterSpacing: "-0.02em",
+                  color: "var(--text-primary)",
                 }}
               >
                 {step.title}
               </h3>
-              <p style={{ color: "var(--mist)", fontSize: 15, lineHeight: 1.7 }}>
+              <p
+                style={{
+                  color: "var(--text-muted)",
+                  fontSize: 15,
+                  lineHeight: 1.75,
+                }}
+              >
                 {step.desc}
               </p>
             </motion.div>

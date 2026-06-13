@@ -26,9 +26,8 @@ const ICONS: Record<IconKey, JSX.Element> = {
   ai: (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-2.26A7 7 0 0 1 12 2z"/>
-      <line x1="10" y1="20" x2="14" y2="20"/>
-      <line x1="10" y1="22" x2="14" y2="22"/>
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
     </svg>
   ),
   portal: (
@@ -49,13 +48,15 @@ const ICONS: Record<IconKey, JSX.Element> = {
   bi: (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
-      <line x1="6" y1="20" x2="6" y2="14"/>
+      <line x1="18" y1="20" x2="18" y2="10"/>
+      <line x1="12" y1="20" x2="12" y2="4"/>
+      <line x1="6"  y1="20" x2="6"  y2="14"/>
     </svg>
   ),
 };
 
-const ICON_COLORS: IconKey[] = ["sfa", "dms", "ai", "portal", "api", "bi"];
+const ICON_KEYS: IconKey[] = ["sfa", "dms", "ai", "portal", "api", "bi"];
+const CARD_NUMS            = ["01", "02", "03", "04", "05", "06"];
 
 export default function Services() {
   const reduce = useReducedMotion();
@@ -78,20 +79,26 @@ export default function Services() {
           transition={{ duration: 0.65, ease: EASE_OUT }}
           style={{ marginBottom: "clamp(3rem, 6vw, 4.5rem)" }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-            <div style={{
-              width: 24, height: 2,
-              background: "var(--g-em)",
-              borderRadius: 1,
-              flexShrink: 0,
-            }} />
-            <span className="eyebrow">{eyebrow}</span>
-          </div>
-          <h2 style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>{heading}</h2>
+          <span className="eyebrow" style={{ marginBottom: 16 }}>{eyebrow}</span>
+          <h2
+            style={{
+              fontSize: "clamp(2rem, 5vw, 3rem)",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {heading}
+          </h2>
         </motion.div>
 
         {/* Cards grid */}
-        <div
+        <motion.div
+          variants={reduce ? {} : {
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.08 } },
+          }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 340px), 1fr))",
@@ -99,66 +106,103 @@ export default function Services() {
           }}
         >
           {items.map((item, i) => {
-            const iconKey = ICON_COLORS[i] as IconKey;
+            const iconKey = ICON_KEYS[i];
             const isEven  = i % 2 === 0;
 
             return (
               <motion.article
                 key={i}
-                initial={reduce ? false : { opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "0px 0px -40px 0px" }}
-                transition={{ duration: 0.6, ease: EASE_OUT, delay: (i % 2) * 0.08 }}
-                whileHover={reduce ? {} : {
-                  y: -4,
-                  boxShadow: isEven
-                    ? "0 0 32px rgba(16,185,129,0.13), 0 20px 40px rgba(0,0,0,0.4)"
-                    : "0 0 32px rgba(167,139,250,0.13), 0 20px 40px rgba(0,0,0,0.4)",
+                variants={reduce ? {} : {
+                  hidden:   { opacity: 0, y: 24 },
+                  visible:  { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_OUT } },
                 }}
                 className="q-card"
                 style={{
                   cursor: "default",
                   display: "flex",
                   flexDirection: "column",
-                  transition: "border-color 0.25s ease, background 0.25s ease",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = isEven
-                    ? "rgba(16,185,129,0.28)"
-                    : "rgba(167,139,250,0.28)";
-                  el.style.background = "var(--surface2)";
+                  el.style.borderColor  = "rgba(16,185,129,0.3)";
+                  el.style.boxShadow    = "0 0 40px rgba(16,185,129,0.08), 0 20px 40px rgba(0,0,0,0.3)";
+                  el.style.transform    = "translateY(-4px)";
+                  el.style.background   = "var(--surface2)";
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "var(--border)";
+                  el.style.borderColor = "rgba(255,255,255,0.05)";
+                  el.style.boxShadow   = "none";
+                  el.style.transform   = "translateY(0)";
                   el.style.background  = "var(--surface)";
                 }}
               >
+                {/* Watermark number */}
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    top: -8, right: 12,
+                    fontFamily: "var(--font-mono)",
+                    fontWeight: 700,
+                    fontSize: 80,
+                    lineHeight: 1,
+                    color: "rgba(255,255,255,0.04)",
+                    userSelect: "none",
+                    letterSpacing: "-0.05em",
+                  }}
+                >
+                  {CARD_NUMS[i]}
+                </div>
+
                 {/* Icon */}
                 <div
                   style={{
-                    width: 44, height: 44,
+                    width: 48, height: 48,
                     borderRadius: 12,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     marginBottom: 20,
                     background: isEven
-                      ? "rgba(16,185,129,0.10)"
-                      : "rgba(167,139,250,0.10)",
+                      ? "var(--emerald-dim)"
+                      : "var(--violet-dim)",
                     color: isEven ? "var(--emerald)" : "var(--violet)",
+                    flexShrink: 0,
+                    position: "relative",
+                    zIndex: 1,
                   }}
                 >
                   {ICONS[iconKey]}
                 </div>
 
-                <h3 style={{ fontSize: "1.05rem", marginBottom: 10 }}>{item.title}</h3>
-                <p style={{ fontSize: "0.9rem", color: "var(--mist)", lineHeight: 1.7, flex: 1 }}>
+                <h3
+                  style={{
+                    fontSize: "1.05rem",
+                    marginBottom: 10,
+                    letterSpacing: "-0.01em",
+                    position: "relative",
+                    zIndex: 1,
+                  }}
+                >
+                  {item.title}
+                </h3>
+                <p
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "var(--text-muted)",
+                    lineHeight: 1.75,
+                    flex: 1,
+                    position: "relative",
+                    zIndex: 1,
+                  }}
+                >
                   {item.desc}
                 </p>
 
-                <div style={{ marginTop: 20 }}>
+                <div style={{ marginTop: 20, position: "relative", zIndex: 1 }}>
                   <span
                     style={{
                       fontSize: 13,
@@ -166,7 +210,6 @@ export default function Services() {
                       fontWeight: 500,
                       cursor: "pointer",
                       borderBottom: "1px solid transparent",
-                      transition: "border-color 0.2s",
                       paddingBottom: 1,
                     }}
                     onMouseEnter={(e) => {
@@ -184,7 +227,7 @@ export default function Services() {
               </motion.article>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

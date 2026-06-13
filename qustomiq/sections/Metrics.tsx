@@ -1,70 +1,115 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { gsap } from "gsap";
 import { ru } from "@/lib/i18n/ru";
+import { EASE_OUT } from "@/lib/animations";
 
 function Counter({
   value,
   suffix,
   label,
+  index,
 }: {
   value: number;
   suffix: string;
   label: string;
+  index: number;
 }) {
-  const ref    = useRef<HTMLSpanElement>(null);
-  const reduce = useReducedMotion();
-  const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
+  const wrapRef  = useRef<HTMLDivElement>(null);
+  const numRef   = useRef<HTMLSpanElement>(null);
+  const barRef   = useRef<HTMLDivElement>(null);
+  const reduce   = useReducedMotion();
+  const inView   = useInView(wrapRef, { once: true, margin: "0px 0px -60px 0px" });
 
   useEffect(() => {
-    if (!inView || !ref.current) return;
+    if (!inView || !numRef.current) return;
     if (reduce) {
-      ref.current.textContent = value + suffix;
+      numRef.current.textContent = value + suffix;
       return;
     }
-    const obj = { val: 0 };
-    const ctx = gsap.context(() => {
+    const delay = index * 0.12;
+    const obj   = { val: 0 };
+    const ctx   = gsap.context(() => {
       gsap.to(obj, {
         val: value,
-        duration: 1.8,
+        duration: 2,
         ease: "power2.out",
-        delay: 0,
+        delay,
         onUpdate() {
-          if (ref.current) {
-            ref.current.textContent = Math.round(obj.val) + suffix;
+          if (numRef.current) {
+            numRef.current.textContent = Math.round(obj.val) + suffix;
           }
         },
       });
+      if (barRef.current) {
+        gsap.fromTo(
+          barRef.current,
+          { scaleX: 0 },
+          { scaleX: 1, duration: 1.6, ease: "power2.out", delay }
+        );
+      }
     });
     return () => ctx.revert();
-  }, [inView, value, suffix, reduce]);
+  }, [inView, value, suffix, reduce, index]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+    <div
+      ref={wrapRef}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 12,
+      }}
+    >
+      {/* Number */}
       <div
         style={{
           fontFamily: "var(--font-display)",
           fontWeight: 700,
-          fontSize: "clamp(2rem, 5vw, 3.2rem)",
-          background: "var(--g-em)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-          lineHeight: 1.1,
+          fontSize: "clamp(2.4rem, 5vw, 3.5rem)",
+          color: "var(--text-primary)",
+          lineHeight: 1,
+          letterSpacing: "-0.03em",
         }}
       >
-        <span ref={ref}>0{suffix}</span>
+        <span ref={numRef}>0{suffix}</span>
       </div>
+
+      {/* Emerald bar */}
+      <div
+        style={{
+          width: 40,
+          height: 2,
+          background: "rgba(255,255,255,0.08)",
+          borderRadius: 1,
+          overflow: "hidden",
+        }}
+      >
+        <div
+          ref={barRef}
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "var(--emerald)",
+            transformOrigin: "left",
+            transform: "scaleX(0)",
+          }}
+        />
+      </div>
+
+      {/* Label */}
       <p
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: 12,
-          color: "var(--mist)",
-          letterSpacing: "0.08em",
+          fontSize: 11,
+          color: "var(--text-hint)",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
           textAlign: "center",
-          lineHeight: 1.5,
+          lineHeight: 1.4,
         }}
       >
         {label}
@@ -74,14 +119,19 @@ function Counter({
 }
 
 export default function Metrics() {
+  const reduce   = useReducedMotion();
   const { items } = ru.metrics;
 
   return (
-    <section
+    <motion.section
+      initial={reduce ? false : { opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, ease: EASE_OUT }}
       style={{
-        background: "var(--surface)",
-        borderTop: "1px solid var(--border)",
-        borderBottom: "1px solid var(--border)",
+        background: "linear-gradient(135deg, #050505 0%, #0B0F0E 100%)",
+        borderTop:    "1px solid rgba(16,185,129,0.2)",
+        borderBottom: "1px solid rgba(255,255,255,0.04)",
         paddingBlock: "clamp(3rem, 7vw, 5rem)",
       }}
     >
@@ -91,17 +141,22 @@ export default function Metrics() {
             <div
               key={i}
               style={{
-                paddingInline: "clamp(1rem, 3vw, 2rem)",
+                paddingInline: "clamp(1rem, 3vw, 2.5rem)",
                 borderRight: i < items.length - 1
-                  ? "1px solid rgba(255,255,255,0.07)"
+                  ? "1px solid rgba(255,255,255,0.06)"
                   : "none",
               }}
             >
-              <Counter value={item.value} suffix={item.suffix} label={item.label} />
+              <Counter
+                value={item.value}
+                suffix={item.suffix}
+                label={item.label}
+                index={i}
+              />
             </div>
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
