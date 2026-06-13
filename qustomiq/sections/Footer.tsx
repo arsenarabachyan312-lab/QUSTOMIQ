@@ -78,15 +78,6 @@ export default function Footer() {
               >
                 {f.email}
               </a>
-              <a
-                href={`tel:${f.phone.replace(/\s|\(|\)|-/g, "")}`}
-                className="no-underline transition-colors duration-200"
-                style={{ fontSize: 14, color: "var(--muted)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink)")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted)")}
-              >
-                {f.phone}
-              </a>
             </div>
 
             {/* Social */}

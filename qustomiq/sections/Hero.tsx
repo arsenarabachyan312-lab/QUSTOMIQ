@@ -1,19 +1,17 @@
 "use client";
-import { useEffect } from "react";
+import { motion } from "framer-motion";
 import Nav from "@/components/Nav";
 import ParticleSphere from "@/components/ParticleSphere";
 
-export default function Hero() {
-  /* Global scroll-reveal observer */
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("in-view"); }),
-      { threshold: 0.10, rootMargin: "0px 0px -32px 0px" }
-    );
-    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, []);
+const EASE = [0.22, 1, 0.36, 1] as const;
 
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 22 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.65, ease: EASE, delay },
+});
+
+export default function Hero() {
   return (
     <section
       className="relative min-h-screen flex flex-col"
@@ -52,31 +50,32 @@ export default function Hero() {
         </div>
 
         {/* Left: copy */}
-        <div className="relative z-10 flex-shrink-0 w-full lg:max-w-[600px] reveal">
+        <div className="relative z-10 flex-shrink-0 w-full lg:max-w-[600px]">
           {/* Badge */}
-          <div className="badge mb-6 sm:mb-8" style={{ fontSize: "clamp(11px, 2.5vw, 13px)" }}>
+          <motion.div {...fadeUp(0)} className="badge mb-6 sm:mb-8" style={{ fontSize: "clamp(11px, 2.5vw, 13px)" }}>
             <span className="badge-dot" />
-            IT-компания нового поколения
-          </div>
+            SFA · DMS · AI · Интеграции
+          </motion.div>
 
           {/* Heading */}
-          <h1 className="mb-5 sm:mb-6">
+          <motion.h1 {...fadeUp(0.1)} className="mb-5 sm:mb-6">
             Автоматизация<br />
             бизнеса с помощью{" "}
             <span className="gradient-text">AI</span>
-          </h1>
+          </motion.h1>
 
           {/* Sub */}
-          <p
+          <motion.p
+            {...fadeUp(0.2)}
             className="lead mb-8 sm:mb-10"
             style={{ color: "var(--muted)", maxWidth: 520 }}
           >
             Строим кастомные AI-системы, CRM и аналитику для FMCG,
             ритейла и производства — от прототипа до промышленной эксплуатации.
-          </p>
+          </motion.p>
 
           {/* CTAs */}
-          <div className="hero-ctas flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <motion.div {...fadeUp(0.3)} className="hero-ctas flex flex-col sm:flex-row gap-3 sm:gap-4">
             <a href="#contacts" className="btn-primary">
               Обсудить проект
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -88,17 +87,18 @@ export default function Hero() {
             <a href="#cases" className="btn-ghost">
               Смотреть кейсы
             </a>
-          </div>
+          </motion.div>
 
           {/* Stats row */}
-          <div
+          <motion.div
+            {...fadeUp(0.4)}
             className="flex flex-wrap mt-10 sm:mt-14"
             style={{ gap: "clamp(1.5rem, 5vw, 2.5rem)" }}
           >
             {[
-              { v: "50+",   l: "проектов" },
-              { v: "5 лет", l: "на рынке" },
-              { v: "98%",   l: "SLA" },
+              { v: "50+",     l: "проектов" },
+              { v: "6 нед.",  l: "до MVP" },
+              { v: "98%",     l: "SLA" },
             ].map(({ v, l }) => (
               <div key={l}>
                 <div
@@ -119,7 +119,7 @@ export default function Hero() {
                 </div>
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Tablet sphere — in flow below text, centered */}
@@ -141,7 +141,13 @@ export default function Hero() {
       </div>
 
       {/* ── Scroll indicator ── */}
-      <div className="relative z-10 flex justify-center pb-6 sm:pb-8" aria-hidden="true">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.1, duration: 0.8 }}
+        className="relative z-10 flex justify-center pb-6 sm:pb-8"
+        aria-hidden="true"
+      >
         <div style={{
           width: 24, height: 40, borderRadius: 12,
           border: "1.5px solid rgba(255,255,255,0.14)",
@@ -154,7 +160,7 @@ export default function Hero() {
             animation: "scrollDot 2.2s ease-in-out infinite",
           }} />
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

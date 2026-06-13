@@ -37,7 +37,6 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }

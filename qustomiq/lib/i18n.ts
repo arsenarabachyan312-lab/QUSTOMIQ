@@ -141,7 +141,7 @@ export const dict = {
       paragraphs: [
         "За QUSTOMIQ стоят инженеры и менеджеры с опытом в крупных проектах автоматизации бизнеса. Мы прошли путь от управления IT-проектами и архитектуры до прямой работы с клиентами — и поняли главное: бизнесу нужен не подрядчик, который сдал код и исчез, а партнёр, который остаётся рядом.",
         "Поэтому мы собрались и создали свою компанию. Чтобы работать иначе: глубоко погружаться в задачу, брать ответственность за результат и развивать продукт вместе с вами — а не закрывать тикеты.",
-        "Мы молодая команда, но не новички. За плечами — годы работы над системами автоматизации, интеграциями и AI-решениями для бизнеса.",
+        "За плечами — годы реальных проектов по автоматизации, системным интеграциям и AI-решениям для бизнеса.",
       ],
     },
     team: {
@@ -185,7 +185,7 @@ export const dict = {
     },
     cases: {
       heading: "Кейсы",
-      sub: "Пока мы готовим публичные кейсы, вот типовые задачи, которые решает наша команда. Детали проектов под NDA — расскажем на созвоне.",
+      sub: "Проекты под NDA. Детали, метрики и архитектуру — расскажем на созвоне.",
       task_label: "Задача",
       solution_label: "Решение",
       effect_label: "Эффект",
@@ -229,7 +229,6 @@ export const dict = {
       nav: ["Услуги", "AI-решения", "Процесс", "Кейсы", "Контакты"],
       contacts_heading: "Контакты",
       email: "hello@qustomiq.ru",
-      phone: "+7 (495) 000-00-00",
       rights: "© 2026 QUSTOMIQ. Все права защищены.",
     },
   },
@@ -373,7 +372,7 @@ export const dict = {
       paragraphs: [
         "Behind QUSTOMIQ are engineers and managers with experience in large-scale business automation projects. We've gone from managing IT projects and architecture to working directly with clients — and understood the key thing: a business needs not a contractor who delivers code and disappears, but a partner who stays.",
         "That's why we came together and built our own company. To work differently: dive deep into the problem, take responsibility for results, and develop the product together with you — not just close tickets.",
-        "We're a young team, but not newcomers. Behind us are years of work on automation systems, integrations and AI solutions for business.",
+        "Behind us are years of real projects in automation, system integrations, and AI solutions for business.",
       ],
     },
     team: {
@@ -417,7 +416,7 @@ export const dict = {
     },
     cases: {
       heading: "Cases",
-      sub: "While we prepare public cases, here are typical tasks our team solves. Project details are under NDA — we'll share on a call.",
+      sub: "Projects under NDA. Details, metrics and architecture — we'll share on a call.",
       task_label: "Challenge",
       solution_label: "Solution",
       effect_label: "Outcome",
@@ -461,7 +460,6 @@ export const dict = {
       nav: ["Services", "AI Solutions", "Process", "Cases", "Contacts"],
       contacts_heading: "Contacts",
       email: "hello@qustomiq.ru",
-      phone: "+7 (495) 000-00-00",
       rights: "© 2026 QUSTOMIQ. All rights reserved.",
     },
   },
