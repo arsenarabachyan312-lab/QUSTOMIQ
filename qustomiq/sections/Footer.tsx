@@ -30,26 +30,11 @@ export default function Footer() {
                 color: "var(--text-primary)",
                 textDecoration: "none",
                 letterSpacing: "-0.02em",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 2,
+                display: "inline-block",
                 marginBottom: 10,
               }}
             >
-              QUSTOMIQ
-              <span
-                style={{
-                  display: "inline-block",
-                  width: 5,
-                  height: 5,
-                  borderRadius: "50%",
-                  background: "var(--emerald)",
-                  boxShadow: "0 0 6px var(--emerald)",
-                  marginLeft: 2,
-                  marginBottom: 6,
-                  flexShrink: 0,
-                }}
-              />
+              <span>QUSTOM</span><span style={{ color: "#10B981" }}>IQ</span>
             </a>
             <p
               style={{
