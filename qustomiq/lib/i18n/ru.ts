@@ -1,10 +1,11 @@
 export const ru = {
   nav: {
     links: [
-      { label: "Услуги",   href: "#services" },
-      { label: "Процесс",  href: "#process"  },
-      { label: "Проекты",  href: "#cases"    },
-      { label: "Контакты", href: "#contact"  },
+      { label: "О компании", href: "#about"    },
+      { label: "Услуги",     href: "#services" },
+      { label: "Процесс",    href: "#process"  },
+      { label: "Проекты",    href: "#cases"    },
+      { label: "Контакты",   href: "#contact"  },
     ],
     cta: "Обсудить проект",
   },
@@ -17,13 +18,13 @@ export const ru = {
     cta_primary:   "Посмотреть кейсы",
     cta_secondary: "Обсудить проект →",
     scroll_hint:   "прокрутите вниз",
-    stats:         "50+ проектов · 8 лет · 3 страны",
+    stats:         "100+ проектов · Enterprise-стек · 3 страны",
   },
 
   metrics: {
     items: [
-      { value: 50,  suffix: "+",    label: "проектов"              },
-      { value: 8,   suffix: " лет", label: "опыта команды"         },
+      { value: 100, suffix: "+",    label: "проектов"              },
+      { value: 100, suffix: "%",    label: "проектов с архитектурным аудитом" },
       { value: 3,   suffix: "",     label: "страны"                },
       { value: 98,  suffix: "%",    label: "клиентов возвращаются" },
     ],
@@ -152,7 +153,7 @@ export const ru = {
   },
 
   footer: {
-    tagline: "// системная разработка · с 2016 года",
+    tagline: "// системная разработка · enterprise-фокус",
     cols: [
       {
         heading: "Услуги",

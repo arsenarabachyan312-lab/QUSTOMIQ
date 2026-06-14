@@ -157,6 +157,35 @@ a, button, [role="button"] {
   box-shadow: 0 0 40px rgba(16, 185, 129, 0.08);
 }
 
+/* ── Responsive overrides ── */
+
+/* Process: horizontal scroll → vertical card stack on mobile */
+.process-step-indicator { display: none; }
+
+@media (max-width: 767px) {
+  .process-track {
+    flex-direction: column !important;
+    width: 100% !important;
+    transform: none !important;  /* clear GSAP translateX applied at desktop width */
+    padding-bottom: var(--section-py) !important;
+  }
+  .process-track > div {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex-shrink: 1 !important;
+    transform: none !important;  /* clear Framer Motion initial x:30 if still pending */
+  }
+  .process-progress-line { display: none; }
+  .process-step-indicator { display: block; }
+}
+
+/* Cases: visual block always appears above text on mobile single-column */
+@media (max-width: 639px) {
+  .case-visual { order: 1 !important; }
+  .case-text   { order: 2 !important; }
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

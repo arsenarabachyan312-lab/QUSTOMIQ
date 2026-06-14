@@ -79,6 +79,7 @@ export default function Cases() {
               >
                 {/* Visual — metric block with sparkline */}
                 <div
+                  className="case-visual"
                   style={{
                     background:     "var(--surface)",
                     border:         "1px solid rgba(255,255,255,0.06)",
@@ -195,7 +196,7 @@ export default function Cases() {
                 </div>
 
                 {/* Text content */}
-                <div style={{ order: isReversed ? 1 : 2 }}>
+                <div className="case-text" style={{ order: isReversed ? 1 : 2 }}>
                   <h3
                     style={{
                       fontFamily:    "var(--font-display)",

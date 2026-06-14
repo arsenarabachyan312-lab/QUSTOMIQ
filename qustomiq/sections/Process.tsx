@@ -45,20 +45,20 @@ export default function Process() {
   const reduce       = useReducedMotion();
 
   useEffect(() => {
-    if (reduce) return;
-    if (!containerRef.current || !trackRef.current) return;
-    if (typeof window === "undefined" || window.innerWidth < 768) return;
+    if (reduce || !containerRef.current || !trackRef.current) return;
 
-    const track = trackRef.current;
+    const mm = gsap.matchMedia();
 
-    const ctx = gsap.context(() => {
+    mm.add("(min-width: 768px)", () => {
+      const track = trackRef.current!;
+      const cont  = containerRef.current!;
       const totalScroll = () => track.scrollWidth - window.innerWidth + 80;
 
       gsap.to(track, {
         x: () => -totalScroll(),
         ease: "none",
         scrollTrigger: {
-          trigger: containerRef.current,
+          trigger: cont,
           start: "top top",
           end: () => `+=${totalScroll()}`,
           scrub: 1.2,
@@ -69,24 +69,28 @@ export default function Process() {
       });
 
       if (lineRef.current) {
-        gsap.fromTo(
-          lineRef.current,
-          { scaleX: 0 },
-          {
-            scaleX: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: containerRef.current,
-              start: "top top",
-              end: () => `+=${totalScroll()}`,
-              scrub: 1.2,
-            },
-          }
-        );
+        gsap.fromTo(lineRef.current, { scaleX: 0 }, {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: cont,
+            start: "top top",
+            end: () => `+=${totalScroll()}`,
+            scrub: 1.2,
+          },
+        });
       }
-    }, containerRef);
 
-    return () => ctx.revert();
+      /* Called when breakpoint deactivates (e.g. resize to mobile) */
+      return () => { gsap.set(track, { x: 0 }); };
+    });
+
+    /* Mobile branch — explicitly clear any transform left by a prior desktop run */
+    mm.add("(max-width: 767px)", () => {
+      if (trackRef.current) gsap.set(trackRef.current, { x: 0 });
+    });
+
+    return () => mm.revert();
   }, [reduce]);
 
   const { eyebrow, heading, steps } = ru.process;
@@ -108,8 +112,9 @@ export default function Process() {
             <h2 style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>{heading}</h2>
           </motion.div>
 
-          {/* Progress line */}
+          {/* Progress line — hidden on mobile (no ScrollTrigger on mobile) */}
           <div
+            className="process-progress-line"
             style={{
               marginTop: 40,
               height: 2,
@@ -133,9 +138,10 @@ export default function Process() {
           </div>
         </div>
 
-        {/* Horizontal step track */}
+        {/* Horizontal step track — vertical stack on mobile via CSS */}
         <div
           ref={trackRef}
+          className="process-track"
           style={{
             display:      "flex",
             gap:          "1.5rem",
@@ -185,6 +191,23 @@ export default function Process() {
                   transition:    "opacity 0.2s",
                 }}
               />
+
+              {/* Mobile step counter — hidden on desktop via CSS */}
+              <span
+                className="process-step-indicator"
+                style={{
+                  fontFamily:    "var(--font-mono)",
+                  fontSize:      11,
+                  color:         "var(--emerald)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  marginBottom:  12,
+                  position:      "relative",
+                  zIndex:        3,
+                }}
+              >
+                {`Шаг ${i + 1} из ${steps.length}`}
+              </span>
 
               {/* Watermark step number */}
               <div

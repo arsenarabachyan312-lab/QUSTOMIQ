@@ -114,6 +114,25 @@ function Particles() {
   );
 }
 
+/* ── Slow-rotating wireframe plane — background texture ──── */
+function WireframePlane() {
+  const ref = useRef<THREE.Mesh>(null);
+
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+    const t = clock.elapsedTime;
+    ref.current.rotation.x = 0.35 + t * 0.018;
+    ref.current.rotation.z = t * 0.011;
+  });
+
+  return (
+    <mesh ref={ref}>
+      <planeGeometry args={[28, 28, 20, 20]} />
+      <meshBasicMaterial wireframe color="#10B981" opacity={0.038} transparent depthWrite={false} />
+    </mesh>
+  );
+}
+
 /* ── Camera drift ─────────────────────────────────────────── */
 function CameraRig() {
   const { camera } = useThree();
@@ -144,6 +163,7 @@ export default function HeroScene() {
       style={{ position: "absolute", inset: 0 }}
     >
       <ambientLight intensity={0.04} />
+      <WireframePlane />
       <Particles />
       <Sparkles count={60} scale={9} size={1.1} speed={0.22} opacity={0.35} color="#10B981" noise={0.9} />
       <Sparkles count={30} scale={7} size={0.85} speed={0.16} opacity={0.22} color="#A78BFA" noise={1.2} />

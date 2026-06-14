@@ -148,7 +148,7 @@ export default function About() {
               className="eyebrow"
               style={{ marginBottom: 20, display: "block" }}
             >
-              О КОМАНДЕ
+              О КОМПАНИИ
             </span>
             <h2
               style={{
@@ -194,16 +194,15 @@ export default function About() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.65, ease: EASE_OUT, delay: 0.25 }}
+          className="grid grid-cols-1 sm:grid-cols-3"
           style={{
-            marginTop:           "clamp(3rem, 6vw, 5rem)",
-            paddingTop:          "clamp(2rem, 4vw, 3rem)",
-            borderTop:           "1px solid rgba(255,255,255,0.06)",
-            display:             "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-            gap:                 "clamp(2rem, 4vw, 3rem)",
+            marginTop:  "clamp(3rem, 6vw, 5rem)",
+            paddingTop: "clamp(2rem, 4vw, 3rem)",
+            borderTop:  "1px solid rgba(255,255,255,0.06)",
+            gap:        "clamp(2rem, 4vw, 3rem)",
           }}
         >
-          <AnimCounter value={10} suffix="+ лет" label="средний опыт в команде" />
+          <AnimCounter value={10} suffix="+ лет" label="опыт каждого инженера" />
           <StatItem value="Enterprise" label="уровень предыдущих клиентов" />
           <StatItem value="0" label="посредников между вами и инженером" />
         </motion.div>
