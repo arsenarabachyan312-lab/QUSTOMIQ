@@ -1,6 +1,7 @@
 import Hero    from "@/sections/Hero";
 import Metrics  from "@/sections/Metrics";
 import Services from "@/sections/Services";
+import About    from "@/sections/About";
 import Process  from "@/sections/Process";
 import Cases    from "@/sections/Cases";
 import BI       from "@/sections/BI";
@@ -14,6 +15,7 @@ export default function Home() {
         <Hero />
         <Metrics />
         <Services />
+        <About />
         <Process />
         <Cases />
         <BI />
