@@ -7,12 +7,18 @@ import LineChart from "@/components/charts/LineChart";
 
 /* Sparkline trend data per case — visual only, not in i18n */
 const SPARKLINES = [
-  [65, 72, 68, 78, 82, 90, 95, 110, 118, 126, 134],   /* SFA +34% growth */
-  [100, 95, 88, 78, 65, 52, 48, 42, 38, 36, 40],       /* DMS -60% time */
-  [20, 28, 35, 42, 52, 60, 68, 74, 78, 80, 80],        /* AI 80% automated */
+  [44, 50, 47, 56, 62, 69, 76, 84, 93, 102, 110, 118],  /* FMCG SFA +41% — growing */
+  [100, 95, 89, 82, 75, 68, 62, 56, 50, 46, 42, 38],    /* Retail AI -28% — declining */
+  [100, 91, 83, 74, 65, 57, 50, 44, 40, 37, 34, 32],    /* FMCG DMS -55% — declining */
+  [38, 44, 50, 58, 65, 72, 80, 88, 96, 104, 110, 116],  /* Retail Analytics 2.1× — growing */
+  [100, 93, 84, 74, 63, 52, 42, 34, 28, 23, 20, 18],    /* FMCG AI -70% — declining */
+  [48, 54, 52, 60, 67, 74, 80, 87, 92, 98, 104, 110],   /* Logistics FMCG +37% — growing */
 ];
 
-const SPARKLINE_COLORS = ["#10B981", "#A78BFA", "#10B981"];
+const SPARKLINE_COLORS = [
+  "#10B981", "#10B981", "#10B981",
+  "#10B981", "#10B981", "#10B981",
+];
 
 export default function Cases() {
   const reduce = useReducedMotion();
