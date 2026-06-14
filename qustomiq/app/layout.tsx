@@ -22,10 +22,25 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "QUSTOMIQ — Системы, которые работают на вас",
-  description:
-    "SFA, DMS, AI-интеграции и корпоративные платформы. Кастомная разработка для enterprise-клиентов в России и СНГ.",
-  keywords: "разработка, интеграции, AI, автоматизация, SFA, DMS, CRM, ERP",
+  metadataBase: new URL("https://qustomiq.ru"),
+  title: "QUSTOMIQ — системы, которые не ломаются",
+  description: "SFA · DMS · AI-интеграции для компаний, которым важен результат",
+  keywords: "SFA, DMS, AI-интеграции, автоматизация, разработка, enterprise",
+  openGraph: {
+    title: "QUSTOMIQ — системы, которые не ломаются",
+    description: "SFA · DMS · AI-интеграции для компаний, которым важен результат",
+    url: "https://qustomiq.ru",
+    siteName: "QUSTOMIQ",
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    locale: "ru_RU",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "QUSTOMIQ — системы, которые не ломаются",
+    description: "SFA · DMS · AI-интеграции для компаний, которым важен результат",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
