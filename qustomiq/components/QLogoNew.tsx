@@ -57,8 +57,16 @@ export default function QLogoNew({ size = 34, wordmark = true }: Props) {
       </svg>
 
       {wordmark && (
-        <span className="q-wordmark" style={{ fontSize: size * 0.53 }}>
-          QUSTOMIQ
+        <span
+          className="q-wordmark"
+          style={{
+            fontSize:      size * 0.53,
+            fontFamily:    "var(--font-display)",
+            fontWeight:    700,
+            letterSpacing: "-0.02em",
+          }}
+        >
+          <span>QUSTOM</span><span style={{ color: "#10B981" }}>IQ</span>
         </span>
       )}
     </div>
