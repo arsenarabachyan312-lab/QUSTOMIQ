@@ -47,6 +47,18 @@ export default function Hero() {
         {!reduce && <HeroScene />}
       </div>
 
+      {/* Radial glow — centered behind headline */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: "none",
+          background: "radial-gradient(circle at 50% 45%, rgba(16,185,129,0.08) 0%, rgba(16,185,129,0.02) 35%, transparent 70%)",
+        }}
+      />
+
       {/* Subtle grid overlay — creates depth */}
       <div
         aria-hidden="true"
@@ -130,11 +142,33 @@ export default function Hero() {
             marginBottom: 24,
             lineHeight: 1.05,
             letterSpacing: "-0.03em",
+            color: "var(--text-primary)",
           }}
         >
           {ru.hero.h1_1}
           <br />
-          <span className="grad-vi">{ru.hero.h1_2}</span>
+          {/* "инфраструктуру" — solid; "бизнеса" — gradient */}
+          {(() => {
+            const words = ru.hero.h1_2.split(" ");
+            const plain = words.slice(0, -1).join(" ");
+            const grad  = words[words.length - 1];
+            return (
+              <>
+                {plain}
+                <br />
+                <span
+                  style={{
+                    background:           "linear-gradient(135deg, #10B981, #A78BFA)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor:  "transparent",
+                    backgroundClip:       "text",
+                  }}
+                >
+                  {grad}
+                </span>
+              </>
+            );
+          })()}
         </motion.h1>
 
         {/* Sub */}
@@ -218,17 +252,17 @@ export default function Hero() {
           </a>
         </motion.div>
 
-        {/* Glassmorphism stats card — bottom right */}
+        {/* Stats card — bottom-left, aligned with headline left edge */}
         <motion.div
           {...(reduce ? {} : {
-            initial: { opacity: 0, x: 20 },
+            initial: { opacity: 0, x: -20 },
             animate: { opacity: 1, x: 0 },
             transition: { delay: 0.7, duration: 0.6, ease: EASE_OUT },
           })}
           style={{
             position: "absolute",
             bottom: "5rem",
-            right: 0,
+            left: 0,
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
             background: "rgba(11,15,14,0.7)",

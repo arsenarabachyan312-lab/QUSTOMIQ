@@ -2,168 +2,130 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { MeshDistortMaterial, Float, Sparkles } from "@react-three/drei";
+import { Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 
-/* ── Module-level mouse — zero per-frame allocation ──────── */
-const mouse = { tx: 0, ty: 0, cx: 0, cy: 0 };
+/* ── Module-level state — zero per-frame allocations ─────── */
+const mouse = { tx: 0, ty: 0, cx: 0, cy: 0 }; // NDC, lerped for camera
 
-/* ── Central Distorting Orb ──────────────────────────────── */
-function DistortOrb() {
-  return (
-    <Float speed={1.4} rotationIntensity={0.4} floatIntensity={0.6}>
-      <mesh>
-        <sphereGeometry args={[0.85, 64, 64]} />
-        <MeshDistortMaterial
-          color="#10B981"
-          distort={0.45}
-          speed={2.5}
-          transparent
-          opacity={0.12}
-          emissive="#10B981"
-          emissiveIntensity={0.6}
-        />
-      </mesh>
-    </Float>
-  );
-}
+/* ── GLSL shaders for per-particle mouse brightening ─────── */
+const VERT = /* glsl */ `
+  uniform vec2 uMouse;
 
-/* ── Wireframe Icosahedron (dual shell) ──────────────────── */
-function Icosahedra() {
-  const groupRef = useRef<THREE.Group>(null);
+  attribute vec3 aColor;
+  varying   vec3 vColor;
+  varying   float vAlpha;
 
-  const outerEdges = useMemo(() => {
-    const base = new THREE.IcosahedronGeometry(2.1, 2);
-    const e = new THREE.EdgesGeometry(base);
-    base.dispose();
-    return e;
-  }, []);
+  void main() {
+    vec4 mvPos  = modelViewMatrix * vec4(position, 1.0);
+    vec4 clip   = projectionMatrix * mvPos;
+    gl_Position = clip;
 
-  const innerEdges = useMemo(() => {
-    const base = new THREE.IcosahedronGeometry(1.35, 1);
-    const e = new THREE.EdgesGeometry(base);
-    base.dispose();
-    return e;
-  }, []);
+    /* Screen-space NDC distance from cursor */
+    vec2 ndc  = clip.xy / clip.w;
+    float dist = length(ndc - uMouse);
+    float t    = max(0.0, 1.0 - dist / 0.5); /* 0.5 NDC radius ≈ 200px on 800px wide */
 
-  useFrame(({ clock }) => {
-    if (!groupRef.current) return;
-    const t = clock.elapsedTime;
-    mouse.cx += (mouse.tx - mouse.cx) * 0.035;
-    mouse.cy += (mouse.ty - mouse.cy) * 0.035;
-    groupRef.current.rotation.y = t * 0.07 + mouse.cx * 0.22;
-    groupRef.current.rotation.x = Math.sin(t * 0.05) * 0.12 - mouse.cy * 0.14;
-  });
+    /* Size: base 1.8, +20% near cursor */
+    float sz = 1.8 * (1.0 + t * 0.2);
+    gl_PointSize = clamp(sz * (280.0 / -mvPos.z), 0.4, 4.0);
 
-  return (
-    <group ref={groupRef}>
-      {/* Outer cage — emerald */}
-      <lineSegments geometry={outerEdges}>
-        <lineBasicMaterial color="#10B981" transparent opacity={0.42} />
-      </lineSegments>
-      {/* Inner cage — violet, counter-rotated */}
-      <lineSegments geometry={innerEdges} rotation={[0.5, 0.8, 0.3]}>
-        <lineBasicMaterial color="#A78BFA" transparent opacity={0.22} />
-      </lineSegments>
-    </group>
-  );
-}
+    /* Brightness: 0.15 → 0.40 near cursor */
+    vAlpha = 0.15 + t * 0.25;
+    vColor = aColor;
+  }
+`;
 
-/* ── Orbital Torus Ring ───────────────────────────────────── */
-function TorusOrbit() {
-  const ref = useRef<THREE.Mesh>(null);
-  useFrame(({ clock }) => {
-    if (!ref.current) return;
-    const t = clock.elapsedTime;
-    ref.current.rotation.x = t * 0.18;
-    ref.current.rotation.z = t * 0.08;
-  });
-  return (
-    <mesh ref={ref} rotation={[Math.PI / 3, 0, Math.PI / 7]}>
-      <torusGeometry args={[2.6, 0.007, 4, 140]} />
-      <meshBasicMaterial color="#A78BFA" transparent opacity={0.18} />
-    </mesh>
-  );
-}
+const FRAG = /* glsl */ `
+  varying vec3  vColor;
+  varying float vAlpha;
 
-/* ── Particle Cloud ──────────────────────────────────────── */
+  void main() {
+    vec2  c   = gl_PointCoord - 0.5;
+    float len = length(c);
+    if (len > 0.5) discard;
+    float soft = smoothstep(0.5, 0.15, len);
+    gl_FragColor = vec4(vColor, soft * vAlpha);
+  }
+`;
+
+/* ── Particle cloud ───────────────────────────────────────── */
 function Particles() {
-  const ref = useRef<THREE.Points>(null);
+  const ref    = useRef<THREE.Points>(null);
+  const matRef = useRef<THREE.ShaderMaterial>(null);
 
+  const COUNT = 800;
+
+  /* Build buffers once */
   const geo = useMemo(() => {
-    const COUNT = 2200;
-    const positions = new Float32Array(COUNT * 3);
-    const colors    = new Float32Array(COUNT * 3);
-    const em = new THREE.Color("#10B981");
-    const vi = new THREE.Color("#A78BFA");
+    const pos  = new Float32Array(COUNT * 3);
+    const col  = new Float32Array(COUNT * 3);
+    const em   = new THREE.Color("#10B981");
+    const vi   = new THREE.Color("#A78BFA");
 
     for (let i = 0; i < COUNT; i++) {
       const layer  = Math.random();
-      const radius = layer < 0.35 ? 2.3 + Math.random() * 1.0 : 3.5 + Math.random() * 4.5;
+      const radius = layer < 0.4 ? 2.2 + Math.random() * 1.1 : 3.4 + Math.random() * 4.5;
       const theta  = Math.random() * Math.PI * 2;
       const phi    = Math.acos(2 * Math.random() - 1);
 
-      positions[i * 3]     = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.65;
-      positions[i * 3 + 2] = radius * Math.cos(phi);
+      pos[i * 3]     = radius * Math.sin(phi) * Math.cos(theta);
+      pos[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.6;
+      pos[i * 3 + 2] = radius * Math.cos(phi);
 
-      const c = em.clone().lerp(vi, i / COUNT);
-      colors[i * 3]     = c.r;
-      colors[i * 3 + 1] = c.g;
-      colors[i * 3 + 2] = c.b;
+      /* 70% emerald bias: t goes from 0 to 0.30 */
+      const t  = (i / COUNT) * 0.3;
+      const c  = em.clone().lerp(vi, t);
+      col[i * 3]     = c.r;
+      col[i * 3 + 1] = c.g;
+      col[i * 3 + 2] = c.b;
     }
 
     const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    g.setAttribute("color",    new THREE.BufferAttribute(colors,    3));
+    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    g.setAttribute("aColor",   new THREE.BufferAttribute(col, 3));
     return g;
   }, []);
 
   useFrame(({ clock }) => {
     if (!ref.current) return;
-    const t = clock.elapsedTime;
-    ref.current.rotation.y = t * 0.018 + mouse.cx * 0.15;
-    ref.current.rotation.x = Math.sin(t * 0.012) * 0.05 - mouse.cy * 0.08;
+    const t  = clock.elapsedTime;
+    mouse.cx += (mouse.tx - mouse.cx) * 0.04;
+    mouse.cy += (mouse.ty - mouse.cy) * 0.04;
+    ref.current.rotation.y = t * 0.016 + mouse.cx * 0.12;
+    ref.current.rotation.x = Math.sin(t * 0.011) * 0.04;
+
+    if (matRef.current) {
+      matRef.current.uniforms.uMouse.value.set(mouse.cx, mouse.cy);
+    }
   });
 
   return (
     <points ref={ref} geometry={geo}>
-      <pointsMaterial size={0.028} sizeAttenuation vertexColors transparent opacity={0.65} depthWrite={false} />
+      <shaderMaterial
+        ref={matRef}
+        vertexShader={VERT}
+        fragmentShader={FRAG}
+        uniforms={{ uMouse: { value: new THREE.Vector2(0, 0) } }}
+        transparent
+        depthWrite={false}
+      />
     </points>
   );
 }
 
-/* ── Dynamic Lights ──────────────────────────────────────── */
-function Lights() {
-  const eRef = useRef<THREE.PointLight>(null);
-  const vRef = useRef<THREE.PointLight>(null);
-  useFrame(({ clock }) => {
-    const t = clock.elapsedTime;
-    if (eRef.current) eRef.current.position.set(Math.sin(t * 0.28) * 4, Math.cos(t * 0.18) * 2, 2);
-    if (vRef.current) vRef.current.position.set(Math.cos(t * 0.22 + 1) * 4, Math.sin(t * 0.15) * 2.5, -2);
-  });
-  return (
-    <>
-      <ambientLight intensity={0.06} />
-      <pointLight ref={eRef} color="#10B981" intensity={3.5} distance={14} decay={2} />
-      <pointLight ref={vRef} color="#A78BFA" intensity={2.5} distance={14} decay={2} />
-      <pointLight color="#ffffff" intensity={0.25} distance={20} position={[0, 6, 5]} />
-    </>
-  );
-}
-
-/* ── Camera Drift ─────────────────────────────────────────── */
+/* ── Camera drift ─────────────────────────────────────────── */
 function CameraRig() {
   const { camera } = useThree();
   useFrame(() => {
-    camera.position.x += (mouse.cx * 0.55 - camera.position.x) * 0.012;
-    camera.position.y += (-mouse.cy * 0.35 - camera.position.y) * 0.012;
+    camera.position.x += (mouse.cx * 0.5  - camera.position.x) * 0.012;
+    camera.position.y += (-mouse.cy * 0.3 - camera.position.y) * 0.012;
     camera.lookAt(0, 0, 0);
   });
   return null;
 }
 
-/* ── Root export ─────────────────────────────────────────── */
+/* ── Root export ──────────────────────────────────────────── */
 export default function HeroScene() {
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -181,13 +143,10 @@ export default function HeroScene() {
       gl={{ alpha: true, antialias: false, powerPreference: "high-performance" }}
       style={{ position: "absolute", inset: 0 }}
     >
-      <Lights />
-      <Icosahedra />
-      <TorusOrbit />
-      <DistortOrb />
+      <ambientLight intensity={0.04} />
       <Particles />
-      <Sparkles count={70} scale={9} size={1.2} speed={0.25} opacity={0.5} color="#10B981" noise={0.8} />
-      <Sparkles count={40} scale={7} size={0.9} speed={0.18} opacity={0.35} color="#A78BFA" noise={1.2} />
+      <Sparkles count={60} scale={9} size={1.1} speed={0.22} opacity={0.35} color="#10B981" noise={0.9} />
+      <Sparkles count={30} scale={7} size={0.85} speed={0.16} opacity={0.22} color="#A78BFA" noise={1.2} />
       <CameraRig />
     </Canvas>
   );

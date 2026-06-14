@@ -68,29 +68,13 @@ export default function Nav() {
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 700,
-            fontSize: 16,
+            fontSize: 22,
             color: "var(--text-primary)",
             textDecoration: "none",
             letterSpacing: "-0.02em",
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
           }}
         >
-          QUSTOMIQ
-          <span
-            style={{
-              display: "inline-block",
-              width: 5,
-              height: 5,
-              borderRadius: "50%",
-              background: "var(--emerald)",
-              boxShadow: "0 0 6px var(--emerald)",
-              marginLeft: 2,
-              marginBottom: 6,
-              flexShrink: 0,
-            }}
-          />
+          <span>QUSTOM</span><span style={{ color: "#10B981" }}>IQ</span>
         </a>
 
         {/* Links — hidden on mobile */}
