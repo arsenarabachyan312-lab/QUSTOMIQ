@@ -186,6 +186,18 @@ a, button, [role="button"] {
   .case-text   { order: 2 !important; }
 }
 
+/* ── Hero vignette: softer on mobile so green glow shows through ── */
+@media (max-width: 1023px) {
+  .hero-vignette {
+    background: linear-gradient(
+      90deg,
+      rgba(5,5,5,0.35) 0%,
+      rgba(5,5,5,0.08) 40%,
+      transparent 60%
+    ) !important;
+  }
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

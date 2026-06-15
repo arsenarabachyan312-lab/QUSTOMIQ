@@ -14,7 +14,7 @@ const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
     <div
       style={{
         position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse 60% 70% at 74% 50%, rgba(16,185,129,0.06) 0%, transparent 70%)",
+        background: "radial-gradient(ellipse 60% 70% at 50% 50%, rgba(16,185,129,0.18) 0%, transparent 70%)",
       }}
     />
   ),
@@ -48,7 +48,17 @@ export default function Hero() {
     >
       {/* WebGL particle field — full-bleed background */}
       <div aria-hidden="true" style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-        {!reduce && <HeroScene />}
+        {reduce ? (
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute", inset: 0, pointerEvents: "none",
+              background: "radial-gradient(ellipse 70% 80% at 50% 40%, rgba(16,185,129,0.15) 0%, rgba(167,139,250,0.08) 40%, transparent 70%)",
+            }}
+          />
+        ) : (
+          <HeroScene />
+        )}
       </div>
 
       {/* Radial glow — anchored to right zone (~74% from left) */}
@@ -73,9 +83,20 @@ export default function Hero() {
         }}
       />
 
+      {/* Mobile green glow — centered, only below lg breakpoint */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 lg:hidden pointer-events-none"
+        style={{
+          zIndex: 1,
+          background: "radial-gradient(ellipse 110% 50% at 50% 32%, rgba(16,185,129,0.11) 0%, transparent 60%)",
+        }}
+      />
+
       {/* Left vignette — lifts text readability against particle field */}
       <div
         aria-hidden="true"
+        className="hero-vignette"
         style={{
           position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
           background: "linear-gradient(90deg, rgba(5,5,5,0.5) 0%, rgba(5,5,5,0.12) 48%, transparent 68%)",
